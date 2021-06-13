@@ -1,3 +1,6 @@
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+
 - defaults:
     link:
       relink: true
@@ -5,7 +8,15 @@
 - clean: ['~']
 
 - link:
-    ~/.zshrc: zshrc
+    ~/.zshrc:
+      force: true
+      path: zshrc
 
 - shell:
-  - [git submodule update --init --recursive, Installing submodules]
+  - [chsh -s $(which zsh), Making zsh the default shell]
+  -
+    command: ./git/set-gitconfig.sh
+    description: Configuring Git
+    stdout: true
+    stderr: true
+    quiet: false
