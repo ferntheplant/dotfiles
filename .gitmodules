@@ -4,3 +4,6 @@
 [submodule "ohmyzsh"]
 	path = ohmyzsh
 	url = https://github.com/ohmyzsh/ohmyzsh
+[submodule "tower-crane"]
+	path = tower-crane
+	url = https://gitlab.com/upchieve/tower-crane.git

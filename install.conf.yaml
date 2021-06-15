@@ -1,5 +1,11 @@
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
+  -
+    command: sudo apt install zsh
+    describe: Install zsh
+    stdout: true
+    stderr: true
+    quiet: false
 
 - defaults:
     link:
@@ -21,6 +27,12 @@
   -
     command: ./git/set-gitconfig.sh
     description: Configuring Git
+    stdout: true
+    stderr: true
+    quiet: false
+  -
+    command: ./tower-crane/.community_setup_linux.sh
+    description: Setup subway
     stdout: true
     stderr: true
     quiet: false
