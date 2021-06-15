@@ -48,5 +48,5 @@ export PATH=$PATH:/home/fjorn/.linkerd2/bin
 export PATH=$PATH:$HOME/.pulumi/bin
 
 # Load aliases
-for f in $DOTFILES/aliases/*.aliases.*sh; do source $f; done
+for f in $DOTFILES/alias/*.alias.*sh; do source $f; done
 

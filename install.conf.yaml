@@ -13,7 +13,11 @@
       path: zshrc
 
 - shell:
-  - [chsh -s $(which zsh), Making zsh the default shell]
+  - 
+    command: chsh -s $(which zsh)
+    description: Making zsh the default shell
+    stdout: true
+    stderr: true
   -
     command: ./git/set-gitconfig.sh
     description: Configuring Git
