@@ -24,9 +24,3 @@
     stdout: true
     stderr: true
     quiet: false
-  -
-    command: ./tower-crane/community_setup_linux.sh
-    description: Setup subway
-    stdout: true
-    stderr: true
-    quiet: false
