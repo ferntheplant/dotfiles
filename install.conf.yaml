@@ -1,11 +1,5 @@
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
-  -
-    command: sudo apt install zsh
-    describe: Install zsh
-    stdout: true
-    stderr: true
-    quiet: false
 
 - defaults:
     link:
@@ -19,7 +13,7 @@
       path: zshrc
 
 - shell:
-  - 
+  -  
     command: chsh -s $(which zsh)
     description: Making zsh the default shell
     stdout: true

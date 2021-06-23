@@ -5,7 +5,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export DOTFILES="/home/$USER/dotfiles"
+export ZSH_DISABLE_COMPFIX=true
+export DOTFILES="$HOME/dotfiles"
+export ZSH_CUSTOM="$DOTFILES/zsh-custom"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -44,7 +46,7 @@ export PATH=$PATH:/usr/bin
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-export PATH=$PATH:/home/fjorn/.linkerd2/bin
+export PATH=$PATH:$HOME/.linkerd2/bin
 export PATH=$PATH:$HOME/.pulumi/bin
 
 # Load aliases

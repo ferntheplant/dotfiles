@@ -7,3 +7,9 @@
 [submodule "tower-crane"]
 	path = tower-crane
 	url = https://gitlab.com/upchieve/tower-crane.git
+[submodule "zsh-custom/themes/powerlevel10k"]
+	path = zsh-custom/themes/powerlevel10k
+	url = https://github.com/romkatv/powerlevel10k
+[submodule "zsh-custom/plugins/zsh-syntax-highlighting"]
+	path = zsh-custom/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
