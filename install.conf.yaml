@@ -8,7 +8,7 @@
 - clean: ['~']
 
 - link:
-    ~/.zshrc:
+    $HOME/.zshrc:
       force: true
       path: zshrc
 

@@ -52,3 +52,6 @@ export PATH=$PATH:$HOME/.pulumi/bin
 # Load aliases
 for f in $DOTFILES/alias/*.alias.*sh; do source $f; done
 
+export PATH=$PATH:/home/fjorn/bin
+
+source '/home/fjorn/lib/azure-cli/az.completion'
