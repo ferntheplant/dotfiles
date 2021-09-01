@@ -52,3 +52,9 @@ export PATH=$PATH:$HOME/.pulumi/bin
 # Load aliases
 for f in $DOTFILES/alias/*.alias.*sh; do source $f; done
 
+export PATH=$PATH:/home/fjorn/bin
+
+source '/home/fjorn/lib/azure-cli/az.completion'
+
+# To customize prompt, run `p10k configure` or edit ~/dotfiles/p10k.zsh.
+[[ ! -f ~/dotfiles/p10k.zsh ]] || source ~/dotfiles/p10k.zsh

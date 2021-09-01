@@ -11,3 +11,6 @@ alias startargo="kubectl port-forward -n argocd argocd-server-55c946954f-zdjps 8
 alias startsubway="startmongo && startredis && npx ts-node server/init"
 alias killsubway="killmongo && killredis"
 alias resetsubway="killsubway && startsubway"
+
+alias killtelepresence="rm -rf /tmp/telepresence-connector.socket && telepresence quit"
+alias resettelepresence="killtelepresence && telepresence connect"
