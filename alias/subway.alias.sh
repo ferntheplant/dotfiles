@@ -15,4 +15,4 @@ alias resetsubway="killsubway && startsubway"
 alias killtelepresence="rm -rf /tmp/telepresence-connector.socket && telepresence quit"
 alias resettelepresence="killtelepresence && telepresence connect"
 
-alias startdocker="dockerd > /dev/null 2>&1 & disown"
+alias startdocker="sudo service docker status || sudo service docker start"
