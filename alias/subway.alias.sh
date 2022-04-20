@@ -17,4 +17,5 @@ alias resettelepresence="killtelepresence && telepresence connect"
 
 alias startdocker="sudo service docker status || sudo service docker start"
 
-alias dc="docker-compose"
+alias dc="docker compose"
+

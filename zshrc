@@ -55,5 +55,20 @@ for f in $DOTFILES/alias/*.alias.*sh; do source $f; done
 
 export PATH=$PATH:/home/fjorn/bin
 
+function peco-history-selection() {
+  local tac
+  if which tac > /dev/null; then
+    tac="tac"
+  else
+    tac="tail -r"
+  fi
+  BUFFER=$(history -1000 | eval $tac | cut -c 8- | peco --query "$LBUFFER")
+  CURSOR=$#BUFFER
+}
+zle -N peco-history-selection
+bindkey '^R' peco-history-selection
+
+alias pdoc="docker ps --all | peco | awk '{print \$1;}' | tr '\n' ' ' | xargs docker"
+
 # To customize prompt, run `p10k configure` or edit ~/dotfiles/p10k.zsh.
 [[ ! -f ~/dotfiles/p10k.zsh ]] || source ~/dotfiles/p10k.zsh
