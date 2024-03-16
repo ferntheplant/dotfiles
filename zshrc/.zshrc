@@ -13,9 +13,8 @@ alias g="git"
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
-eval "$(zellij setup --generate-auto-start zsh)"
 
 if [[ -x "$(command -v zellij)" ]];
 then
-	eval "$(zellij setup --generate-completion zsh | grep "^function")"
+  eval "$(zellij setup --generate-completion zsh | grep "^function")"
 fi;
