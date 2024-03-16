@@ -14,6 +14,6 @@ xargs sudo apt-get install < leaves.txt
 Clone this repo to `~/dotfiles` and run
 
 ```bash
-stow alacritty  gh  git  nvim  starship  zshrc
+stow --no-folding alacritty gh git nvim starship zellij zshrc
 ```
 

@@ -3,6 +3,8 @@ path+=('/home/fjorn/.local/bin')
 
 export PATH
 
+export EDITOR="/opt/nvim-linux64/bin/nvim"
+
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -11,3 +13,9 @@ alias g="git"
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+eval "$(zellij setup --generate-auto-start zsh)"
+
+if [[ -x "$(command -v zellij)" ]];
+then
+	eval "$(zellij setup --generate-completion zsh | grep "^function")"
+fi;
