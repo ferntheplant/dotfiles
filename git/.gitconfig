@@ -1,0 +1,17 @@
+[user]
+	name = Fern Sanchez
+	email = me@fjorn.dev
+	username = ferntheplant
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[init]
+	defaultBranch = main
+[alias]
+	st = status
+	ci = commit -v
+	co = checkout
+	br = branch
+	unstage = reset HEAD --
+[core]
+	editor = nvim

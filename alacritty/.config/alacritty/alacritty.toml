@@ -1,0 +1,45 @@
+live_config_reload = true
+shell = "ubuntu"
+
+import = ["./catppuccin-macchiato.toml"]
+
+[env]
+term = "xterm-256color"
+
+[window]
+dynamic_title = true
+decorations_theme_variant = "Dark"
+
+[window.dimensions]
+columns = 120
+lines = 30
+
+[cursor]
+thickness = 0.85
+unfocused_hollow = true
+
+[cursor.style]
+shape = "Block"
+blinking = "off"
+
+[terminal]
+osc52 = "CopyPaste"
+
+[font]
+size = 14.0
+
+[font.normal]
+family = "MesloLGS NF"
+style = "Regular"
+
+[font.bold]
+family = "MesloLGS NF"
+style = "Bold"
+
+[font.italic]
+family = "MesloLGS NF"
+style = "italic"
+
+[font.bold_italic]
+family = "MesloLGS NF"
+style = "Bold Italic"
