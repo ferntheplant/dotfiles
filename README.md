@@ -35,6 +35,10 @@ $ xargs bun add --global < bun-packages.txt
 # setup location for custom installed libraries
 $ mkdir ~/bin
 
+# install fzf (ubuntu apt repository is outdated)
+$ git clone https://github.com/junegunn/fzf.git ~/bin/fzf
+$ ~/bin/fzf/install
+
 # install zk
 $ git clone https://github.com/zk-org/zk.git ~/bin/zk
 $ cd ~/bin/zk
