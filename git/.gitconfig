@@ -14,4 +14,4 @@
 	br = branch
 	unstage = reset HEAD --
 [core]
-	editor = nvim
+	editor = hx

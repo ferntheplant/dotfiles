@@ -9,10 +9,7 @@ term = "xterm-256color"
 [window]
 dynamic_title = true
 decorations_theme_variant = "Dark"
-
-[window.dimensions]
-columns = 120
-lines = 30
+startup_mode = "Maximized"
 
 [cursor]
 thickness = 0.85

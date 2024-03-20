@@ -1,0 +1,4 @@
+[[language]]
+name = "markdown"
+formatter = { command = "bunx", args = ["dprint", "fmt", "--stdin", "md"]}
+auto-format = true

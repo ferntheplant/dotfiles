@@ -1,0 +1,30 @@
+theme = "catppuccin_macchiato"
+
+[editor]
+cursorline = true
+true-color = true
+color-modes = true
+
+[editor.cursor-shape]
+insert = "block"
+normal = "block"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+
+[editor.file-picker]
+hidden = false
+follow-symlinks = true
+
+[editor.whitespace.render]
+space = "none"
+tab = "all"
+newline = "none"
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+tab = "→"
+newline = "⏎"
+tabpad = "·" # Tabs will look like "→···" (depending on tab width)
