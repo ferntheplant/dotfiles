@@ -2,3 +2,8 @@
 name = "markdown"
 formatter = { command = "bunx", args = ["dprint", "fmt", "--stdin", "md"]}
 auto-format = true
+
+[[language]]
+name = "javascript"
+formatter = { command = "bunx", args = ["dprint", "fmt", "--stdin", "js"]}
+auto-format = true

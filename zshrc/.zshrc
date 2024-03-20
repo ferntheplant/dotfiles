@@ -1,12 +1,13 @@
-path+=('/opt/nvim-linux64/bin')
-path+=('/home/fjorn/.local/bin')
-path+=('/home/fjorn/go/bin')
-
-export PATH
-
 export EDITOR="/usr/bin/hx"
 export HELIX_RUNTIME="/var/lib/helix/runtime"
 export ZK_NOTEBOOK_DIR="/home/fjorn/notebook"
+export GOROOT="/usr/local/go"
+export GOPATH="$HOME/go"
+
+path+=('/home/fjorn/.local/bin')
+path+=('/home/fjorn/go/bin')
+path+=('/usr/local/go/bin')
+export PATH
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -14,6 +15,7 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias l="exa -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git'"
 alias g="git"
 
+eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
