@@ -15,6 +15,8 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias l="exa -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git'"
 alias g="git"
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"

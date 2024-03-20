@@ -1,9 +1,24 @@
 [[language]]
 name = "markdown"
-formatter = { command = "bunx", args = ["dprint", "fmt", "--stdin", "md"]}
+formatter = { command = "dprint", args = ["fmt", "--stdin", "md"] }
 auto-format = true
 
 [[language]]
 name = "javascript"
-formatter = { command = "bunx", args = ["dprint", "fmt", "--stdin", "js"]}
+formatter = { command = "dprint", args = ["fmt", "--stdin", "js"] }
+auto-format = true
+
+[[language]]
+name = "typescript"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "ts"] }
+auto-format = true
+
+[[language]]
+name = "bash"
+formatter = { command = "shfmt", args = ["-"] }
+auto-format = true
+
+[[language]]
+name = "toml"
+formatter = { command = "dprint", args = ["shfmt"] }
 auto-format = true

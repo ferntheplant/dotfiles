@@ -1,6 +1,7 @@
-# Dotfiles symlinking
+# Dotfiles Setup
 
 ## Install packages
+
 ```bash
 # Leaving machine
 $ sudo apt-mark showmanual > apt-packages.txt
@@ -21,15 +22,15 @@ $ chsh -s $(which zsh)
 $ curl https://sh.rustup.rs -sSf | sh
 $ xargs cargo install < cargo-packages.txt
 
+# install bun
+$ curl -fsSL https://bun.sh/install | bash
+$ xargs bun add --global < bun-packages.txt
+
 # install go
 $ wget https://go.dev/dl/go1.22.1.linux-amd64.tar.gz
 $ sudo tar -xvf go1.22.1.linux-amd64.tar.gz
 $ sudo mv go /usr/local
 $ rm go1.22.1.linux-amd64.tar.gz
-
-# install bun
-$ curl -fsSL https://bun.sh/install | bash
-$ xargs bun add --global < bun-packages.txt
 
 # TODO: find way to automate custom bin installs
 # setup location for custom installed libraries
@@ -55,6 +56,9 @@ $ git clone https://github.com/jesseduffield/lazygit.git ~/bin/lazygit
 $ cd ~/bin/lazygit
 $ go install
 
+# install shfmt
+$ go install mvdan.cc/sh/v3/cmd/shfmt@latest
+
 # setup notebook
 $ git clone https://github.com/ferntheplant/notebook.git ~/notebook
 ```
@@ -65,15 +69,22 @@ Clone this repo to `~/dotfiles` and run
 
 ```bash
 # TODO: find way to automatically install all the subdirectories with stow
-stow --no-folding alacritty gh git helix starship zellij zk zshrc
+$ cd ~/dotfiles
+$ ./install
 ```
 
 ## Windows shennanigans
 
 After setting up WSL and installing alacritty need ot symlink the alacritty config to the windows filesystem. Run the following in an administrator power shell instance
+
 ```powershell
-> New-Item -ItemType SymbolicLink -Path C:\Users\fjorn\AppData\Roaming\alacritty\alacritty.toml -Target "\\wsl.localhost\Ubuntu\home\fjorn\dotfiles\alacritty\.config\alacritty\alacritty.toml" 
+> New-Item -ItemType SymbolicLink -Path C:\Users\fjorn\AppData\Roaming\alacritty\alacritty.toml -Target "\\wsl.localhost\Ubuntu\home\fjorn\dotfiles\alacritty\.config\alacritty\alacritty.toml"
 ```
 
 Note that the symlink target points to the dotfiles repo and not `~/.config`. Thisi s because windows symlinks CANNOT follow linux symlinks so we need ot point to the original file.
 
+## MacOS and Homebrew
+
+Most things from `apt`, `cargo`, `bun`, and the manual install list can be acquired via homebrew on MacOS.
+
+TODO: finalize list of homebrew packages to install
