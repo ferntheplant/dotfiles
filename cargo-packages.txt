@@ -1,0 +1,1 @@
+dprint exa sd starship zellij 
