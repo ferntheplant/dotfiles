@@ -68,7 +68,6 @@ $ git clone https://github.com/ferntheplant/notebook.git ~/notebook
 Clone this repo to `~/dotfiles` and run
 
 ```bash
-# TODO: find way to automatically install all the subdirectories with stow
 $ cd ~/dotfiles
 $ ./install
 ```
