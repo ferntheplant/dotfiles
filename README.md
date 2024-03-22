@@ -6,7 +6,7 @@
 # Leaving machine
 $ sudo apt-mark showmanual > apt-packages.txt
 $ cargo install --list | awk 'NF==1 {printf "%s ", $1}' > cargo-packages.txt
-
+$ cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt
 # -------------------------------------
 
 # Fresh machine
@@ -33,6 +33,9 @@ $ mise install
 # install cargo
 $ curl https://sh.rustup.rs -sSf | sh
 $ xargs cargo install < cargo-packages.txt
+
+# install bun packages
+$ xargs bun add --global < bun-packages.txt
 
 # TODO: find way to automate custom bin installs
 # setup location for custom installed libraries

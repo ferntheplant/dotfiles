@@ -20,5 +20,13 @@ auto-format = true
 
 [[language]]
 name = "toml"
-formatter = { command = "dprint", args = ["shfmt"] }
+formatter = { command = "dprint", args = ["fmt", "--stdin", "toml"] }
 auto-format = true
+
+[[language]]
+name = "bash"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "sh"] }
+auto-format = true
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
