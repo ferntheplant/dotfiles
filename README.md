@@ -65,6 +65,10 @@ Note that the symlink target points to the dotfiles repo and not `~/.config`. Th
 
 ## MacOS and Homebrew
 
-Most things from `apt`, `cargo`, `bun`, and the manual install list can be acquired via homebrew on MacOS.
+Most things from `apt`, `mise`, `cargo`, and the manual install list can be acquired via homebrew on MacOS.
 
 TODO: finalize list of homebrew packages to install
+Notes on this:
+
+- probably keep everything managed by cargo and mise in those tools
+- only use homebrew on custom bin installs
