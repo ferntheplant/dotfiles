@@ -4,7 +4,7 @@
 
 ```bash
 # Leaving machine
-$ sudo apt-mark showmanual > apt-packages.txt
+$ apt-mark showmanual > apt-packages.txt
 $ cargo install --list | awk 'NF==1 {printf "%s ", $1}' > cargo-packages.txt
 $ cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt
 $ pip list | awk 'NR>2 && NF' | grep -v "\[notice\]" | awk '{print $1}' | paste -sd " " > pip-packages.txt

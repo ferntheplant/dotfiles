@@ -1,0 +1,1 @@
+attrs black cattrs click exceptiongroup lsprotocol mypy-extensions packaging pathspec pip platformdirs pygls ruff ruff-lsp setuptools tomli typing_extensions
