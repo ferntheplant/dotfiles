@@ -1,0 +1,9 @@
+[tools]
+bun = "latest"
+fzf = "latest"
+shfmt = "latest"
+lazygit = "latest"
+go = "latest"
+
+[settings]
+activate_aggressive = true

@@ -6,7 +6,6 @@
 # Leaving machine
 $ sudo apt-mark showmanual > apt-packages.txt
 $ cargo install --list | awk 'NF==1 {printf "%s ", $1}' > cargo-packages.txt
-$ cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt 
 
 # -------------------------------------
 
@@ -15,30 +14,29 @@ $ sudo add-apt-repository ppa:maveonair/helix-editor
 $ sudo apt update
 $ xargs sudo apt-get install < apt-packages.txt
 
+# login with github to access dotfiles and notebook repos
+$ gh auth login
+
+# install dotfiles (must come after installing stow)
+$ git clone https://github.com/ferntheplant/dotfiles.git ~/dotfiles
+$ cd ~/dotfiles
+$ ./install
+
 # make zsh default shell
 $ chsh -s $(which zsh)
+
+# install mise
+$ curl https://mise.run | sh
+$ ~/.local/bin/mise activate
+$ mise install
 
 # install cargo
 $ curl https://sh.rustup.rs -sSf | sh
 $ xargs cargo install < cargo-packages.txt
 
-# install bun
-$ curl -fsSL https://bun.sh/install | bash
-$ xargs bun add --global < bun-packages.txt
-
-# install go
-$ wget https://go.dev/dl/go1.22.1.linux-amd64.tar.gz
-$ sudo tar -xvf go1.22.1.linux-amd64.tar.gz
-$ sudo mv go /usr/local
-$ rm go1.22.1.linux-amd64.tar.gz
-
 # TODO: find way to automate custom bin installs
 # setup location for custom installed libraries
 $ mkdir ~/bin
-
-# install fzf (ubuntu apt repository is outdated)
-$ git clone https://github.com/junegunn/fzf.git ~/bin/fzf
-$ ~/bin/fzf/install
 
 # install zk
 $ git clone https://github.com/zk-org/zk.git ~/bin/zk
@@ -51,25 +49,8 @@ $ curl -o ~/bin/marksman https://github.com/artempyanykh/marksman/releases/downl
 $ chmod +x ~/bin/marksman
 $ sudo ln -s /home/fjorn/bin/marksman /usr/local/bin/marksman
 
-# install lazygit
-$ git clone https://github.com/jesseduffield/lazygit.git ~/bin/lazygit
-$ cd ~/bin/lazygit
-$ go install
-
-# install shfmt
-$ go install mvdan.cc/sh/v3/cmd/shfmt@latest
-
 # setup notebook
 $ git clone https://github.com/ferntheplant/notebook.git ~/notebook
-```
-
-## Install dotfiles with stow
-
-Clone this repo to `~/dotfiles` and run
-
-```bash
-$ cd ~/dotfiles
-$ ./install
 ```
 
 ## Windows shennanigans

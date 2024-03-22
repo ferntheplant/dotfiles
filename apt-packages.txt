@@ -16,9 +16,11 @@ hostname
 init
 jq
 libdebconfclient0
+libssl-dev
 login
 ncurses-base
 ncurses-bin
+openssl
 ripgrep
 shellcheck
 stow
