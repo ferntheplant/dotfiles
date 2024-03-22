@@ -9,7 +9,7 @@ export PATH
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-alias l="exa -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git'"
+alias l="exa -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git' --git-ignore"
 alias g="git"
 
 eval "$(mise activate zsh)"

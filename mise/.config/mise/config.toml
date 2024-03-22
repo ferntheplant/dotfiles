@@ -5,6 +5,7 @@ shfmt = "latest"
 lazygit = "latest"
 go = "latest"
 python = "3.10.6"
+node = "latest"
 
 [settings]
 activate_aggressive = true
