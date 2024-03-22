@@ -1,1 +1,1 @@
-dprint exa markdown-oxide rustlings sccache sd starship taplo zellij 
+atuindprintexamarkdown-oxiderustlingssccachesdstarshiptaplozellij

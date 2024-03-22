@@ -11,12 +11,17 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 alias l="exa -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git' --git-ignore"
 alias g="git"
+alias leave-apt="apt-mark showmanual > apt-packages.txt"
+alias leave-cargo="cargo install --list | awk 'NF==1 {printf \"%s\", \$1}' > cargo-packages.txt"
+alias leave-bun="cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt"
+alias leave-pip="pip list | awk 'NR>2 && NF' | grep -v \"\\[notice\\]\" | awk '{print \$1}' | paste -sd \" \" > pip-packages.txt"
 
 eval "$(mise activate zsh)"
 eval "$(mise hook-env)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+eval "$(atuin init zsh --disable-up-arrow)"
 
 if [[ -x "$(command -v zellij)" ]]; then
 	eval "$(zellij setup --generate-completion zsh | grep "^function")"
