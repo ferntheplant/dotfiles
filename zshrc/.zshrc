@@ -4,8 +4,6 @@ export ZK_NOTEBOOK_DIR="/home/fjorn/notebook"
 export RUSTC_WRAPPER="/home/fjorn/.cargo/bin/sccache"
 
 path+=('/home/fjorn/.local/bin')
-path+=('/home/fjorn/go/bin')
-path+=('/usr/local/go/bin')
 export PATH
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh

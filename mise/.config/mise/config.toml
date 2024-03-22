@@ -4,6 +4,7 @@ fzf = "latest"
 shfmt = "latest"
 lazygit = "latest"
 go = "latest"
+python = "3.10.6"
 
 [settings]
 activate_aggressive = true
