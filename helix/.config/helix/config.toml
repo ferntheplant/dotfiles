@@ -36,3 +36,6 @@ nbsp = "⍽"
 tab = "→"
 newline = "⏎"
 tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+
+[keys.normal]
+C-y = ":sh yy" # launch filepicker

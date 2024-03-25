@@ -1,3 +1,3 @@
 #!/bin/bash
 
-zellij run -c -f -- yazi
+zellij run -c -f -- yazi "$PWD"
