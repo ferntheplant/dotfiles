@@ -1,11 +1,11 @@
 [tools]
-bun = "latest"
 fzf = "latest"
 shfmt = "latest"
 lazygit = "latest"
 go = "latest"
 python = "3.10.6"
 node = "latest"
+bun = "latest"
 
 [settings]
 activate_aggressive = true

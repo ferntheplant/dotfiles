@@ -6,6 +6,8 @@ true-color = true
 color-modes = true
 rulers = [80, 120]
 text-width = 120
+shell = ["zsh", "-c"]
+bufferline = "always"
 
 [editor.soft-wrap]
 enable = true

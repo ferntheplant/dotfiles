@@ -1,6 +1,3 @@
-[language-server]
-biome = { command = "biome", args = ["lsp-proxy"] }
-
 # notes -----------------------------------------------------------------------
 [[language]]
 name = "markdown"
@@ -8,15 +5,24 @@ formatter = { command = "dprint", args = ["fmt", "--stdin", "md"] }
 auto-format = true
 language-servers = ["markdown-oxide", "ltex-ls"]
 
-[language-server.markdown-oxide]
+[language-server.mardown-oxide]
 command = "markdown-oxide"
+
+[language-server.markdoc-ls]
+command = "markdoc-ls"
+args = ["--stdio"]
+config = { "root" = "/home/fjorn/projects/fjorndotdev", "path" = "content/blog", config = { "root" = "/home/fjorn/projects/fjorndotdev", "path" = "content/blog" } }
 
 [language-server.ltex-ls.config]
 ltex.language = "en-US"
 ltex.disabledRules = { "en-US" = ["PROFANITY"] }
-ltex.dictionary = { "en-US" = ["dotfile", "dotfiles", "mise", "homebrew", "Alacritty", "todo", "poop", "pee", "yeet", "Dotfiles", "Mise", "TODO"] }
+ltex.dictionary = { "en-US" = ["dotfile", "dotfiles", "mise", "homebrew", "Alacritty", "todo", "poop", "pee", "yeet", "Dotfiles", "Mise", "TODO", "inting", "inted"] }
 
 # web dev ---------------------------------------------------------------------
+[language-server.biome]
+command = "biome"
+args = ["lsp-proxy"]
+
 [[language]]
 name = "javascript"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "js"] }
@@ -95,6 +101,14 @@ args = ["up", "--method", "stdio"]
 name = "toml"
 formatter = { command = "dprint", args = ["fmt", "--stdin", "toml"] }
 auto-format = true
+
+[[language]]
+name = "json"
+formatter = { command = "dprint", args = ["fmt", "--stdin", "json"] }
+auto-format = true
+
+[language-server.vscode-json-language-server]
+config = { provideFormatter = false }
 
 [[language]]
 name = "bash"
