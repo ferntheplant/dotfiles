@@ -2,6 +2,11 @@
 
 ## Install packages
 
+Prerequisites:
+
+1. Install [Alacritty](https://github.com/alacritty/alacritty)
+2. Install [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md)
+
 ```bash
 # Leaving machine
 $ apt-mark showmanual > apt-packages.txt
