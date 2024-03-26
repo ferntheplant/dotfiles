@@ -17,7 +17,7 @@ alias g="git"
 
 alias leave-apt="apt-mark showmanual > apt-packages.txt"
 # shellcheck disable=SC2142
-alias leave-cargo="cargo install --list | awk 'NF==1 {printf \"%s\", \$1}' > cargo-packages.txt"
+alias leave-cargo="cargo install --list | awk 'NF==1 {printf \"%s \", \$1}' > cargo-packages.txt"
 alias leave-bun="cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt"
 # shellcheck disable=SC2142
 alias leave-pip="pip list | awk 'NR>2 && NF' | grep -v \"\\[notice\\]\" | awk '{print \$1}' | paste -sd \" \" > pip-packages.txt"
