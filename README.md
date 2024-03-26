@@ -24,9 +24,6 @@ $ git clone https://github.com/ferntheplant/dotfiles.git ~/dotfiles
 $ cd ~/dotfiles
 $ ./scripts/install
 
-# make zsh default shell
-$ chsh -s $(which zsh)
-
 # install mise
 $ curl https://mise.run | sh
 $ ~/.local/bin/mise activate
@@ -59,9 +56,11 @@ $ cd ~/bin/zk
 $ make
 $ sudo ln -s /home/fjorn/bin/zk/zk ~/.local/bin/zk
 
-# setup notebook
-$ git clone https://github.com/ferntheplant/notebook.git ~/notebook
+# make zsh default shell
+$ chsh -s $(which zsh)
 ```
+
+TODO: find way to automate generating `leaves.txt` files on reasonable schedule to always keep them up to date.
 
 ## Windows shenanigans
 
@@ -80,5 +79,5 @@ Most things from `apt`, `mise`, `cargo`, and the manual install list can be acqu
 TODO: finalize list of Homebrew packages to install
 Notes on this:
 
-- probably keep everything managed by cargo and Mise in those tools
-- only use Homebrew on custom bin installs
+- probably keep everything managed by external package managers in those tools since we have the `leaves.txt` pattern
+- only use Homebrew on custom bin installs and to replace `apt` on macOS

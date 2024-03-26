@@ -16,7 +16,6 @@ alias l="exa -a --long --header --tree --level=2 --icons --no-user --git --ignor
 alias g="git"
 
 alias leave-apt="apt-mark showmanual > apt-packages.txt"
-
 # shellcheck disable=SC2142
 alias leave-cargo="cargo install --list | awk 'NF==1 {printf \"%s\", \$1}' > cargo-packages.txt"
 alias leave-bun="cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt"
