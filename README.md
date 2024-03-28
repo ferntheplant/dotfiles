@@ -86,3 +86,12 @@ Notes on this:
 
 - probably keep everything managed by external package managers in those tools since we have the `leaves.txt` pattern
 - only use Homebrew on custom bin installs and to replace `apt` on macOS
+
+## Config TODOs
+
+- Setup [pretty ts errors](https://github.com/yoavbls/pretty-ts-errors)
+  - Here is a [fork](https://github.com/hexh250786313/pretty-ts-errors-markdown) that exposes a standalone LSP
+  - Here is a [sample plugin](https://github.com/hexh250786313/coc-pretty-ts-errors) for nvim using said LSP
+- Setup [quick lint js](https://quick-lint-js.com/)
+- Setup [automatic class sorting](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier) for tailwind with prettier
+  - Pass the prettier config to dprint somehow
