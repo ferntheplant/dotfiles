@@ -1,5 +1,6 @@
 live_config_reload = true
-shell = "ubuntu"
+
+shell = "/bin/zsh"
 
 import = ["./catppuccin-macchiato.toml"]
 
@@ -10,6 +11,7 @@ term = "xterm-256color"
 dynamic_title = true
 decorations_theme_variant = "Dark"
 startup_mode = "Maximized"
+option_as_alt = "OnlyLeft"
 
 [cursor]
 thickness = 0.85
@@ -35,7 +37,7 @@ style = "Bold"
 
 [font.italic]
 family = "MesloLGS NF"
-style = "italic"
+style = "Italic"
 
 [font.bold_italic]
 family = "MesloLGS NF"

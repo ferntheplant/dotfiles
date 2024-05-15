@@ -2,14 +2,14 @@
 
 # WRITTEN BY CHATGPT
 # Define the fixed location
-fixed_location="/home/fjorn/dotfiles"
+fixed_location="$HOME/dotfiles"
 
 # Loop through all subdirectories
 for subdir in "$fixed_location"/*; do
 	if [ -d "$subdir" ]; then
 		subdir_name=$(basename "$subdir")
 		if [ "$subdir_name" = "scripts" ]; then
-			stow -t '/home/fjorn/.local/bin' --ignore='install' scripts
+			stow -t "$HOME/.local/bin" --ignore="install" scripts
 		else
 			stow --no-folding "$subdir_name"
 		fi

@@ -9,17 +9,37 @@ Prerequisites:
 
 ```bash
 # Leaving machine
-$ apt-mark showmanual > apt-packages.txt
-$ cargo install --list | awk 'NF==1 {printf "%s ", $1}' > cargo-packages.txt
-$ cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt
-$ pip list | awk 'NR>2 && NF' | grep -v "\[notice\]" | awk '{print $1}' | paste -sd " " > pip-packages.txt
+$cd ~/dotfiles
+
+# Linux
+$ leave-apt
+
+# macOS
+$ leave-brew
+
+$ leave-cargo
+$ leave-bun
+$ leave-pip
+
+$ g add *
+$ g commit -m "Leaving machine"
+$ g push origin main
 
 # -------------------------------------
 
 # Fresh machine
-$ sudo add-apt-repository ppa:maveonair/helix-editor
+# Clear out existing configs
+$ rm ~/.zshrc ~/.zshenv ~/.gitconfig
+$ rm -rf ~/.config
+
+# Linux
 $ sudo apt update
+$ sudo add-apt-repository ppa:maveonair/helix-editor
 $ xargs sudo apt-get install < apt-packages.txt
+
+# macOS
+$ brew update
+$ xargs brew install < brew-packages.txt
 
 # login with github to access dotfiles and notebook repos
 $ gh auth login
@@ -31,12 +51,16 @@ $ ./scripts/install
 
 # install mise
 $ curl https://mise.run | sh
-$ ~/.local/bin/mise activate
-$ mise install
+$ ~/.local/bin/mise install
 
 # install cargo (mise reccomends not using mise to manage rust)
+$ unset RUSTC_WRAPPER
 $ curl https://sh.rustup.rs -sSf | sh
 $ xargs cargo install < cargo-packages.txt
+$ cargo-install-custom < cargo-custom.txt
+
+# add sccache to rust
+$ cargo install sccache
 
 # install bun packages
 $ xargs bun add --global < bun-packages.txt
@@ -47,6 +71,9 @@ $ xargs pip install < pip-packages.txt
 # TODO: find way to automate custom bin installs
 # setup location for custom installed libraries
 $ mkdir ~/bin
+
+# install zsh auto-suggestions
+$ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 
 # install ltex-ls
 $ curl -L -o "/home/fjorn/bin/ltex-ls.tar.gz" https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz
@@ -75,17 +102,15 @@ After setting up WSL and installing Alacritty you need to symlink the Alacritty 
 > New-Item -ItemType SymbolicLink -Path C:\Users\fjorn\AppData\Roaming\alacritty\alacritty.toml -Target "\\wsl.localhost\Ubuntu\home\fjorn\dotfiles\alacritty\.config\alacritty\alacritty.toml"
 ```
 
+Furthermore you'll likely need to modify the default shell for Alacritty to be the Ubuntu shell for WSL. Set the top level `shell=ubuntu` key in `alacritty.toml`.
+
 Note that the symlink target points to the dotfiles repo and not `~/.config`. This is because windows symlinks CANNOT follow Linux symlinks, so we need to point to the original file.
 
 ## macOS and Homebrew
 
-Most things from `apt`, `mise`, `cargo`, and the manual install list can be acquired via Homebrew on macOS.
+Most things from `apt`, `mise`, `cargo`, and the manual install list can be acquired via Homebrew on macOS. However, for maximal interoperability we instead manually ported over the list of `apt` packages to `brew` packages.
 
-TODO: finalize list of Homebrew packages to install
-Notes on this:
-
-- probably keep everything managed by external package managers in those tools since we have the `leaves.txt` pattern
-- only use Homebrew on custom bin installs and to replace `apt` on macOS
+TODO: look into using nixOS/nix packages
 
 ## Config TODOs
 

@@ -1,1 +1,1 @@
-atuin dprint exa markdown-oxide rustlings sccache sd starship taplo yazi zellij 
+atuin dprint exa sccache sd starship taplo-cli yazi-cli yazi-fm zellij zoxide

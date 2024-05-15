@@ -48,7 +48,7 @@ keybinds {
     }
     tab {
         bind "Ctrl t" { SwitchToMode "Normal"; }
-        bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
+        bind "c" { SwitchToMode "RenameTab"; TabNameInput 0; }
         bind "h" "Left" "Up" "k" { GoToPreviousTab; }
         bind "l" "Right" "Down" "j" { GoToNextTab; }
         bind "n" { NewTab; SwitchToMode "Normal"; }
@@ -156,12 +156,6 @@ keybinds {
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
-        bind "Ctrl y" {
-            LaunchOrFocusPlugin "file:~/.config/zellij/zellij-plugins/zellij_forgot.wasm" {
-                "LOAD_ZELLIJ_BINDINGS" "true"
-                floating true
-            }
-        }
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Check if stdin is empty
+if [ -t 0 ]; then
+	echo "Error: No input provided."
+	exit 1
+fi
+
+default=""
+custom=""
+
+# Loop through stdin, concatenating the first words and URLs from lines that don't start with whitespace
+while IFS= read -r line; do
+	# Check if the line starts with whitespace
+	if [[ ! "$line" =~ ^[[:space:]] ]]; then
+		first_word=$(echo "$line" | awk '{print $1}')
+		url=$(echo "$line" | sed -n 's/.* (\(.*\)):.*$/\1/p')
+		if [ -z "$url" ]; then
+			default="$default $first_word"
+		else
+			custom="$custom $url"
+		fi
+	fi
+done
+
+default_path="$HOME/dotfiles/cargo-packages.txt"
+custom_path="$HOME/dotfiles/cargo-custom.txt"
+
+if [ ! -f "$default_path" ]; then
+	touch "$default_path"
+fi
+
+if [ ! -f "$custom_path" ]; then
+	touch "$custom_path"
+fi
+
+echo "${default#"${default%%[![:space:]]*}"}" >"$default_path"
+echo "${custom#"${custom%%[![:space:]]*}"}" >"$custom_path"

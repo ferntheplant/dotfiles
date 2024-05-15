@@ -1,0 +1,6 @@
+#!/bin/bash
+
+while IFS= read -r word; do
+    echo "Installing package from $word"
+    echo $(cargo install --locked --git "$word")
+done
