@@ -3,10 +3,8 @@
 	email = me@fjorn.dev
 	username = ferntheplant
 [credential "https://github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
 	helper =
-	helper = !/usr/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [init]
 	defaultBranch = main
 [alias]
@@ -20,7 +18,5 @@
 [advice]
 	addIgnoredFile = false
 [credential "https://gist.github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
 	helper =
-	helper = !/usr/bin/gh auth git-credential
+	helper = !gh auth git-credential
