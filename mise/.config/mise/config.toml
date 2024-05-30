@@ -6,6 +6,7 @@ go = "latest"
 python = "3.10.6"
 node = "latest"
 bun = "latest"
+java = "17"
 
 [settings]
 activate_aggressive = true

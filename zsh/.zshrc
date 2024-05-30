@@ -29,6 +29,7 @@ alias leave-bun="cat ~/.bun/install/global/package.json | jq -r '.dependencies |
 alias leave-pip="pip list | awk 'NR>2 && NF' | grep -v \"\\[notice\\]\" | awk '{print \$1}' | paste -sd \" \" > pip-packages.txt"
 
 alias zell="zellij"
+alias blog-toc="markdown-toc --append=$'\n<br></br>' -i"
 
 eval "$(mise activate zsh)"
 eval "$(mise hook-env)"

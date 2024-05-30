@@ -5,7 +5,7 @@
 read -r word
 
 # TOML file path
-toml_file="/home/fjorn/dotfiles/helix/.config/helix/languages.toml"
+toml_file="$HOME/dotfiles/helix/.config/helix/languages.toml"
 
 # Check if the TOML file exists
 

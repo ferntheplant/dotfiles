@@ -76,17 +76,21 @@ $ mkdir ~/bin
 $ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 
 # install ltex-ls
-$ curl -L -o "/home/fjorn/bin/ltex-ls.tar.gz" https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz
+$ curl -L -o "~/bin/ltex-ls.tar.gz" https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz
 $ cd ~/bin
 $ tar -xvzf ltex-ls.tar.gz
 $ rm ltex-ls.tar.gz
-$ sudo ln -s /home/fjorn/bin/ltex-ls-16.0.0/bin/ltex-ls ~/.local/bin/ltex-ls
+$ sudo ln -s ~/bin/ltex-ls-16.0.0/bin/ltex-ls ~/.local/bin/ltex-ls
+
+# macOS only
+$ sudo mkdir /Library/Java/JavaVirtualMachines/17.0.2.jdk
+$ sudo ln -s /Users/fjorn/.local/share/mise/installs/java/17.0.2/Contents /Library/Java/JavaVirtualMachines/17.0.2.jdk/Contents
 
 # install zk
 $ git clone https://github.com/zk-org/zk.git ~/bin/zk
 $ cd ~/bin/zk
 $ make
-$ sudo ln -s /home/fjorn/bin/zk/zk ~/.local/bin/zk
+$ sudo ln -s ~/bin/zk/zk ~/.local/bin/zk
 
 # make zsh default shell
 $ chsh -s $(which zsh)
@@ -102,7 +106,7 @@ After setting up WSL and installing Alacritty you need to symlink the Alacritty 
 > New-Item -ItemType SymbolicLink -Path C:\Users\fjorn\AppData\Roaming\alacritty\alacritty.toml -Target "\\wsl.localhost\Ubuntu\home\fjorn\dotfiles\alacritty\.config\alacritty\alacritty.toml"
 ```
 
-Furthermore you'll likely need to modify the default shell for Alacritty to be the Ubuntu shell for WSL. Set the top level `shell=ubuntu` key in `alacritty.toml`.
+Furthermore, you'll likely need to modify the default shell for Alacritty to be the Ubuntu shell for WSL. Set the top level `shell=ubuntu` key in `alacritty.toml`.
 
 Note that the symlink target points to the dotfiles repo and not `~/.config`. This is because windows symlinks CANNOT follow Linux symlinks, so we need to point to the original file.
 
@@ -117,6 +121,6 @@ TODO: look into using nixOS/nix packages
 - Setup [pretty ts errors](https://github.com/yoavbls/pretty-ts-errors)
   - Here is a [fork](https://github.com/hexh250786313/pretty-ts-errors-markdown) that exposes a standalone LSP
   - Here is a [sample plugin](https://github.com/hexh250786313/coc-pretty-ts-errors) for nvim using said LSP
-- Setup [quick lint js](https://quick-lint-js.com/)
+- Setup [quick lint JS](https://quick-lint-js.com/)
 - Setup [automatic class sorting](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier) for tailwind with prettier
   - Pass the prettier config to dprint somehow

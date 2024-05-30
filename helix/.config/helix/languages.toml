@@ -11,12 +11,15 @@ command = "markdown-oxide"
 [language-server.markdoc-ls]
 command = "markdoc-ls"
 args = ["--stdio"]
-config = { "root" = "/home/fjorn/projects/fjorndotdev", "path" = "content/blog", config = { "root" = "/home/fjorn/projects/fjorndotdev", "path" = "content/blog" } }
+config = { "root" = "~/projects/fjorndotdev", "path" = "content/blog", config = { "root" = "~/projects/fjorndotdev", "path" = "content/blog" } }
+
+[language-server.ltex-ls]
+command = "ltex-ls"
 
 [language-server.ltex-ls.config]
 ltex.language = "en-US"
-ltex.disabledRules = { "en-US" = ["PROFANITY"] }
-ltex.dictionary = { "en-US" = ["dotfile", "dotfiles", "mise", "homebrew", "Alacritty", "todo", "poop", "pee", "yeet", "Dotfiles", "Mise", "TODO", "inting", "inted", "zsh", "zshrc", "Catppuccin", "catppuccin", "zellij", "Zellij", "Yazi", "nvim", "dprint"] }
+ltex.disabledRules = { "en-US" = ["PROFANITY", "TO_DO_HYPHEN"] }
+ltex.dictionary = { "en-US" = ["dotfile", "dotfiles", "mise", "homebrew", "Alacritty", "todo", "poop", "pee", "yeet", "Dotfiles", "Mise", "TODO", "inting", "inted", "zsh", "zshrc", "Catppuccin", "catppuccin", "zellij", "Zellij", "Yazi", "nvim", "dprint", "nixOS", "MesloLGS"] }
 
 # web dev ---------------------------------------------------------------------
 [language-server.biome]
