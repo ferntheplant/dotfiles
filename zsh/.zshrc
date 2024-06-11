@@ -18,7 +18,7 @@ else
 	source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
-alias l="exa -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*'"
+alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*'"
 alias g="git"
 
 alias leave-apt="apt-mark showmanual > apt-packages.txt"
@@ -37,3 +37,18 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(atuin init zsh --disable-up-arrow)"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2>/dev/null)"
+if [ $? -eq 0 ]; then
+	eval "$__conda_setup"
+else
+	if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
+		. "/opt/miniconda3/etc/profile.d/conda.sh"
+	else
+		export PATH="/opt/miniconda3/bin:$PATH"
+	fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
