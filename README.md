@@ -9,7 +9,7 @@ Prerequisites:
 
 ```bash
 # Leaving machine
-$cd ~/dotfiles
+$ cd ~/dotfiles
 
 # Linux
 $ leave-apt
