@@ -72,8 +72,11 @@ $ xargs pip install < pip-packages.txt
 # setup location for custom installed libraries
 $ mkdir ~/bin
 
-# install zsh auto-suggestions
+# install zsh auto-suggestions and theme
 $ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+$ git clone https://github.com/catppuccin/zsh-syntax-highlighting.git ~/zsh-catppuccin-highlighting-theme
+$ cd ~/zsh-catppuccin-highlighting-theme
+$ cp -v themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh ~/.zsh/
 
 # install ltex-ls
 $ curl -L -o "~/bin/ltex-ls.tar.gz" https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz

@@ -1,0 +1,7 @@
+theme = "Catppuccin-macchiato"
+enable_media_control = true
+
+[device]
+volume = 85
+audio_cache = true
+autoplay = true
