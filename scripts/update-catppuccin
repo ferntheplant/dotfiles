@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Check if at least one argument is given
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+	echo "Usage: $0 filename [light|dark]"
+	exit 1
+fi
+
+# Store the file name from the arguments
+FILE=$1
+
+# Check if the file exists
+if [ ! -e "$FILE" ]; then
+	echo "File not found!"
+	exit 1
+fi
+
+# Determine the actual file the symlink points to, if applicable
+TARGET_FILE=$(readlink -f "$FILE" || echo "$FILE")
+
+# Check if the file exists
+if [ ! -f "$FILE" ]; then
+	echo "File not found!"
+	exit 1
+fi
+
+# Check the optional argument for "light" or "dark"
+if [ "$2" == "light" ]; then
+	# Replace "catppuccin-macchiato" with "catppuccin-latte"
+	sed 's/"catppuccin-macchiato"/"catppuccin-latte"/g' "$FILE" >/tmp/tmpfile && mv /tmp/tmpfile "$TARGET_FILE"
+elif [ "$2" == "dark" ]; then
+	# Replace "catppuccin-latte" with "catppuccin-macchiato"
+	sed 's/"catppuccin-latte"/"catppuccin-macchiato"/g' "$FILE" >/tmp/tmpfile && mv /tmp/tmpfile "$TARGET_FILE"
+else
+	# If no valid option is given, default to switching to light theme
+	sed 's/"catppuccin-macchiato"/"catppuccin-latte"/g' "$FILE" >/tmp/tmpfile && mv /tmp/tmpfile "$TARGET_FILE"
+fi

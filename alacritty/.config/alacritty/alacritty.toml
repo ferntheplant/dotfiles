@@ -2,15 +2,15 @@ live_config_reload = true
 
 shell = "/bin/zsh"
 
-import = ["./catppuccin-macchiato.toml"]
+import = ["~/.config/alacritty/catppuccin-latte.toml"]
 
 [env]
 term = "xterm-256color"
+ALACRITTY = "true"
 
 [window]
 dynamic_title = true
-decorations_theme_variant = "Dark"
-startup_mode = "Maximized"
+decorations_theme_variant = "None"
 option_as_alt = "OnlyLeft"
 
 [cursor]
