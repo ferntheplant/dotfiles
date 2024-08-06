@@ -22,12 +22,14 @@ alias leave-bun="cat ~/.bun/install/global/package.json | jq -r '.dependencies |
 alias leave-pip="pip list | awk 'NR>2 && NF' | grep -v \"\\[notice\\]\" | awk '{print \$1}' | paste -sd \" \" > pip-packages.txt"
 
 theme() {
-	update-catppuccin "$HOME/.config/alacritty/alacritty.toml" "$1"
-	update-catppuccin "$HOME/.config/starship.toml" "$1"
-	update-catppuccin "$HOME/.config/zellij/config.kdl" "$1"
-	update-catppuccin "$HOME/.config/bat/config.conf" "$1"
+	update-catppuccin "$HOME/.config/alacritty/alacritty.toml" --"$1"
+	update-catppuccin "$HOME/.config/starship.toml" --"$1" --quotes
+	update-catppuccin "$HOME/.config/zellij/config.kdl" --"$1" --quotes
+	update-catppuccin "$HOME/.config/bat/config.conf" --"$1" --quotes
+	update-catppuccin "$HOME/.config/helix/config.toml" --"$1" --quotes --underscore
+	update-catppuccin "$HOME/.config/spotify-player/app.toml" --"$1" --quotes
+
 	# TODO: Yazi
-	update-catppuccin "$HOME/.config/spotify-player/app.toml" "$1"
 	if [[ "$1" == "light" ]]; then
 		source "$HOME/.zsh/catppuccin-latte-zsh-syntax-highlighting.zsh"
 		export FZF_DEFAULT_OPTS=" \

@@ -1,9 +1,14 @@
 #!/bin/bash
 
-# Check if at least one argument is given
-if [ $# -lt 1 ] || [ $# -gt 2 ]; then
-	echo "Usage: $0 filename [light|dark]"
+# Function to display usage
+usage() {
+	echo "Usage: $0 filename [--light|--dark] [--quotes] [--underscore]"
 	exit 1
+}
+
+# Check if at least one argument is given
+if [ $# -lt 1 ]; then
+	usage
 fi
 
 # Store the file name from the arguments
@@ -18,20 +23,49 @@ fi
 # Determine the actual file the symlink points to, if applicable
 TARGET_FILE=$(readlink -f "$FILE" || echo "$FILE")
 
-# Check if the file exists
-if [ ! -f "$FILE" ]; then
-	echo "File not found!"
-	exit 1
+# Initialize variables for the options
+LIGHT_REPLACEMENT="catppuccin-latte"
+DARK_REPLACEMENT="catppuccin-macchiato"
+USE_QUOTES=false
+USE_UNDERSCORE=false
+
+# Process the flags
+for arg in "$@"; do
+	case $arg in
+	--light)
+		REPLACEMENT_ACTION="light"
+		;;
+	--dark)
+		REPLACEMENT_ACTION="dark"
+		;;
+	--quotes)
+		USE_QUOTES=true
+		;;
+	--underscore)
+		USE_UNDERSCORE=true
+		;;
+	*)
+		FILE_ARG="$arg"
+		;;
+	esac
+done
+
+# Adjust replacements based on flags
+if [ "$USE_UNDERSCORE" = true ]; then
+	LIGHT_REPLACEMENT="catppuccin_latte"
+	DARK_REPLACEMENT="catppuccin_macchiato"
 fi
 
-# Check the optional argument for "light" or "dark"
-if [ "$2" == "light" ]; then
-	# Replace "catppuccin-macchiato" with "catppuccin-latte"
-	sed 's/"catppuccin-macchiato"/"catppuccin-latte"/g' "$FILE" >/tmp/tmpfile && mv /tmp/tmpfile "$TARGET_FILE"
-elif [ "$2" == "dark" ]; then
-	# Replace "catppuccin-latte" with "catppuccin-macchiato"
-	sed 's/"catppuccin-latte"/"catppuccin-macchiato"/g' "$FILE" >/tmp/tmpfile && mv /tmp/tmpfile "$TARGET_FILE"
+if [ "$USE_QUOTES" = true ]; then
+	LIGHT_REPLACEMENT="\"$LIGHT_REPLACEMENT\""
+	DARK_REPLACEMENT="\"$DARK_REPLACEMENT\""
+fi
+
+# Perform the replacement based on the selected action
+if [ "$REPLACEMENT_ACTION" == "light" ]; then
+	sed -E "s/$DARK_REPLACEMENT/$LIGHT_REPLACEMENT/g" "$TARGET_FILE" >/tmp/tmpfile && mv /tmp/tmpfile "$TARGET_FILE"
+elif [ "$REPLACEMENT_ACTION" == "dark" ]; then
+	sed -E "s/$LIGHT_REPLACEMENT/$DARK_REPLACEMENT/g" "$TARGET_FILE" >/tmp/tmpfile && mv /tmp/tmpfile "$TARGET_FILE"
 else
-	# If no valid option is given, default to switching to light theme
-	sed 's/"catppuccin-macchiato"/"catppuccin-latte"/g' "$FILE" >/tmp/tmpfile && mv /tmp/tmpfile "$TARGET_FILE"
+	usage
 fi
