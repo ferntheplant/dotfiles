@@ -8,10 +8,13 @@ path+=("$HOME/.bun/bin")
 path+=("$HOME/.local/bin")
 export PATH
 
-alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*'"
-alias l1="l --level=1"
+alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*' --time-style='relative' --no-permissions --modified"
+alias l1="l --level=1 --time-style='+%y-%m-%d %H:%M'"
 alias g="git"
 alias zell="zellij"
+alias zspot="zellij action new-tab --layout ~/.config/zellij/layouts/spotify.kdl --name spotify"
+alias ztab="zellij action new-tab --layout ~/.config/zellij/layouts/base.kdl --name "
+
 alias blog-toc="markdown-toc --append=$'\n<br></br>' -i"
 alias spot="spotify_player"
 
@@ -48,7 +51,7 @@ theme() {
 	fi
 }
 
-if [ "$ALACRITTY" = "true" ]; then
+if [ "$ALACRITTY" = "true" ] && [ "$ZELLIJ" != 0 ]; then
 	ALACRITTY_THEME=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
 	if [ "$ALACRITTY_THEME" = "Dark" ]; then
 		theme "dark"
