@@ -1,5 +1,5 @@
 add_newline = true
-palette = "catppuccin-macchiato"
+palette = "catppuccin-latte"
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character] # The name of the module we are configuring is 'character'

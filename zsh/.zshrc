@@ -9,6 +9,7 @@ path+=("$HOME/.local/bin")
 export PATH
 
 alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*'"
+alias l1="l --level=1"
 alias g="git"
 alias zell="zellij"
 alias blog-toc="markdown-toc --append=$'\n<br></br>' -i"
