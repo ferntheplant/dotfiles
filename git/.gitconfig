@@ -13,6 +13,8 @@
 	co = checkout
 	br = branch
 	unstage = reset HEAD --
+	lola = log --oneline --all --graph --decorate
+	lol = log --oneline --graph --decorate
 [core]
 	editor = hx
 [advice]

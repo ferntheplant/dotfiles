@@ -1,22 +1,220 @@
 add_newline = true
 palette = "catppuccin-latte"
+continuation_prompt = '▶▶ '
+
+[battery]
+disabled = true
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character] # The name of the module we are configuring is 'character'
 success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
 error_symbol = '[➜](bold red)'
 
+[aws]
+format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
+
+[buf]
+format = '\[[$symbol]($style)\]'
+
+[bun]
+format = '\[[$symbol]($style)\]'
+symbol = '🥟 '
+
+[cmake]
+format = '\[[$symbol]($style)\]'
+
+[cmd_duration]
+format = '\[[⏱ $duration]($style)\]'
+
+[cobol]
+format = '\[[$symbol]($style)\]'
+
+[conda]
+format = '\[[$symbol$environment]($style)\]'
+
+[crystal]
+format = '\[[$symbol]($style)\]'
+
+[daml]
+format = '\[[$symbol]($style)\]'
+
+[dart]
+format = '\[[$symbol]($style)\]'
+
+[deno]
+format = '\[[$symbol]($style)\]'
+
+[docker_context]
+format = '\[[$symbol$context]($style)\]'
+
+[dotnet]
+format = '\[$symbol(🎯 $tfm )]($style)\]'
+
+[elixir]
+format = '\[[$symbol]($style)\]'
+
+[elm]
+format = '\[[$symbol]($style)\]'
+
+[erlang]
+format = '\[[$symbol]($style)\]'
+
+[fennel]
+format = '\[[$symbol]($style)\]'
+
+[fossil_branch]
+format = '\[[$symbol$branch]($style)\]'
+
+[gcloud]
+format = '\[[$symbol$account(@$domain)(\($region\))]($style)\]'
+
+[gleam]
+format = '\[[$symbol]($style)\]'
+
+[git_branch]
+format = '\[[$symbol$branch]($style)\]'
+
 [git_status]
+format = '([\[$all_status$ahead_behind\]]($style))'
 ahead = '⇡${count}'
 diverged = '⇕⇡${ahead_count}⇣${behind_count}'
 behind = '⇣${count}'
 modified = '!${count}'
 
-[bun]
-symbol = '🥟 '
+[golang]
+format = '\[[$symbol]($style)\]'
 
-[battery]
-disabled = true
+[gradle]
+format = '\[[$symbol]($style)\]'
+
+[guix_shell]
+format = '\[[$symbol]($style)\]'
+
+[haskell]
+format = '\[[$symbol]($style)\]'
+
+[haxe]
+format = '\[[$symbol]($style)\]'
+
+[helm]
+format = '\[[$symbol]($style)\]'
+
+[hg_branch]
+format = '\[[$symbol$branch]($style)\]'
+
+[java]
+format = '\[[$symbol]($style)\]'
+
+[julia]
+format = '\[[$symbol]($style)\]'
+
+[kotlin]
+format = '\[[$symbol]($style)\]'
+
+[lua]
+format = '\[[$symbol]($style)\]'
+
+[memory_usage]
+format = '\[$symbol[$ram( | $swap)]($style)\]'
+
+[meson]
+format = '\[[$symbol]($style)\]'
+
+[nim]
+format = '\[[$symbol]($style)\]'
+
+[nix_shell]
+format = '\[[$symbol$state( \($name\))]($style)\]'
+
+[nodejs]
+format = '\[[$symbol]($style)\]'
+
+[ocaml]
+format = '\[[$symbol(\($switch_indicator$switch_name\) )]($style)\]'
+
+[opa]
+format = '\[[$symbol]($style)\]'
+
+[openstack]
+format = '\[[$symbol$cloud(\($project\))]($style)\]'
+
+[os]
+format = '\[[$symbol]($style)\]'
+
+[package]
+format = '\[[$symbol]($style)\]'
+
+[perl]
+format = '\[[$symbol]($style)\]'
+
+[php]
+format = '\[[$symbol]($style)\]'
+
+[pijul_channel]
+format = '\[[$symbol$channel]($style)\]'
+
+[pulumi]
+format = '\[[$symbol$stack]($style)\]'
+
+[purescript]
+format = '\[[$symbol]($style)\]'
+
+[python]
+format = '\[[${symbol}${pyenv_prefix}(\($virtualenv\))]($style)\]'
+
+[quarto]
+format = '\[[$symbol]($style)\]'
+
+[raku]
+format = '\[[$symbol]($style)\]'
+
+[red]
+format = '\[[$symbol]($style)\]'
+
+[rlang]
+format = '\[[$symbol]($style)\]'
+
+[ruby]
+format = '\[[$symbol]($style)\]'
+
+[rust]
+format = '\[[$symbol]($style)\]'
+
+[scala]
+format = '\[[$symbol]($style)\]'
+
+[spack]
+format = '\[[$symbol$environment]($style)\]'
+
+[sudo]
+format = '\[[as $symbol]($style)\]'
+
+[swift]
+format = '\[[$symbol]($style)\]'
+
+[solidity]
+format = '\[[$symbol]($style)\]'
+
+[typst]
+format = '\[[$symbol]($style)\]'
+
+[terraform]
+format = '\[[$symbol$workspace]($style)\]'
+
+[time]
+format = '\[[$time]($style)\]'
+
+[username]
+format = '\[[$user]($style)\]'
+
+[vagrant]
+format = '\[[$symbol]($style)\]'
+
+[vlang]
+format = '\[[$symbol]($style)\]'
+
+[zig]
+format = '\[[$symbol]($style)\]'
 
 [palettes.catppuccin-latte]
 rosewater = "#dc8a78"
