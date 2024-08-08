@@ -1,0 +1,86 @@
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="file:~/.config/zellij/zellij-plugins/zjstatus.wasm" {
+                color_catppuccin_latte_bg "#acb0be" // Surface2
+                color_catppuccin_latte_fg "#acb0be" // Surface2
+                color_catppuccin_latte_red "#d20f39"
+                color_catppuccin_latte_green "#40a02b"
+                color_catppuccin_latte_blue "#1e66f5"
+                color_catppuccin_latte_yellow "#df8e1d"
+                color_catppuccin_latte_magenta "#ea76cb" // Pink
+                color_catppuccin_latte_orange "#fe640b" // Peach
+                color_catppuccin_latte_cyan "#04a5e5" // Sky
+                color_catppuccin_latte_black "#dce0e8" // Crust
+                color_catppuccin_latte_white "#4c4f69" // Text
+
+                color_catppuccin_macchiato_bg "#5b6078" // Surface2
+                color_catppuccin_macchiato_fg "#cad3f5"
+                color_catppuccin_macchiato_red "#ed8796"
+                color_catppuccin_macchiato_green "#a6da95"
+                color_catppuccin_macchiato_blue "#8aadf4"
+                color_catppuccin_macchiato_yellow "#eed49f"
+                color_catppuccin_macchiato_magenta "#f5bde6" // Pink
+                color_catppuccin_macchiato_orange "#f5a97f" // Peach
+                color_catppuccin_macchiato_cyan "#91d7e3" // Sky
+                color_catppuccin_macchiato_black "#1e2030" // Mantle
+                color_catppuccin_macchiato_white "#cad3f5"
+
+                format_left   "{mode} #[fg=$catppuccin_latte_white,italic]{session} {tabs}"
+                format_center ""
+                format_right  ""
+                format_space  ""
+
+                border_enabled  "true"
+                border_char     "─"
+                border_format   "#[fg=$catppuccin_latte_white]{char}"
+                border_position "top"
+
+                format_hide_on_overlength  "false"
+                format_precedence          "lrc"
+                hide_frame_for_single_pane "false"
+
+                mode_normal        "#[bg=$catppuccin_latte_blue] {name} "
+                mode_locked        "#[bg=$catppuccin_latte_ired] {name} "
+                mode_resize        "#[bg=$catppuccin_latte_yellow] {name} "
+                mode_pane          "#[bg=$catppuccin_latte_green] {name} "
+                mode_tab           "#[bg=$catppuccin_latte_orange] {name} "
+                mode_scroll        "#[bg=$catppuccin_latte_yellow] {name} "
+                mode_enter_search  "#[bg=$catppuccin_latte_yellow] {name} "
+                mode_search        "#[bg=$catppuccin_latte_yellow] {name} "
+                mode_rename_tab    "#[bg=$catppuccin_latte_yellow] {name} "
+                mode_rename_pane   "#[bg=$catppuccin_latte_yellow] {name} "
+                mode_session       "#[bg=$catppuccin_latte_white] {name} "
+                mode_move          "#[bg=$catppuccin_latte_yellow] {name} "
+                mode_prompt        "#[bg=$catppuccin_latte_yellow] {name} "
+
+                // formatting for inactive tabs
+                tab_normal              "#[bg=$catppuccin_latte_bg] {name} "
+                tab_normal_fullscreen   "#[bg=$catppuccin_latte_bg] {name} [] "
+                tab_normal_sync         "#[bg=$catppuccin_latte_bg] {name} <> "
+
+                // formatting for the current active tab
+                tab_active              "#[fg=$catppuccin_latte_white,bg=$catppuccin_latte_green,bold,italic]>{name}{floating_indicator} "
+                tab_active_fullscreen   "#[fg=$catppuccin_latte_white,bg=$catppuccin_latte_green,bold,italic]>{name}{fullscreen_indicator} "
+                tab_active_sync         "#[fg=$catppuccin_latte_white,bg=$catppuccin_latte_green,bold,italic]>{name}{sync_indicator} "
+
+                // separator between the tabs
+                tab_separator           "|"
+                
+                // format when renaming a tab
+                tab_rename              "#[bg=$catppuccin_latte_blue] {index} {name} {floating_indicator} "
+
+                // indicators
+                tab_sync_indicator       "<> "
+                tab_fullscreen_indicator "[] "
+                tab_floating_indicator   "⬚ "
+
+                // limit tab display count
+                tab_display_count         "9"
+                tab_truncate_start_format "#[fg=red,bg=$catppuccin_latte_magenta] < +{count} ..."
+                tab_truncate_end_format   "#[fg=red,bg=$catppuccin_latte_magenta] ... +{count} >"
+            }
+        }
+    }
+}
