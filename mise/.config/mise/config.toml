@@ -4,9 +4,9 @@ shfmt = "latest"
 lazygit = "latest"
 go = "latest"
 python = "3.11"
-node = "latest"
 bun = "latest"
 java = "17"
+node = "18.9"
 
 [settings]
 activate_aggressive = true

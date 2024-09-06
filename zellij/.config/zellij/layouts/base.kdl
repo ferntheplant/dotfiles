@@ -1,5 +1,5 @@
 layout {
-	tab_template name="new-tab" {
+	tab {
 		pane split_direction="vertical" {
 			pane name="shell" focus=true size="40%"
 			pane name="other" size="60%"
@@ -8,5 +8,4 @@ layout {
 			plugin location="zellij:compact-bar"
 		}
 	}
-	new-tab
 }

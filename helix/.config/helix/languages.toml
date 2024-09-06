@@ -28,13 +28,16 @@ args = ["lsp-proxy"]
 
 [[language]]
 name = "javascript"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "js"] }
 auto-format = true
 language-servers = [{ name = "typescript-language-server", except-features = ["format"] }, "biome"]
 
 [[language]]
 name = "typescript"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "ts"] }
+auto-format = true
+language-servers = [{ name = "typescript-language-server", except-features = ["format"] }, "biome"]
+
+[[language]]
+name = "tsx"
 auto-format = true
 language-servers = [{ name = "typescript-language-server", except-features = ["format"] }, "biome"]
 
@@ -107,11 +110,8 @@ auto-format = true
 
 [[language]]
 name = "json"
-formatter = { command = "dprint", args = ["fmt", "--stdin", "json"] }
 auto-format = true
-
-[language-server.vscode-json-language-server]
-config = { provideFormatter = false }
+language-servers = [{ name = "vscode-json-language-server", except-features = ["format"] }, "biome"]
 
 [[language]]
 name = "bash"

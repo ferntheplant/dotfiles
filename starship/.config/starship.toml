@@ -1,5 +1,5 @@
 add_newline = true
-palette = "catppuccin-latte"
+palette = "catppuccin-macchiato"
 continuation_prompt = '▶▶ '
 
 [battery]
@@ -18,7 +18,7 @@ format = '\[[$symbol]($style)\]'
 
 [bun]
 format = '\[[$symbol]($style)\]'
-symbol = '🥟 '
+symbol = '🥟'
 
 [cmake]
 format = '\[[$symbol]($style)\]'
@@ -82,6 +82,7 @@ behind = '⇣${count}'
 modified = '!${count}'
 
 [golang]
+symbol = '🐹'
 format = '\[[$symbol]($style)\]'
 
 [gradle]
@@ -127,6 +128,7 @@ format = '\[[$symbol]($style)\]'
 format = '\[[$symbol$state( \($name\))]($style)\]'
 
 [nodejs]
+symbol = ''
 format = '\[[$symbol]($style)\]'
 
 [ocaml]

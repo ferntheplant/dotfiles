@@ -15,10 +15,24 @@
 	unstage = reset HEAD --
 	lola = log --oneline --all --graph --decorate
 	lol = log --oneline --graph --decorate
+	undo = reset --soft HEAD^
 [core]
 	editor = hx
+	pager = delta
+[interactive]
+	navigate = true
+[merge]
+	conflictstyle = diff3
+[diff]
+	colorMoved = default
 [advice]
 	addIgnoredFile = false
 [credential "https://gist.github.com"]
 	helper =
 	helper = !gh auth git-credential
+[include]
+	path = "~/dotfiles/git/catppuccin.gitconfig"
+[delta]
+	features = catppuccin-macchiato
+	side-by-side = true
+	line-numbers = true

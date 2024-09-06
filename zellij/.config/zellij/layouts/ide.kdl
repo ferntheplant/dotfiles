@@ -1,5 +1,5 @@
 layout {
-	tab name="primary" {
+	tab {
 		pane size="80%" focus=true name="editor"
 		pane size="20%" split_direction="vertical" {
 			pane name="shell"
