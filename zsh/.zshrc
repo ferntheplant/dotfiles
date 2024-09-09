@@ -36,6 +36,7 @@ theme() {
 
 	# TODO: Yazi
 	if [[ "$1" == "light" ]]; then
+		# shellcheck disable=SC1091
 		source "$HOME/.zsh/catppuccin-latte-zsh-syntax-highlighting.zsh"
 		export FZF_DEFAULT_OPTS=" \
 --color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
@@ -44,6 +45,7 @@ theme() {
 --color=selected-bg:#bcc0cc \
 --multi"
 	else
+		# shellcheck disable=SC1091
 		source "$HOME/.zsh/catppuccin-macchiato-zsh-syntax-highlighting.zsh"
 		export FZF_DEFAULT_OPTS=" \
 --color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796 \
