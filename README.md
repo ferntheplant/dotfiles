@@ -59,7 +59,7 @@ $ ~/.local/bin/mise install
 $ unset RUSTC_WRAPPER
 $ curl https://sh.rustup.rs -sSf | sh
 $ xargs cargo install < cargo-packages.txt
-$ cargo-install-custom < cargo-custom.txt
+$ install-cargo-custom < cargo-custom.txt
 
 # add sccache to rust
 $ cargo install sccache
@@ -79,9 +79,10 @@ $ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosugg
 $ git clone https://github.com/catppuccin/zsh-syntax-highlighting.git ~/zsh-catppuccin-highlighting-theme
 $ cd ~/zsh-catppuccin-highlighting-theme
 $ cp -v themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh ~/.zsh/
+$ cp -v themes/catppuccin_latte-zsh-syntax-highlighting.zsh ~/.zsh/
 
 # install ltex-ls
-$ curl -L -o "~/bin/ltex-ls.tar.gz" https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz
+$ curl -L -o "$HOME/bin/ltex-ls.tar.gz" https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz
 $ cd ~/bin
 $ tar -xvzf ltex-ls.tar.gz
 $ rm ltex-ls.tar.gz

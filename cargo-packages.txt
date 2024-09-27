@@ -1,1 +1,1 @@
-atuin cargo-update dprint eza macchina sccache sd starship taplo-cli yazi-cli yazi-fm zellij zoxide
+cargo-update dprint eza macchina sccache sd starship taplo-cli yazi-cli yazi-fm zellij zoxide

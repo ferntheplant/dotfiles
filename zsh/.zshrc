@@ -1,6 +1,5 @@
 export EDITOR="/usr/bin/hx"
 export HELIX_RUNTIME="/var/lib/helix/runtime"
-export ZK_NOTEBOOK_DIR="$HOME/notebook"
 export RUSTC_WRAPPER="$HOME/.cargo/bin/sccache"
 
 path+=("/opt/homebrew/bin")
