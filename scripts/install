@@ -10,7 +10,7 @@ for subdir in "$fixed_location"/*; do
 		subdir_name=$(basename "$subdir")
 		if [ "$subdir_name" = "scripts" ]; then
 			stow -t "$HOME/.local/bin" --ignore="install" scripts
-		elif [ "$subdir_name" = "raycast"i ]; then
+		elif [ "$subdir_name" = "raycast" ] || [ "$subdir_name" = "stylus" ]; then
 			continue
 		else
 			stow --no-folding "$subdir_name"
