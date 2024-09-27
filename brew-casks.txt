@@ -1,0 +1,9 @@
+alacritty
+alt-tab
+karabiner-elements
+linearmouse
+macfuse
+ngrok
+raycast
+stats
+visual-studio-code

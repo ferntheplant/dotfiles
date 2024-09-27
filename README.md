@@ -4,8 +4,8 @@
 
 Prerequisites:
 
-1. Install [Alacritty](https://github.com/alacritty/alacritty)
-2. Install [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md)
+1. Install [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md)
+2. Install [Docker](https://docs.docker.com/desktop/install/mac-install/)
 
 ```bash
 # Leaving machine
@@ -16,6 +16,7 @@ $ leave-apt
 
 # macOS
 $ leave-brew
+$ leave-brew-casks
 
 $ leave-cargo
 $ leave-bun
@@ -40,11 +41,12 @@ $ xargs sudo apt-get install < apt-packages.txt
 # macOS
 $ brew update
 $ xargs brew install < brew-packages.txt
+$ xargs brew install --cask < brew-casks.txt
 
 # login with github to access dotfiles and notebook repos
 $ gh auth login
 
-# install dotfiles (must come after installing stow with apt)
+# install dotfiles (must come after installing stow)
 $ git clone https://github.com/ferntheplant/dotfiles.git ~/dotfiles
 $ cd ~/dotfiles
 $ ./scripts/install
@@ -88,12 +90,6 @@ $ sudo ln -s ~/bin/ltex-ls-16.0.0/bin/ltex-ls ~/.local/bin/ltex-ls
 # macOS only
 $ sudo mkdir /Library/Java/JavaVirtualMachines/17.0.2.jdk
 $ sudo ln -s /Users/fjorn/.local/share/mise/installs/java/17.0.2/Contents /Library/Java/JavaVirtualMachines/17.0.2.jdk/Contents
-
-# install zk
-$ git clone https://github.com/zk-org/zk.git ~/bin/zk
-$ cd ~/bin/zk
-$ make
-$ sudo ln -s ~/bin/zk/zk ~/.local/bin/zk
 
 # make zsh default shell
 $ chsh -s $(which zsh)

@@ -20,6 +20,7 @@ alias spot="spotify_player"
 
 alias leave-apt="apt-mark showmanual > apt-packages.txt"
 alias leave-brew="brew leaves > brew-packages.txt"
+alias leave-brew-casks="brew list --cask > brew-casks.txt"
 alias leave-cargo="cargo install --list | parse-cargo"
 alias leave-bun="cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt"
 # shellcheck disable=SC2142

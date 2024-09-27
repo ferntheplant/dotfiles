@@ -2,7 +2,7 @@ live_config_reload = true
 
 shell = "/bin/zsh"
 
-import = ["~/.config/alacritty/catppuccin-macchiato.toml"]
+import = ["~/.config/alacritty/catppuccin-latte.toml"]
 
 [env]
 term = "xterm-256color"
