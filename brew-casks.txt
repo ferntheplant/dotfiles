@@ -1,9 +1,14 @@
+1password
 alacritty
 alt-tab
+hiddenbar
 karabiner-elements
 linearmouse
 macfuse
 ngrok
 raycast
+shottr
+slack
+spotify
 stats
 visual-studio-code
