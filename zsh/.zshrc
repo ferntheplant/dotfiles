@@ -24,6 +24,8 @@ alias leave-cargo="cargo install --list | parse-cargo"
 alias leave-bun="cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt"
 # shellcheck disable=SC2142
 alias leave-pip="pip list | awk 'NR>2 && NF' | grep -v \"\\[notice\\]\" | awk '{print \$1}' | paste -sd \" \" > pip-packages.txt"
+# TODO: move this to script to check for current location (~/dotfiles)
+alias leave-mac="leave-brew && leave-brew-casks && leave-cargo && leave-bun && leave-pip"
 
 theme() {
 	update-catppuccin "$HOME/.config/alacritty/alacritty.toml" --"$1"
@@ -95,3 +97,6 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+# heroku autocomplete setup
+HEROKU_AC_ZSH_SETUP_PATH=/Users/fjorn/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH

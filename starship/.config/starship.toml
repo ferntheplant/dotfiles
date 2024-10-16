@@ -1,5 +1,5 @@
 add_newline = true
-palette = "catppuccin-latte"
+palette = "catppuccin-macchiato"
 continuation_prompt = '▶▶ '
 
 [battery]
@@ -162,6 +162,7 @@ format = '\[[$symbol$stack]($style)\]'
 format = '\[[$symbol]($style)\]'
 
 [python]
+symbol = '🐍'
 format = '\[[${symbol}${pyenv_prefix}(\($virtualenv\))]($style)\]'
 
 [quarto]
@@ -177,6 +178,7 @@ format = '\[[$symbol]($style)\]'
 format = '\[[$symbol]($style)\]'
 
 [ruby]
+symbol = '💎'
 format = '\[[$symbol]($style)\]'
 
 [rust]

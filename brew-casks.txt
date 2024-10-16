@@ -1,6 +1,9 @@
 1password
 alacritty
 alt-tab
+beekeeper-studio
+chromedriver
+discord
 hiddenbar
 karabiner-elements
 linearmouse
@@ -12,3 +15,4 @@ slack
 spotify
 stats
 visual-studio-code
+zoom

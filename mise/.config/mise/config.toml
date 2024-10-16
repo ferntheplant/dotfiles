@@ -3,10 +3,11 @@ fzf = "latest"
 shfmt = "latest"
 lazygit = "latest"
 go = "latest"
-python = "3.11"
 bun = "latest"
 java = "17"
 node = "20"
+ruby = "3.2.2"
+python = "3.12"
 
 [settings]
 activate_aggressive = true

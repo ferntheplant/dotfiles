@@ -143,5 +143,8 @@
   "workbench.preferredLightColorTheme": "Catppuccin Latte",
   "workbench.sideBar.location": "right",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "explorer.confirmDragAndDrop": false
+  "explorer.confirmDragAndDrop": false,
+  "editor.unicodeHighlight.nonBasicASCII": false,
+  "extensions.ignoreRecommendations": true,
+  "explorer.confirmDelete": false
 }
