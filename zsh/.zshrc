@@ -22,8 +22,7 @@ alias leave-brew="brew leaves > brew-packages.txt"
 alias leave-brew-casks="brew list --cask > brew-casks.txt"
 alias leave-cargo="cargo install --list | parse-cargo"
 alias leave-bun="cat ~/.bun/install/global/package.json | jq -r '.dependencies | keys[]' | tr -s '\n' ' ' > bun-packages.txt"
-# shellcheck disable=SC2142
-alias leave-pip="pip list | awk 'NR>2 && NF' | grep -v \"\\[notice\\]\" | awk '{print \$1}' | paste -sd \" \" > pip-packages.txt"
+alias leave-pip="pip freeze > pip-packages.txt"
 # TODO: move this to script to check for current location (~/dotfiles)
 alias leave-mac="leave-brew && leave-brew-casks && leave-cargo && leave-bun && leave-pip"
 

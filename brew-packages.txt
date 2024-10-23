@@ -2,6 +2,7 @@ atuin
 bash
 bat
 cmake
+duckdb
 gawk
 gh
 git-delta

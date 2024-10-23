@@ -8,6 +8,7 @@ hiddenbar
 karabiner-elements
 linearmouse
 macfuse
+monitorcontrol
 ngrok
 raycast
 shottr

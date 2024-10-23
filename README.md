@@ -68,7 +68,7 @@ $ cargo install sccache
 $ xargs bun add --global < bun-packages.txt
 
 # install pip packages
-$ xargs pip install < pip-packages.txt
+$ pip install -r pip-packages.txt
 
 # TODO: find way to automate custom bin installs
 # setup location for custom installed libraries
