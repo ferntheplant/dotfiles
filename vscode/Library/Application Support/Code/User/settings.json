@@ -40,7 +40,7 @@
     "editor.codeActionsOnSave": {
       "source.organizeImports.biome": "explicit"
     },
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "application.shellEnvironmentResolutionTimeout": 30,
   "editor.bracketPairColorization.enabled": true,
@@ -146,5 +146,6 @@
   "explorer.confirmDragAndDrop": false,
   "editor.unicodeHighlight.nonBasicASCII": false,
   "extensions.ignoreRecommendations": true,
-  "explorer.confirmDelete": false
+  "explorer.confirmDelete": false,
+  "editor.formatOnSave": true,
 }
