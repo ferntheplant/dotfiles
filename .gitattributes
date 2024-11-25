@@ -4,3 +4,4 @@ helix/.config/helix/config.toml filter=ignore-theme-lines
 spotify-player/.config/spotify-player/app.toml filter=ignore-theme-lines
 starship/.config/starship.toml filter=ignore-theme-lines
 zellij/.config/zellij/config.kdl filter=ignore-theme-lines
+git/.gitconfig filter=ignore-theme-lines
