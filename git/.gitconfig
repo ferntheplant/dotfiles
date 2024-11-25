@@ -34,6 +34,6 @@
 [include]
 	path = "~/dotfiles/git/catppuccin.gitconfig"
 [delta]
-	features = catppuccin-macchiato # THEME TOGGLE LINE
+	features = catppuccin-latte # THEME TOGGLE LINE
 	side-by-side = true
 	line-numbers = true
