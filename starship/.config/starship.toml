@@ -1,5 +1,4 @@
 add_newline = true
-palette = "catppuccin-macchiato"
 continuation_prompt = '▶▶ '
 
 [battery]
