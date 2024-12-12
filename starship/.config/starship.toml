@@ -65,7 +65,9 @@ format = '\[[$symbol]($style)\]'
 format = '\[[$symbol$branch]($style)\]'
 
 [gcloud]
-format = '\[[$symbol$account(@$domain)(\($region\))]($style)\]'
+format = '\[[$symbol$project(\($region\))]($style)\]'
+symbol = 'ⓖ '
+detect_env_vars = ["GCLOUD_PROJECT"]
 
 [gleam]
 format = '\[[$symbol]($style)\]'

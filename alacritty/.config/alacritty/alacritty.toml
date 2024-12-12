@@ -11,6 +11,7 @@ ALACRITTY = "true"
 dynamic_title = true
 decorations_theme_variant = "None"
 option_as_alt = "OnlyLeft"
+decorations = "Buttonless"
 
 [cursor]
 thickness = 0.85
