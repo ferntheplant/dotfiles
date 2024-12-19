@@ -11,6 +11,7 @@ error_symbol = '[➜](bold red)'
 
 [aws]
 format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
+symbol = " "
 
 [buf]
 format = '\[[$symbol]($style)\]'
@@ -18,6 +19,10 @@ format = '\[[$symbol]($style)\]'
 [bun]
 format = '\[[$symbol]($style)\]'
 symbol = '🥟'
+
+[c]
+format = '\[[$symbol]($style)\]'
+symbol = " "
 
 [cmake]
 format = '\[[$symbol]($style)\]'
@@ -30,6 +35,7 @@ format = '\[[$symbol]($style)\]'
 
 [conda]
 format = '\[[$symbol$environment]($style)\]'
+symbol = " "
 
 [crystal]
 format = '\[[$symbol]($style)\]'
@@ -66,7 +72,7 @@ format = '\[[$symbol$branch]($style)\]'
 
 [gcloud]
 format = '\[[$symbol$project(\($region\))]($style)\]'
-symbol = 'ⓖ '
+symbol = ' '
 detect_env_vars = ["GCLOUD_PROJECT"]
 
 [gleam]
@@ -83,7 +89,6 @@ behind = '⇣${count}'
 modified = '!${count}'
 
 [golang]
-symbol = '🐹'
 format = '\[[$symbol]($style)\]'
 
 [gradle]
@@ -179,7 +184,7 @@ format = '\[[$symbol]($style)\]'
 format = '\[[$symbol]($style)\]'
 
 [ruby]
-symbol = '💎'
+symbol = ''
 format = '\[[$symbol]($style)\]'
 
 [rust]
