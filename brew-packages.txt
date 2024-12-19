@@ -3,6 +3,7 @@ bash
 bat
 cmake
 duckdb
+exiftool
 gawk
 gh
 git-delta
@@ -30,6 +31,7 @@ tcl-tk
 tctl
 telnet
 tippecanoe
+tree
 unzip
 wget
 wimlib

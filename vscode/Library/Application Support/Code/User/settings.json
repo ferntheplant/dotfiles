@@ -105,7 +105,7 @@
   "python.analysis.include": [
     "extrapath"
   ],
-  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.typeCheckingMode": "standard",
   "security.workspace.trust.untrustedFiles": "open",
   "svelte.enable-ts-plugin": true,
   "terminal.integrated.cursorStyle": "block",
@@ -131,7 +131,6 @@
   },
   "update.showReleaseNotes": false,
   "window.autoDetectColorScheme": true,
-  "window.commandCenter": false,
   "window.systemColorTheme": "auto",
   "window.zoomLevel": 1,
   "workbench.colorTheme": "Catppuccin Latte",
@@ -148,4 +147,6 @@
   "extensions.ignoreRecommendations": true,
   "explorer.confirmDelete": false,
   "editor.formatOnSave": true,
+  "window.commandCenter": false,
+  "workbench.layoutControl.enabled": false,
 }
