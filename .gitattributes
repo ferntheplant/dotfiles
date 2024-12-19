@@ -1,4 +1,4 @@
-#alacritty/.config/alacritty/alacritty.toml filter=ignore-theme-lines
+alacritty/.config/alacritty/alacritty.toml filter=ignore-theme-lines
 bat/.config/bat/config.conf filter=ignore-theme-lines
 helix/.config/helix/config.toml filter=ignore-theme-lines
 spotify-player/.config/spotify-player/app.toml filter=ignore-theme-lines
