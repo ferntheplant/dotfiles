@@ -34,5 +34,6 @@
 [include]
 	path = "~/dotfiles/git/catppuccin.gitconfig"
 [delta]
+    features = catppuccin-macchiato
 	side-by-side = true
 	line-numbers = true
