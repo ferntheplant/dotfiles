@@ -49,3 +49,5 @@ Vite
 shadcn
 ui
 eslint
+OrbStack
+postgres
