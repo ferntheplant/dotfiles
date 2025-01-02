@@ -14,6 +14,7 @@ gzip
 helix
 heroku/brew/heroku
 httpie
+icu4c@75
 jq
 less
 libmagic

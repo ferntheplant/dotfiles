@@ -6,6 +6,7 @@ beekeeper-studio
 chromedriver
 discord
 font-monaspace
+ghostty
 google-cloud-sdk
 hiddenbar
 karabiner-elements
