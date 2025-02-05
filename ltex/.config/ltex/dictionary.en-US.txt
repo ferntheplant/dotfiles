@@ -51,3 +51,15 @@ ui
 eslint
 OrbStack
 postgres
+Nativewind
+nvm
+pnpm
+MapBox
+NativeWind
+Reusables
+Gluestack
+mise
+Hestia
+withco
+Intellisense
+combobox

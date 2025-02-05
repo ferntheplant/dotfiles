@@ -1,9 +1,11 @@
 1password
+1password-cli
 alacritty
 alt-tab
 altair-graphql-client
 beekeeper-studio
 chromedriver
+cursor
 discord
 font-monaspace
 ghostty
@@ -17,6 +19,7 @@ ngrok
 notion
 orbstack
 raycast
+responsively
 shottr
 slack
 spotify

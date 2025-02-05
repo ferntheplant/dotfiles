@@ -14,9 +14,9 @@ gzip
 helix
 heroku/brew/heroku
 httpie
-icu4c@75
 jq
 less
+libgit2@1.7
 libmagic
 libyaml
 openjdk
@@ -34,6 +34,7 @@ telnet
 tippecanoe
 tree
 unzip
+watchman
 wget
 wimlib
 zlib

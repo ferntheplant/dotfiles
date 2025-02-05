@@ -147,5 +147,4 @@
   "explorer.confirmDelete": false,
   "editor.formatOnSave": true,
   "window.commandCenter": false,
-  "workbench.layoutControl.enabled": false,
 }

@@ -99,3 +99,5 @@ unset __conda_setup
 
 # heroku autocomplete setup
 HEROKU_AC_ZSH_SETUP_PATH=/Users/fjorn/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH
+
+export PATH=$PATH:/Users/fjorn/.spicetify
