@@ -2,6 +2,7 @@ atuin
 bash
 bat
 cmake
+databricks/tap/databricks
 duckdb
 exiftool
 gawk

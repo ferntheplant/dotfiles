@@ -63,3 +63,14 @@ Hestia
 withco
 Intellisense
 combobox
+Databricks
+DABs
+Pyright
+PyTest
+Pandera
+favourite
+virtualenv
+datetime
+DataFrames
+DataFrame
+Chronos

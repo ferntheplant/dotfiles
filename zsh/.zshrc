@@ -13,6 +13,8 @@ alias g="git"
 alias zell="zellij"
 alias zspot="zellij action new-tab --layout ~/.config/zellij/layouts/spotify.kdl --name spotify"
 alias ztab="zellij action new-tab --layout ~/.config/zellij/layouts/base.kdl --name "
+alias dab="databricks"
+pychronos() { CHRONOS_LOCAL=true DATABRICKS_CONFIG_PROFILE=fjorn poetry run python "$@"; }
 
 alias blog-toc="markdown-toc --append=$'\n<br></br>' -i"
 alias spot="spotify_player"

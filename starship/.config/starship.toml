@@ -151,6 +151,7 @@ format = '\[[$symbol$cloud(\($project\))]($style)\]'
 format = '\[[$symbol]($style)\]'
 
 [package]
+disabled = true
 format = '\[[$symbol]($style)\]'
 
 [perl]
@@ -170,7 +171,7 @@ format = '\[[$symbol]($style)\]'
 
 [python]
 symbol = '🐍'
-format = '\[[${symbol}${pyenv_prefix}(\($virtualenv\))]($style)\]'
+format = '\[[${symbol}(\($virtualenv\))]($style)\]'
 
 [quarto]
 format = '\[[$symbol]($style)\]'
