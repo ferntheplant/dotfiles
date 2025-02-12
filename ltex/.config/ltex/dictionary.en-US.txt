@@ -74,3 +74,8 @@ datetime
 DataFrames
 DataFrame
 Chronos
+Jank
+Zod
+jotai
+react-map-gl
+PascalCase

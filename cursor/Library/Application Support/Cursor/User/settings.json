@@ -42,6 +42,15 @@
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.ruff": "always",
+      "source.unusedImports": "always",
+      "source.fixAll.ruff": "always"
+    }
+  },
   "application.shellEnvironmentResolutionTimeout": 30,
   "editor.bracketPairColorization.enabled": true,
   "editor.cursorStyle": "block",
@@ -85,7 +94,6 @@
     }
   },
   "python.analysis.extraPaths": ["src"],
-  "python.analysis.include": ["extrapath"],
   "python.analysis.typeCheckingMode": "basic",
   "security.workspace.trust.untrustedFiles": "open",
   "svelte.enable-ts-plugin": true,
@@ -154,5 +162,6 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "explorer.sortOrder": "type",
   "python.experiments.optOutFrom": ["pythonTerminalEnvVarActivation"],
-  "terminal.integrated.shellIntegration.enabled": false
+  "terminal.integrated.shellIntegration.enabled": false,
+  "redhat.telemetry.enabled": false
 }
