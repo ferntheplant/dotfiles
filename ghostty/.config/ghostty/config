@@ -18,3 +18,4 @@ resize-overlay-position = bottom-right
 macos-titlebar-style = transparent
 macos-titlebar-proxy-icon = hidden
 
+custom-shader = ~/dotfiles/shader.glsl

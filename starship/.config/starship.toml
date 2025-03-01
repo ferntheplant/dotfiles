@@ -52,6 +52,7 @@ format = '\[[$symbol]($style)\]'
 
 [docker_context]
 format = '\[[$symbol$context]($style)\]'
+detect_folders = ['docker']
 
 [dotnet]
 format = '\[$symbol(🎯 $tfm )]($style)\]'
@@ -112,6 +113,7 @@ format = '\[[$symbol$branch]($style)\]'
 
 [java]
 format = '\[[$symbol]($style)\]'
+symbol = '☕'
 
 [julia]
 format = '\[[$symbol]($style)\]'

@@ -1,4 +1,7 @@
 {
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -163,5 +166,37 @@
   "explorer.sortOrder": "type",
   "python.experiments.optOutFrom": ["pythonTerminalEnvVarActivation"],
   "terminal.integrated.shellIntegration.enabled": false,
-  "redhat.telemetry.enabled": false
+  "redhat.telemetry.enabled": false,
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "ruff.configuration": "/Users/fjorn/withco/chronos/dab/ruff.toml",
+  "[log]": {
+    "editor.largeFileOptimizations": false,
+    "editor.wordWrap": "off"
+  },
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "log.error",
+        "settings": {
+          "foreground": "#af1f1f",
+          "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": "log.warning",
+        "settings": {
+          "foreground": "#f4ad42",
+          "fontStyle": ""
+        }
+      },
+      {
+        "scope": "log.info",
+        "settings": {
+          "foreground": "#4444FF"
+        }
+      }
+    ]
+  }
 }

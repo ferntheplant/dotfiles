@@ -2,10 +2,8 @@
 fzf = "latest"
 shfmt = "latest"
 lazygit = "latest"
-go = "latest"
 bun = "latest"
-java = "17"
-node = "20"
+node = "23.8"
 ruby = "3.2.2"
 python = "3.12"
 
