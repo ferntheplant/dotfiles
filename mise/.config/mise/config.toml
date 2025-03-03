@@ -6,6 +6,7 @@ bun = "latest"
 node = "23.8"
 ruby = "3.2.2"
 python = "3.12"
+uv = "latest"
 
 [settings]
 activate_aggressive = true

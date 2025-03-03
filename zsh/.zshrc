@@ -166,6 +166,7 @@ theme() {
 	update-catppuccin "$HOME/.config/bat/config.conf" --"$1" --quotes
 	update-catppuccin "$HOME/.config/helix/config.toml" --"$1" --quotes --underscore
 	update-catppuccin "$HOME/.config/spotify-player/app.toml" --"$1" --quotes
+	update-catppuccin "$HOME/.config/btop/btop.conf" --"$1" --quotes --underscore
 	update-catppuccin "$HOME/.gitconfig" --"$1"
 
 	# TODO: Yazi

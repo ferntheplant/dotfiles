@@ -95,3 +95,9 @@ gitleaks
 subcommands
 entrypoints
 filetype
+monorepo
+pyenv
+Typedspark
+Dataframes
+Dataframe
+rawdog
