@@ -1,3 +1,9 @@
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
 [user]
 	name = Fern Sanchez
 	email = me@fjorn.dev
@@ -22,15 +28,38 @@
 	pager = delta
 [interactive]
 	navigate = true
-[merge]
-	conflictstyle = diff3
+[pull]
+	rebase = true
+[rebase]
+	autoSquash = true
+	updateRefs = true
 [diff]
-	colorMoved = default
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+	algorithm = histogram
+[push]
+	default = simple
+	autoSetupRemote = true
+	followTags = true
+[help]
+	autocorrect = prompt
+[commit]
+	verbose = true
+[rerere]
+	enabled = true
+	autoupdate = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
 [advice]
 	addIgnoredFile = false
 [credential "https://gist.github.com"]
 	helper =
 	helper = !gh auth git-credential
+[merge]
+	conflictstyle = zdiff3
 [include]
 	path = "~/dotfiles/git/catppuccin.gitconfig"
 [delta]

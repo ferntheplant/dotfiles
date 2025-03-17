@@ -20,6 +20,10 @@ alias ztab="zellij action new-tab --layout ~/.config/zellij/layouts/base.kdl --n
 alias dab="databricks"
 alias dbx="databricks"
 
+jab() {
+	just dab/"$1" "${@:2}"
+}
+
 alias blog-toc="markdown-toc --append=$'\n<br></br>' -i"
 alias spot="spotify_player"
 

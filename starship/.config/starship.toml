@@ -52,7 +52,7 @@ format = '\[[$symbol]($style)\]'
 
 [docker_context]
 format = '\[[$symbol$context]($style)\]'
-detect_folders = ['docker']
+detect_folders = ['docker', 'dab']
 
 [dotnet]
 format = '\[$symbol(🎯 $tfm )]($style)\]'
