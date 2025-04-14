@@ -4,6 +4,7 @@ compinit
 export EDITOR="/usr/bin/hx"
 export HELIX_RUNTIME="/var/lib/helix/runtime"
 export RUSTC_WRAPPER="$HOME/.cargo/bin/sccache"
+export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 
 path+=("/opt/homebrew/bin")
 path+=("$HOME/.bun/bin")
@@ -35,6 +36,30 @@ alias leave-bun="cat ~/.bun/install/global/package.json | jq -r '.dependencies |
 alias leave-pip="pip freeze > pip-packages.txt"
 # TODO: move this to script to check for current location (~/dotfiles)
 alias leave-mac="leave-brew && leave-brew-casks && leave-cargo && leave-bun && leave-pip"
+
+# Function to capture command start time
+preexec() {
+	date "+%m/%d/%y %H:%M:%S" >~/.cache/starship_command_time
+	STARSHIP_COMMAND_START_SECONDS=$(date +%s)
+	export STARSHIP_COMMAND_START_SECONDS
+}
+
+# Function to check if command was long-running
+precmd() {
+	if [[ -n $STARSHIP_COMMAND_START_SECONDS ]]; then
+		local end_seconds
+		end_seconds=$(date +%s)
+		local duration
+		duration=$((end_seconds - STARSHIP_COMMAND_START_SECONDS))
+
+		# Only keep the timestamp for commands running longer than 3 seconds
+		if [[ duration -lt 3 ]]; then
+			rm -f ~/.cache/starship_command_time
+		fi
+
+		unset STARSHIP_COMMAND_START_SECONDS
+	fi
+}
 
 sanitize_command_name() {
 	local cmd="$1"

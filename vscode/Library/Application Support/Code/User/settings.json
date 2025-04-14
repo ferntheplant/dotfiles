@@ -136,7 +136,6 @@
   "workbench.editor.enablePreview": false,
   "workbench.editor.labelFormat": "short",
   "workbench.editor.showTabs": "multiple",
-  "workbench.iconTheme": "material-icon-theme",
   "workbench.preferredDarkColorTheme": "Catppuccin Macchiato",
   "workbench.preferredLightColorTheme": "Catppuccin Latte",
   "workbench.sideBar.location": "right",
@@ -147,4 +146,5 @@
   "explorer.confirmDelete": false,
   "editor.formatOnSave": true,
   "window.commandCenter": false,
+  "liveshare.notebooks.allowGuestExecuteCells": true,
 }

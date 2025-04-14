@@ -1,5 +1,5 @@
 add_newline = true
-palette = "catppuccin-macchiato"
+palette = "catppuccin-latte"
 continuation_prompt = '▶▶ '
 
 [battery]
@@ -68,6 +68,9 @@ format = '\[[$symbol]($style)\]'
 
 [fennel]
 format = '\[[$symbol]($style)\]'
+
+[fill]
+symbol = ' '
 
 [fossil_branch]
 format = '\[[$symbol$branch]($style)\]'
@@ -216,7 +219,14 @@ format = '\[[$symbol]($style)\]'
 format = '\[[$symbol$workspace]($style)\]'
 
 [time]
-format = '\[[$time]($style)\]'
+format = '\[at [$time]($style)\]'
+time_format = '%H:%M:%S'
+
+[custom.command_start_time]
+description = "Display the time when the command started running"
+command = "cat ~/.cache/starship_command_time 2>/dev/null || echo ''"
+when = "test -f ~/.cache/starship_command_time"
+format = '\[🕰️ [${output}](bold green)\]'
 
 [username]
 format = '\[[$user]($style)\]'
