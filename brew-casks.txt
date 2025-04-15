@@ -7,6 +7,7 @@ beekeeper-studio
 chromedriver
 cursor
 discord
+floorp
 font-monaspace
 ghostty
 google-cloud-sdk
@@ -17,7 +18,6 @@ macfuse
 monitorcontrol
 ngrok
 notion
-orbstack
 raycast
 responsively
 shottr
