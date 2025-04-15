@@ -16,7 +16,7 @@ FILE=$1
 
 # Check if the file exists
 if [ ! -e "$FILE" ]; then
-	echo "File not found!"
+	echo "File $FILE not found!"
 	exit 1
 fi
 

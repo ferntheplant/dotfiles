@@ -116,6 +116,10 @@ Most things from `apt`, `mise`, `cargo`, and the manual install list can be acqu
 
 TODO: look into using nixOS/nix packages
 
+## Colima vs Docker Desktop
+
+See this [thread](https://github.com/abiosoft/colima/discussions/273) for installing buildx
+
 ## Config TODOs
 
 - Setup [pretty ts errors](https://github.com/yoavbls/pretty-ts-errors)

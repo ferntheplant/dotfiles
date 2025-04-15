@@ -190,7 +190,7 @@ logclear() {
 
 theme() {
 	update-catppuccin "$HOME/.config/alacritty/alacritty.toml" --"$1"
-	update-catppuccin "$HOME/.config/starship.toml" --"$1" --quotes
+	update-catppuccin "$HOME/.config/starship/starship.toml" --"$1" --quotes
 	update-catppuccin "$HOME/.config/zellij/config.kdl" --"$1" --quotes
 	update-catppuccin "$HOME/.config/bat/config.conf" --"$1" --quotes
 	update-catppuccin "$HOME/.config/helix/config.toml" --"$1" --quotes --underscore
