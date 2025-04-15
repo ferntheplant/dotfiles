@@ -39,7 +39,7 @@ alias leave-mac="leave-brew && leave-brew-casks && leave-cargo && leave-bun && l
 
 # Function to capture command start time
 preexec() {
-	date "+%m/%d/%y %H:%M:%S" >~/.cache/starship_command_time
+	date "+%m/%d %H:%M:%S" >~/.cache/starship_command_time
 	STARSHIP_COMMAND_START_SECONDS=$(date +%s)
 	export STARSHIP_COMMAND_START_SECONDS
 }
