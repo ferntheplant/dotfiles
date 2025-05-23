@@ -147,4 +147,6 @@
   "editor.formatOnSave": true,
   "window.commandCenter": false,
   "liveshare.notebooks.allowGuestExecuteCells": true,
+  "files.autoSave": "afterDelay",
+  "workbench.layoutControl.enabled": false,
 }
