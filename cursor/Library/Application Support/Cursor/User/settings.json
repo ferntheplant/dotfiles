@@ -125,7 +125,6 @@
   "workbench.editor.enablePreview": false,
   "workbench.editor.labelFormat": "short",
   "workbench.editor.showTabs": "multiple",
-  "workbench.iconTheme": "catppuccin-latte",
   "workbench.preferredDarkColorTheme": "Catppuccin Macchiato",
   "workbench.preferredLightColorTheme": "Catppuccin Latte",
   "workbench.sideBar.location": "right",
@@ -296,5 +295,6 @@
     "*.xaml": "$(capture).xaml.cs"
   },
   "git.openRepositoryInParentFolders": "never",
-  "editor.accessibilitySupport": "off"
+  "git.openRepositoryInParentFolders": "never",
+  "workbench.iconTheme": "catppuccin-macchiato"
 }

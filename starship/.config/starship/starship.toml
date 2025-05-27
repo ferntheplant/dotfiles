@@ -49,6 +49,7 @@ format = '\[[$symbol]($style)\]'
 
 [deno]
 format = '\[[$symbol]($style)\]'
+symbol = "🦕"
 
 [docker_context]
 format = '\[[$symbol$context]($style)\]'

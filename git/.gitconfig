@@ -28,6 +28,7 @@
 	pager = delta
 [interactive]
 	navigate = true
+	singlekey = true
 [pull]
 	rebase = true
 [rebase]
@@ -38,6 +39,9 @@
 	mnemonicPrefix = true
 	renames = true
 	algorithm = histogram
+	context = 3
+	renames = copies
+	interHunkContect = 10
 [push]
 	default = simple
 	autoSetupRemote = true
@@ -66,3 +70,10 @@
     features = catppuccin-latte
 	side-by-side = true
 	line-numbers = true
+[status]
+	branch = true
+	showStash = true
+[diff-so-fancy]
+	markEmptyLines = false
+[log]
+	abbrevCommit = true
