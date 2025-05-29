@@ -1,12 +1,7 @@
 1password
 1password-cli
 alacritty
-alt-tab
-altair-graphql-client
-beekeeper-studio
-chromedriver
 cursor
-discord
 floorp
 font-monaspace
 ghostty
@@ -17,12 +12,9 @@ linearmouse
 macfuse
 monitorcontrol
 ngrok
-notion
 raycast
-responsively
 shottr
 slack
 spotify
 stats
 visual-studio-code
-zoom

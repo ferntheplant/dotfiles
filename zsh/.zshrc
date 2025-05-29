@@ -37,6 +37,10 @@ alias leave-pip="pip freeze > pip-packages.txt"
 # TODO: move this to script to check for current location (~/dotfiles)
 alias leave-mac="leave-brew && leave-brew-casks && leave-cargo && leave-bun && leave-pip"
 
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+zstyle ':completion:*:git:*' group-order 'main commands' 'alias commands' 'external commands'
+source <(carapace _carapace)
+
 # Function to capture command start time
 preexec() {
 	date "+%m/%d %H:%M:%S" >~/.cache/starship_command_time
