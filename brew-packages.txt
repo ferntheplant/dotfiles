@@ -32,11 +32,9 @@ less
 libmagic
 libyaml
 openjdk
-pnpm
 postgis
 postgresql@14
 python@3.9
-redis
 ripgrep
 shellcheck
 spotify_player
@@ -44,7 +42,6 @@ stow
 tcl-tk
 tctl
 telnet
-tippecanoe
 tree
 unzip
 watchman
@@ -53,3 +50,4 @@ wimlib
 xh
 zlib
 zsh-syntax-highlighting
+zx
