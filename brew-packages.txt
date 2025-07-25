@@ -31,7 +31,6 @@ just
 less
 libmagic
 libyaml
-openjdk
 postgis
 postgresql@14
 python@3.9

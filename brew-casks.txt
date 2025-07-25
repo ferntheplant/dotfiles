@@ -9,6 +9,7 @@ cursor
 discord
 floorp
 font-monaspace
+gcloud-cli
 ghostty
 google-cloud-sdk
 hiddenbar
