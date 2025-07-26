@@ -13,6 +13,7 @@ ghostty
 google-cloud-sdk
 hiddenbar
 karabiner-elements
+linear-linear
 linearmouse
 macfuse
 monitorcontrol
@@ -25,4 +26,5 @@ slack
 spotify
 stats
 visual-studio-code
+yaak
 zoom
