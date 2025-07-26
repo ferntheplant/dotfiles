@@ -2,7 +2,7 @@
 
 ## Install packages
 
-Prerequisites:
+Prerequisites: Make sure the machine has a terminal and bash installed then:
 
 1. Install [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md)
 2. Install [Docker](https://docs.docker.com/desktop/install/mac-install/)
@@ -10,90 +10,12 @@ Prerequisites:
 ```bash
 # Leaving machine
 $ cd ~/dotfiles
-
-# Linux
-$ leave-apt
-
-# macOS
-$ leave-brew
-$ leave-brew-casks
-
-$ leave-cargo
-$ leave-bun
-$ leave-pip
-
-$ g add *
-$ g commit -m "Leaving machine"
-$ g push origin main
+$ leave-machine
 
 # -------------------------------------
 
 # Fresh machine
-# Clear out existing configs
-$ rm ~/.zshrc ~/.zshenv ~/.gitconfig
-$ rm -rf ~/.config
-
-# Linux
-$ sudo apt update
-$ sudo add-apt-repository ppa:maveonair/helix-editor
-$ xargs sudo apt-get install < apt-packages.txt
-
-# macOS
-$ brew update
-$ xargs brew install < brew-packages.txt
-$ xargs brew install --cask < brew-casks.txt
-
-# login with github to access dotfiles and notebook repos
-$ gh auth login
-
-# install dotfiles (must come after installing stow)
-$ git clone https://github.com/ferntheplant/dotfiles.git ~/dotfiles
-$ cd ~/dotfiles
-$ ./scripts/install
-
-# install mise
-$ curl https://mise.run | sh
-$ ~/.local/bin/mise install
-
-# install cargo (mise reccomends not using mise to manage rust)
-$ unset RUSTC_WRAPPER
-$ curl https://sh.rustup.rs -sSf | sh
-$ xargs cargo install < cargo-packages.txt
-$ install-cargo-custom < cargo-custom.txt
-
-# add sccache to rust
-$ cargo install sccache
-
-# install bun packages
-$ xargs bun add --global < bun-packages.txt
-
-# install pip packages
-$ pip install -r pip-packages.txt
-
-# TODO: find way to automate custom bin installs
-# setup location for custom installed libraries
-$ mkdir ~/bin
-
-# install zsh auto-suggestions and theme
-$ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
-$ git clone https://github.com/catppuccin/zsh-syntax-highlighting.git ~/zsh-catppuccin-highlighting-theme
-$ cd ~/zsh-catppuccin-highlighting-theme
-$ cp -v themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh ~/.zsh/
-$ cp -v themes/catppuccin_latte-zsh-syntax-highlighting.zsh ~/.zsh/
-
-# install ltex-ls
-$ curl -L -o "$HOME/bin/ltex-ls.tar.gz" https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz
-$ cd ~/bin
-$ tar -xvzf ltex-ls.tar.gz
-$ rm ltex-ls.tar.gz
-$ sudo ln -s ~/bin/ltex-ls-16.0.0/bin/ltex-ls ~/.local/bin/ltex-ls
-
-# macOS only
-$ sudo mkdir /Library/Java/JavaVirtualMachines/17.0.2.jdk
-$ sudo ln -s /Users/fjorn/.local/share/mise/installs/java/17.0.2/Contents /Library/Java/JavaVirtualMachines/17.0.2.jdk/Contents
-
-# make zsh default shell
-$ chsh -s $(which zsh)
+$ curl -fsSL https://raw.githubusercontent.com/ferntheplant/dotfiles/main/scripts/setup-new-machine | bash
 ```
 
 TODO: find way to automate generating `leaves.txt` files on reasonable schedule to always keep them up to date.
@@ -112,7 +34,7 @@ Note that the symlink target points to the dotfiles repo and not `~/.config`. Th
 
 ## macOS and Homebrew
 
-Most things from `apt`, `mise`, `cargo`, and the manual install list can be acquired via Homebrew on macOS. However, for maximal interoperability we instead manually ported over the list of `apt` packages to `brew` packages.
+Most things from `apt`, `mise`, `cargo`, and the manual install list can be acquired via Homebrew on macOS. ~~However, for maximal interoperability we instead manually ported over the list of `apt` packages to `brew` packages.~~
 
 TODO: look into using nixOS/nix packages
 

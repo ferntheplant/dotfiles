@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+# Load all zsh function files in this directory
+for file in "$(dirname "$0")"/*; do
+    # Skip this loader file and non-zsh files
+    [[ "$file" == "$0" ]] && continue
+    [[ "$file" == *.zsh ]] || [[ "$file" == * ]] || continue
+    [[ -f "$file" ]] || continue  # Skip if not a regular file
+    
+    # shellcheck disable=SC1090
+    source "$file"
+done 

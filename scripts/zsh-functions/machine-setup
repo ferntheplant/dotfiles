@@ -1,0 +1,47 @@
+# Machine setup utilities for dotfiles management
+
+# =============================================================================
+# LEAVING MACHINE FUNCTIONS
+# =============================================================================
+
+leave-machine() {
+    echo "🚀 Leaving machine - capturing all package lists..."
+    
+    # Ensure we're in dotfiles directory
+    cd "$HOME/dotfiles" || {
+        echo "❌ Error: Not in dotfiles directory"
+        return 1
+    }
+    
+    # Capture all package lists
+    leave-brew
+    leave-brew-casks
+    leave-cargo
+    leave-bun
+    leave-pip
+    
+    # Git operations
+    echo "📝 Committing changes..."
+    git add .
+    git commit -m "Leaving machine - $(date '+%Y-%m-%d %H:%M:%S')"
+    git push origin main
+    
+    echo "✅ Successfully left machine!"
+}
+
+# =============================================================================
+# FRESH MACHINE SETUP FUNCTIONS
+# =============================================================================
+
+setup-fresh-machine() {
+    echo "🖥️  Setting up fresh machine..."
+    
+    # Ensure we're in dotfiles directory
+    cd "$HOME/dotfiles" || {
+        echo "❌ Error: Not in dotfiles directory"
+        return 1
+    }
+    
+    # Call the standalone script
+    ./scripts/setup-new-machine --skip-prerequisites --skip-clone
+}
