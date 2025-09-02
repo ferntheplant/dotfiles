@@ -19,7 +19,6 @@ gawk
 gh
 git-delta
 gitleaks
-gnupg
 grep
 guile
 gzip
@@ -33,8 +32,11 @@ just
 less
 libmagic
 libyaml
+llvm
 mprocs
 openjdk
+postgis
+postgresql@14
 python@3.9
 ripgrep
 shellcheck
