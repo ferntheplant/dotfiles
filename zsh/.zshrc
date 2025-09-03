@@ -23,6 +23,16 @@ alias dbx="databricks"
 alias blog-toc="markdown-toc --append=$'\n<br></br>' -i"
 alias spot="spotify_player"
 
+beep() {
+	(
+		trap "kill 0" EXIT
+		~/Downloads/bbctl-macos-arm64 run sh-meta &
+		~/Downloads/bbctl-macos-arm64 run --param 'imessage_platform=mac' sh-imessage &
+		~/Downloads/bbctl-macos-arm64 run sh-signal &
+		wait
+	)
+}
+
 jab() {
 	just dab/"$1" "${@:2}"
 }
@@ -83,3 +93,5 @@ else
 	# shellcheck disable=SC1091
 	source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"

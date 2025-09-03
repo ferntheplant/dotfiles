@@ -104,12 +104,15 @@
   },
   "ltex.enabled": [
     "latex",
-    "markdown"
+    "markdown",
   ],
   "markdownlint.config": {
     "MD029": {
       "style": "one_or_ordered"
     }
+  },
+  "workbench.editorAssociations": {
+    "*.svg": "default"
   },
   "security.workspace.trust.untrustedFiles": "open",
   "svelte.enable-ts-plugin": true,

@@ -146,3 +146,6 @@ vercel
 xstate
 Jotai
 db
+Xstate
+async
+Astro
