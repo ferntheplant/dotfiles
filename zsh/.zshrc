@@ -26,7 +26,7 @@ alias spot="spotify_player"
 beep() {
 	(
 		trap "kill 0" EXIT
-		~/Downloads/bbctl-macos-arm64 run sh-meta &
+		~/Downloads/bbctl-macos-arm64 run sh-messenger &
 		~/Downloads/bbctl-macos-arm64 run --param 'imessage_platform=mac' sh-imessage &
 		~/Downloads/bbctl-macos-arm64 run sh-signal &
 		wait

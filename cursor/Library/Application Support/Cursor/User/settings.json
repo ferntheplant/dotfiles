@@ -73,6 +73,10 @@
   "workbench.editorAssociations": {
     "*.svg": "default"
   },
+  "find-it-faster.general.useTerminalInEditor": false,
+  "find-it-faster.general.hideTerminalAfterSuccess": true,
+  "find-it-faster.general.restoreFocusTerminal": true,
+  "find-it-faster.general.hideTerminalAfterFail": true,
   "editor.snippetSuggestions": "bottom",
   "editor.tabSize": 2,
   "editor.wordWrap": "off",
