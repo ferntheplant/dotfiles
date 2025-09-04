@@ -1,4 +1,7 @@
 {
+  "dance.modes": {
+    "disabled": {},
+  },
   "[yaml]": {},
   "[css]": {},
   "[xml]": {
@@ -70,13 +73,16 @@
   "editor.rulers": [
     80
   ],
+  "workbench.editor.navigationScope": "editorGroup",
   "workbench.editorAssociations": {
     "*.svg": "default"
   },
   "find-it-faster.general.useTerminalInEditor": false,
   "find-it-faster.general.hideTerminalAfterSuccess": true,
   "find-it-faster.general.restoreFocusTerminal": true,
+  "find-it-faster.general.showMaximizedTerminal": true,
   "find-it-faster.general.hideTerminalAfterFail": true,
+  "find-it-faster.findWithinFiles.fuzzRipgrepQuery": true,
   "editor.snippetSuggestions": "bottom",
   "editor.tabSize": 2,
   "editor.wordWrap": "off",
@@ -115,11 +121,7 @@
       "style": "one_or_ordered"
     }
   },
-  "workbench.editorAssociations": {
-    "*.svg": "default"
-  },
   "security.workspace.trust.untrustedFiles": "open",
-  "svelte.enable-ts-plugin": true,
   "terminal.integrated.cursorStyle": "block",
   "terminal.integrated.fontFamily": "MesloLGS NF",
   "editor.fontFamily": "'Monaspace Neon', monospace",
@@ -331,7 +333,7 @@
     "*.xaml": "$(capture).xaml.cs"
   },
   "git.openRepositoryInParentFolders": "never",
-  "workbench.iconTheme": "catppuccin-latte",
+  "workbench.iconTheme": "catppuccin-macchiato",
   "debug.disassemblyView.showSourceCode": false,
   "cursor.cpp.enablePartialAccepts": true,
   "git.autofetch": true,

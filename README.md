@@ -50,3 +50,9 @@ See this [thread](https://github.com/abiosoft/colima/discussions/273) for instal
 - Setup [quick lint JS](https://quick-lint-js.com/)
 - Setup [automatic class sorting](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier) for tailwind with prettier
   - Pass the prettier config to dprint somehow
+
+---------
+
+- Neat.run
+- Beeper install
+- meetingbar
