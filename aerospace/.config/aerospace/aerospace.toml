@@ -119,6 +119,11 @@ check-further-callbacks = true
 run = ['layout floating']
 
 [[on-window-detected]]
+if.app-id = 'com.apple.Preview'
+check-further-callbacks = true
+run = ['layout floating']
+
+[[on-window-detected]]
 if.app-id = 'com.1password.1password'
 check-further-callbacks = true
 run = ['layout floating']
@@ -127,6 +132,11 @@ run = ['layout floating']
 if.app-id = 'eu.exelban.Stats'
 check-further-callbacks = true
 run = []
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Notes'
+check-further-callbacks = true
+run = ['layout floating']
 
 [workspace-to-monitor-force-assignment]
 1 = 'main'

@@ -22,6 +22,7 @@ alias dab="databricks"
 alias dbx="databricks"
 alias blog-toc="markdown-toc --append=$'\n<br></br>' -i"
 alias spot="spotify_player"
+alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 
 beep() {
 	(
