@@ -3,6 +3,8 @@
 # WRITTEN BY CHATGPT
 # Define the fixed location
 fixed_location="$HOME/dotfiles"
+# List of directories to ignore
+IGNORE_LIST=("raycast" "stylus" "karabiner")
 
 # Loop through all subdirectories
 for subdir in "$fixed_location"/*; do
@@ -10,7 +12,7 @@ for subdir in "$fixed_location"/*; do
 		subdir_name=$(basename "$subdir")
 		if [ "$subdir_name" = "scripts" ]; then
 			stow -t "$HOME/.local/bin" --ignore="install" scripts
-		elif [ "$subdir_name" = "raycast" ] || [ "$subdir_name" = "stylus" ] || [ "$subdir_name" = "karabiner" ]; then
+		elif [[ " ${IGNORE_LIST[@]} " =~ " ${subdir_name} " ]]; then
 			continue
 		else
 			stow --no-folding "$subdir_name"

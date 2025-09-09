@@ -149,3 +149,12 @@ db
 Xstate
 async
 Astro
+Dotfiles
+MesloLGS
+buildx
+spicetify
+bctl
+meetingbar
+hiddenbar
+floorp
+Raycast

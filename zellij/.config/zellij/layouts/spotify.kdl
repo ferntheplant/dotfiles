@@ -1,9 +1,0 @@
-layout {
-	tab_template name="spotify" {
-		pane name="spot" command="spotify_player"
-		pane size=1 borderless=true {
-			plugin location="zellij:compact-bar"
-		}
-	}
-	spotify
-}

@@ -1,4 +1,4 @@
-theme = "catppuccin_latte"
+theme = "catppuccin_macchiato"
 
 [editor]
 cursorline = true
@@ -35,8 +35,4 @@ space = "·"
 nbsp = "⍽"
 tab = "→"
 newline = "⏎"
-tabpad = "·" # Tabs will look like "→···" (depending on tab width)
-
-[keys.normal]
-# C-y = ":sh yy" # launch filepicker
-C-y = ":sh zellij run -f -x 10% -y 10% --width 80% --height 80% -- yazi-picker"
+tabpad = "·"  # Tabs will look like "→···" (depending on tab width)

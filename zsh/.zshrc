@@ -3,11 +3,9 @@ compinit
 
 export EDITOR="/usr/bin/hx"
 export HELIX_RUNTIME="/var/lib/helix/runtime"
-export RUSTC_WRAPPER="$HOME/.cargo/bin/sccache"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 
 path+=("/opt/homebrew/bin")
-path+=("$HOME/.bun/bin")
 path+=("$HOME/.local/bin")
 path+=("$HOME/.spicetify")
 export PATH
@@ -15,13 +13,8 @@ export PATH
 alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*' --time-style='relative' --no-permissions --modified"
 alias l1="l --level=1 --time-style='+%y-%m-%d %H:%M'"
 alias g="git"
-alias zell="zellij"
-alias zspot="zellij action new-tab --layout ~/.config/zellij/layouts/spotify.kdl --name spotify"
-alias ztab="zellij action new-tab --layout ~/.config/zellij/layouts/base.kdl --name "
 alias dab="databricks"
 alias dbx="databricks"
-alias blog-toc="markdown-toc --append=$'\n<br></br>' -i"
-alias spot="spotify_player"
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 
 beep() {
@@ -67,16 +60,13 @@ source "$HOME/dotfiles/scripts/zsh-functions/loader"
 # shellcheck disable=SC1091
 source "$HOME/dotfiles/scripts/zsh-functions/machine-setup"
 
-if [ "$ALACRITTY" = "true" ] && [ "$ZELLIJ" != 0 ]; then
-	ALACRITTY_THEME=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
-	if [ "$ALACRITTY_THEME" = "Dark" ]; then
-		theme "dark"
-	else
-		theme "light"
-	fi
+if grep -q 'palette = "catppuccin-latte"' "$HOME/.config/starship/starship.toml"; then
+  theme 'light'
+else
+  theme 'dark'
 fi
 
-export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
+export CARAPACE_BRIDGES='zsh,bash,inshellisense' # optional
 zstyle ':completion:*' format $'\e[3m\e[38;2;220;138;120m[ Completing %d ]\e[0m'
 source <(carapace _carapace)
 

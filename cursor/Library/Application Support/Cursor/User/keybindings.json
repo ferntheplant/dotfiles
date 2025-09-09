@@ -1,0 +1,67 @@
+[
+  {
+    "key": "ctrl+tab",
+    "command": "-workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
+    "when": "!activeEditorGroupEmpty"
+  },
+  {
+    "key": "ctrl+tab",
+    "command": "-workbench.action.quickOpenNavigateNextInEditorPicker",
+    "when": "inEditorsPicker && inQuickOpen"
+  },
+  {
+    "key": "cmd+i",
+    "command": "composerMode.agent"
+  },
+  {
+    "key": "cmd+e",
+    "command": "composerMode.background"
+  },
+  {
+    "key": "cmd+shift+D",
+    "command": "dance.modes.set",
+    "args": {
+      "input": "disabled"
+    },
+    "when": "dance.mode != 'disabled'",
+  },
+  {
+    "key": "cmd+shift+E",
+    "command": "dance.modes.set",
+    "args": {
+      "input": "normal"
+    },
+    "when": "dance.mode == 'disabled'",
+  },
+  {
+    "key": "ctrl+o",
+    "command": "workbench.action.navigateBack"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "workbench.action.navigateForward"
+  },
+  {
+    "key": "m",
+    "command": "dance.openMenu",
+    "when": "editorTextFocus && dance.mode == 'normal'",
+    "args": {
+        "menu": {
+            "items": {
+                "i": {
+                    "text": "select inside",
+                    "command": "dance.seek.askObject.inner",
+                },
+                "a": {
+                    "text": "select around",
+                    "command": "dance.seek.askObject",
+                },
+                "m": {
+                    "text": "goto matching bracket",
+                    "command": "dance.seek.enclosing"
+                }
+            }
+        }
+    }
+  }
+]

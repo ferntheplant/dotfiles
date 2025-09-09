@@ -57,6 +57,11 @@ install_homebrew() {
     fi
 }
 
+setup_mac_configs() {
+  defaults write -g ApplePressAndHoldEnabled -bool false
+  print_success "Custom macOS configs applied"
+}
+
 # Function to install GitHub CLI if not present
 install_gh() {
     if ! command_exists gh; then
@@ -112,6 +117,7 @@ clear_existing_configs() {
     print_status "Clearing existing configs..."
     rm -f ~/.zshrc ~/.zshenv ~/.gitconfig
     rm -rf ~/.config
+    rm -rf ~/.local/bin
     print_success "Configs cleared"
 }
 
@@ -120,19 +126,13 @@ install_brew_packages() {
     print_status "Installing Homebrew packages..."
     
     if [[ ! -f brew-packages.txt ]]; then
-        print_error "brew-packages.txt not found"
+        print_error ".Brewfile not found"
         return 1
     fi
     
     brew update
-    xargs brew install < brew-packages.txt
-    
-    if [[ ! -f brew-casks.txt ]]; then
-        print_error "brew-casks.txt not found"
-        return 1
-    fi
-    
-    xargs brew install --cask < brew-casks.txt
+    brew bundle install --file=.Brewfile --cleanup --force --upgrade
+
     print_success "Homebrew packages installed"
 }
 
@@ -153,63 +153,6 @@ setup_mise() {
     fi
     ~/.local/bin/mise install
     print_success "mise setup complete"
-}
-
-# Function to setup Rust
-setup_rust() {
-    print_status "Setting up Rust..."
-    unset RUSTC_WRAPPER
-    if ! command_exists rustc; then
-        curl https://sh.rustup.rs -sSf | sh -s -- -y
-        source "$HOME/.cargo/env"
-    fi
-    cargo install sccache
-    print_success "Rust setup complete"
-}
-
-# Function to install Cargo packages
-install_cargo_packages() {
-    print_status "Installing Cargo packages..."
-    
-    if [[ ! -f cargo-packages.txt ]]; then
-        print_error "cargo-packages.txt not found"
-        return 1
-    fi
-    
-    unset RUSTC_WRAPPER
-    xargs cargo install < cargo-packages.txt
-    
-    if [[ -f cargo-custom.txt ]]; then
-        ./scripts/install-cargo-custom < cargo-custom.txt
-    fi
-    
-    print_success "Cargo packages installed"
-}
-
-# Function to install Bun packages
-install_bun_packages() {
-    print_status "Installing Bun packages..."
-    
-    if [[ ! -f bun-packages.txt ]]; then
-        print_error "bun-packages.txt not found"
-        return 1
-    fi
-    
-    xargs bun add --global < bun-packages.txt
-    print_success "Bun packages installed"
-}
-
-# Function to install Pip packages
-install_pip_packages() {
-    print_status "Installing Pip packages..."
-    
-    if [[ ! -f pip-packages.txt ]]; then
-        print_error "pip-packages.txt not found"
-        return 1
-    fi
-    
-    pip install -r pip-packages.txt
-    print_success "Pip packages installed"
 }
 
 # Function to setup Zsh themes
@@ -257,6 +200,7 @@ setup_ltex() {
 }
 
 # Function to setup Java (macOS only)
+# Must happen after mise is setup
 setup_java_macos() {
     print_status "Setting up Java (macOS)..."
     
@@ -267,6 +211,12 @@ setup_java_macos() {
     else
         print_status "Skipping Java setup (not macOS)"
     fi
+}
+
+setup_cursor() {
+    print_status "Setting up Cursor..."
+    cat cursor-extensions.txt | xargs -L 1 cursor --install-extension
+    print_success "Cursor setup complete"
 }
 
 # Function to make zsh default shell
@@ -345,6 +295,7 @@ main() {
     
     # Clear existing configs
     clear_existing_configs
+    setup_mac_configs
     
     # Setup dotfiles
     install_brew_packages
@@ -352,12 +303,7 @@ main() {
     
     # Setup base tools
     setup_mise
-    setup_rust
-    
-    # Install packages
-    install_cargo_packages
-    install_bun_packages
-    install_pip_packages
+    setup_cursor
     
     # Setup tools
     setup_zsh_themes

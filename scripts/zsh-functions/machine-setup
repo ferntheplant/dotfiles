@@ -15,10 +15,7 @@ leave-machine() {
     
     # Capture all package lists
     leave-brew
-    leave-brew-casks
     leave-cargo
-    leave-bun
-    leave-pip
     
     # Git operations
     echo "📝 Committing changes..."
