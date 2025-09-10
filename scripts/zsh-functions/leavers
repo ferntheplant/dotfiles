@@ -1,3 +1,2 @@
 alias leave-brew="brew bundle dump --file=./.Brewfile --force --describe --no-vscode"
-alias leave-cargo="cargo install --list | parse-cargo"
 alias leave-cursor="cursor --list-extensions > cursor-extensions.txt"

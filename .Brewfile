@@ -40,6 +40,8 @@ brew "docker-credential-helper"
 brew "duckdb"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
+# Modern, maintained replacement for ls
+brew "eza"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Library to load and enumerate PKCS#11 modules
@@ -88,6 +90,8 @@ brew "libmagic"
 brew "libyaml"
 # Next-gen compiler infrastructure
 brew "llvm"
+# Mac App Store command-line interface
+brew "mas"
 # Run multiple commands in parallel
 brew "mprocs"
 # Interpreted, interactive, object-oriented programming language
@@ -98,6 +102,8 @@ brew "python@3.9"
 brew "ripgrep"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
+# Cross-shell prompt for astronauts
+brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
 # Tool Command Language
@@ -120,6 +126,8 @@ brew "wget"
 brew "wimlib"
 # General-purpose lossless data-compression library
 brew "zlib"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
 # Command-line interface for the Databricks platform
@@ -179,5 +187,13 @@ cask "spotify"
 cask "stats"
 # Video communication and virtual meeting platform
 cask "zoom"
-
+mas "Equinox", id: 1591510203
+mas "GarageBand", id: 682658836
+mas "iMovie", id: 408981434
+mas "Keynote", id: 409183694
+mas "Messenger", id: 1480068668
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
 mas "Pandan", id: 1569600264
+mas "QuickShade", id: 931571202
+mas "Xcode", id: 497799835
