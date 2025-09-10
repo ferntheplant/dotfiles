@@ -4,8 +4,6 @@ tap "felixkratz/formulae"
 tap "gromgit/fuse"
 tap "nikitabobko/tap"
 tap "screenplaydev/tap"
-# General-purpose data compression with high compression ratio
-brew "xz"
 # Improved shell history for zsh, bash, fish and nushell
 brew "atuin"
 # Bourne-Again SHell, a UNIX command interpreter
@@ -14,14 +12,8 @@ brew "bash"
 brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
-# Core application library for C
-brew "glib"
-# Vector graphics library with cross-device output support
-brew "cairo"
 # Multi-shell multi-command argument completer
 brew "carapace"
-# Cross-platform make
-brew "cmake"
 # Container runtimes on MacOS (and Linux) with minimal setup
 brew "colima", restart_service: :changed
 # Good-lookin' diffs with diff-highlight and more
@@ -38,46 +30,24 @@ brew "docker-compose"
 brew "docker-credential-helper"
 # Embeddable SQL OLAP Database Management System
 brew "duckdb"
-# Perl lib for reading and writing EXIF metadata
-brew "exiftool"
 # Modern, maintained replacement for ls
 brew "eza"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
-# Library to load and enumerate PKCS#11 modules
-brew "p11-kit"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
-# GNU Transport Layer Security (TLS) Library
-brew "gnutls"
-# OpenType text shaping engine
-brew "harfbuzz"
-# Play, record, convert, and stream audio and video
-brew "ffmpeg"
-# Find files with SQL-like queries
-brew "fselect"
-# GNU awk utility
-brew "gawk"
 # GitHub command-line tool
 brew "gh"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
 # Audit git repos for secrets
 brew "gitleaks"
-# GNU Pretty Good Privacy (PGP) package
-brew "gnupg"
 # GNU grep, egrep and fgrep
 brew "grep"
-# GNU Ubiquitous Intelligent Language for Extensions
-brew "guile"
 # Popular GNU data compression program
 brew "gzip"
 # Post-modern modal text editor
 brew "helix"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
-# Command-line benchmarking tool
-brew "hyperfine"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Handy way to save and run project-specific commands
@@ -88,16 +58,10 @@ brew "less"
 brew "libmagic"
 # YAML Parser
 brew "libyaml"
-# Next-gen compiler infrastructure
-brew "llvm"
 # Mac App Store command-line interface
 brew "mas"
 # Run multiple commands in parallel
 brew "mprocs"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Static analysis and lint tool, for (ba)sh scripts
@@ -106,26 +70,12 @@ brew "shellcheck"
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
-# Tool Command Language
-brew "tcl-tk"
-# Temporal CLI (tctl)
-brew "tctl"
-# User interface to the TELNET protocol
-brew "telnet"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # Extraction utility for .zip compressed archives
 brew "unzip"
 # Generator for LS_COLORS with support for multiple color themes
 brew "vivid"
-# Watch files and take action when they change
-brew "watchman"
-# Internet file retriever
-brew "wget"
-# Library to create, extract, and modify Windows Imaging files
-brew "wimlib"
-# General-purpose lossless data-compression library
-brew "zlib"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Fish-like fast/unobtrusive autosuggestions for zsh
@@ -173,8 +123,6 @@ cask "macfuse"
 cask "meetingbar"
 # Tool to control external monitor brightness & volume
 cask "monitorcontrol"
-# Reverse proxy, secure introspectable tunnels to localhost
-cask "ngrok"
 # App to write, plan, collaborate, and get organised
 cask "notion"
 # Control your tools with a few keystrokes
@@ -192,12 +140,6 @@ cask "stats"
 # Video communication and virtual meeting platform
 cask "zoom"
 mas "Equinox", id: 1591510203
-mas "GarageBand", id: 682658836
-mas "iMovie", id: 408981434
-mas "Keynote", id: 409183694
-mas "Messenger", id: 1480068668
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
 mas "Pandan", id: 1569600264
 mas "QuickShade", id: 931571202
 mas "Xcode", id: 497799835
