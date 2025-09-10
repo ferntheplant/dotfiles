@@ -213,6 +213,17 @@ setup_java_macos() {
     fi
 }
 
+install_buildx() {
+  print_status "Installing buildx..."
+  ARCH=arm64 # change to 'arm64' for m1
+  VERSION=v0.28.0
+  curl -LO https://github.com/docker/buildx/releases/download/${VERSION}/buildx-${VERSION}.darwin-${ARCH}
+  mkdir -p ~/.docker/cli-plugins
+  mv buildx-${VERSION}.darwin-${ARCH} ~/.docker/cli-plugins/docker-buildx
+  chmod +x ~/.docker/cli-plugins/docker-buildx
+  print_success "buildx installed"
+}
+
 setup_cursor() {
     print_status "Setting up Cursor..."
     cat cursor-extensions.txt | xargs -L 1 cursor --install-extension

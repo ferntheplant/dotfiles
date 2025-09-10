@@ -94,6 +94,8 @@ cask "1password-cli"
 cask "aerospace"
 # Cross platform SQL editor and database management app
 cask "beekeeper-studio"
+# Universal chat app powered by Matrix
+cask "beeper"
 # Automated testing of webapps for Google Chrome
 cask "chromedriver"
 # Write, edit, and chat about your code with AI
