@@ -67,7 +67,7 @@ else
 fi
 
 export CARAPACE_BRIDGES='zsh,bash,inshellisense' # optional
-zstyle ':completion:*' format $'\e[3m\e[38;2;220;138;120m[ Completing %d ]\e[0m'
+# zstyle ':completion:*' format $'\e[3m\e[38;2;220;138;120m[ Completing %d ]\e[0m'
 source <(carapace _carapace)
 
 eval "$(mise activate zsh)"
@@ -76,6 +76,9 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(atuin init zsh --disable-up-arrow)"
+
+source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 if [[ -x "$(command -v brew)" ]]; then
 	# shellcheck disable=SC1091

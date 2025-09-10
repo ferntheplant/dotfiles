@@ -9,7 +9,7 @@ Prerequisites: Make sure the machine has a terminal and bash installed then:
 ```bash
 # Leaving machine
 cd ~/dotfiles
-leave-machine
+leave-machine -c
 
 # -------------------------------------
 
@@ -21,7 +21,9 @@ curl -fsSL https://raw.githubusercontent.com/ferntheplant/dotfiles/main/scripts/
 ```
 
 TODO: find way to automate generating `.Brewfile`
+
 TODO: automate generating Stylus config dump
+
 TODO: automate generating Raycast config dump
 
 ## Colima vs Docker Desktop (vs Orbstack)

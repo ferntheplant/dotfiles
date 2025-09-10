@@ -128,6 +128,8 @@ brew "wimlib"
 brew "zlib"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Fish-like fast/unobtrusive autosuggestions for zsh
+brew "zsh-autosuggestions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
 # Command-line interface for the Databricks platform
@@ -177,6 +179,8 @@ cask "ngrok"
 cask "notion"
 # Control your tools with a few keystrokes
 cask "raycast"
+# App that enables mouse-free UI interaction
+cask "shortcat"
 # Screenshot measurement and annotation tool
 cask "shottr"
 # Team communication and collaboration software

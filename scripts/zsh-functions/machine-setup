@@ -15,13 +15,17 @@ leave-machine() {
     
     # Capture all package lists
     leave-brew
+    echo "🔍 Brewfile captured"
     leave-cursor
+    echo "🔍 Cursor extensions captured"
 
-    # Git operations
-    echo "📝 Committing changes..."
-    git add .
-    git commit -m "Leaving machine - $(date '+%Y-%m-%d %H:%M:%S')"
-    git push origin main
+    # Git operations if -c flag is passed
+    if [[ "$*" == *"-c"* ]]; then
+        echo "📝 Committing changes..."
+        git add .
+        git commit -m "Leaving machine - $(date '+%Y-%m-%d %H:%M:%S')"
+        git push origin main
+    fi
     
     echo "✅ Successfully left machine!"
 }
