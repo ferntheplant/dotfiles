@@ -8,7 +8,8 @@ Prerequisites: Make sure the machine has a terminal and bash installed then:
 
 ```bash
 # Leaving machine
-cd ~/dotfiles
+cd ~/dotfilesi
+# Raycast: "Export Settings and Data" to ~/dotfiles/raycast
 leave-machine -c
 
 # -------------------------------------
@@ -18,13 +19,18 @@ curl -fsSL https://raw.githubusercontent.com/ferntheplant/dotfiles/main/scripts/
 
 # load Stylus config dump into browser
 # load Raycast config dump into Raycast
+# cmd+shift+p Install from VSIX for cursor custom extensions
 ```
 
-TODO: find way to automate generating `.Brewfile`
+TODO: find way to automate generating `.Brewfile` and `cursor-extensions.txt`
 
 TODO: automate generating Stylus config dump
 
 TODO: automate generating Raycast config dump
+
+TODO: [Raycast plaintext config](https://gist.github.com/jeremy-code/50117d5b4f29e04fcbbb1f55e301b893)
+
+TODO: somehow put other macOS level settings in here
 
 ## Colima vs Docker Desktop (vs Orbstack)
 
@@ -35,7 +41,7 @@ See this [thread](https://github.com/abiosoft/colima/discussions/273) for instal
 - Neat.run install and configs
 - spicetify install and configs
 - bctl install and configs
-- Beeper install
+- Beeper configs
 - meetingbar configs
 - hiddenbar config
 - stats config

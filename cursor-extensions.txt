@@ -4,6 +4,7 @@ antfu.where-am-i
 anysphere.cursorpyright
 anysphere.pyright
 astro-build.astro-vscode
+be5invis.vscode-custom-css
 bierner.markdown-checkbox
 bierner.markdown-preview-github-styles
 biomejs.biome
@@ -24,7 +25,6 @@ gregoire.dance
 gruntfuggly.todo-tree
 janisdd.vscode-edit-csv
 kevinrose.vsc-python-indent
-ltex-plus.vscode-ltex-plus
 mikestead.dotenv
 ms-azuretools.vscode-containers
 ms-azuretools.vscode-docker
@@ -37,12 +37,12 @@ naumovs.color-highlight
 nefrob.vscode-just-syntax
 oliverkovacs.word-count
 orta.vscode-twoslash-queries
-otovo-oss.htmx-tags
 patbenatar.advanced-new-file
 quicktype.quicktype
 redhat.vscode-xml
 redhat.vscode-yaml
-simonsiefke.svg-preview
+rimuruchan.vscode-fix-checksums-next
+slevesque.shader
 tamasfe.even-better-toml
 tomrijndorp.find-it-faster
 unifiedjs.vscode-mdx

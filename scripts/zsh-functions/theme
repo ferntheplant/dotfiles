@@ -1,9 +1,9 @@
 theme() {
-	update-catppuccin "$HOME/.config/starship/starship.toml" --"$1" --quotes
-	update-catppuccin "$HOME/.config/bat/config.conf" --"$1" --quotes
-	update-catppuccin "$HOME/.config/helix/config.toml" --"$1" --quotes --underscore
-	update-catppuccin "$HOME/.config/btop/btop.conf" --"$1" --quotes --underscore
-	update-catppuccin "$HOME/.gitconfig" --"$1"
+	update-catppuccin.sh "$HOME/.config/starship/starship.toml" --"$1"
+	update-catppuccin.sh "$HOME/.config/bat/config.conf" --"$1"
+	update-catppuccin.sh "$HOME/.config/helix/config.toml" --"$1" --underscore
+	update-catppuccin.sh "$HOME/.config/btop/btop.conf" --"$1" --underscore
+	update-catppuccin.sh "$HOME/.gitconfig" --"$1"
 
   if [[ "$1" == "light" ]]; then
     export LS_COLORS="$(vivid generate catppuccin-latte)"

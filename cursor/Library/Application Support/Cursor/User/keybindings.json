@@ -14,8 +14,14 @@
     "command": "composerMode.agent"
   },
   {
-    "key": "cmd+e",
-    "command": "composerMode.background"
+    "key": "x",
+    "command": "dance.select.line.below.extend",
+    "when": "editorTextFocus && dance.mode == 'normal' || editorTextFocus && dance.mode == 'select'"
+  },
+  {
+    "key": "shift+x",
+    "command": "dance.selections.expandToLines",
+    "when": "editorTextFocus && dance.mode == 'normal' || editorTextFocus && dance.mode == 'select'" 
   },
   {
     "key": "cmd+shift+D",

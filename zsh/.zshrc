@@ -55,10 +55,7 @@ precmd() {
 	fi
 }
 
-# shellcheck disable=SC1091
 source "$HOME/dotfiles/scripts/zsh-functions/loader"
-# shellcheck disable=SC1091
-source "$HOME/dotfiles/scripts/zsh-functions/machine-setup"
 
 if grep -q 'palette = "catppuccin-latte"' "$HOME/.config/starship/starship.toml"; then
   theme 'light'
@@ -78,14 +75,7 @@ eval "$(starship init zsh)"
 eval "$(atuin init zsh --disable-up-arrow)"
 
 source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-if [[ -x "$(command -v brew)" ]]; then
-	# shellcheck disable=SC1091
-	source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-else
-	# shellcheck disable=SC1091
-	source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
+source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
