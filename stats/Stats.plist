@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Battery_state</key>
+	<false/>
+	<key>CPU_mini_alignment</key>
+	<string>center</string>
+	<key>Disk_state</key>
+	<false/>
+	<key>GPU_barChart_position</key>
+	<integer>3</integer>
+	<key>GPU_label_position</key>
+	<integer>1</integer>
+	<key>GPU_lineChart_position</key>
+	<integer>2</integer>
+	<key>GPU_mini_position</key>
+	<integer>0</integer>
+	<key>GPU_state</key>
+	<false/>
+	<key>GPU_tachometer_position</key>
+	<integer>4</integer>
+	<key>GPU_widget</key>
+	<string>mini</string>
+	<key>NSNavPanelExpandedSizeForSaveMode</key>
+	<string>{800, 448}</string>
+	<key>NSNavPanelExpandedStateForSaveMode</key>
+	<true/>
+	<key>NSStatusItem Preferred Position CPU_mini</key>
+	<real>352</real>
+	<key>NSStatusItem Preferred Position Sensors_sensors</key>
+	<real>318</real>
+	<key>NSStatusItem Restore Position GPU_mini</key>
+	<integer>5469</integer>
+	<key>NSStatusItem Restore Position RAM_mini</key>
+	<integer>622</integer>
+	<key>NSToolbar Configuration eu.exelban.Stats.Settings.Toolbar</key>
+	<dict>
+		<key>TB Display Mode</key>
+		<integer>1</integer>
+		<key>TB Icon Size Mode</key>
+		<integer>1</integer>
+		<key>TB Is Shown</key>
+		<true/>
+		<key>TB Size Mode</key>
+		<integer>1</integer>
+	</dict>
+	<key>NSWindow Frame NSNavPanelAutosaveName</key>
+	<string>356 300 800 448 0 0 1512 944 </string>
+	<key>Network_state</key>
+	<false/>
+	<key>RAM_mini_alignment</key>
+	<string>center</string>
+	<key>RAM_state</key>
+	<false/>
+	<key>Sensors_barChart_position</key>
+	<integer>3</integer>
+	<key>Sensors_label_position</key>
+	<integer>2</integer>
+	<key>Sensors_mini_position</key>
+	<integer>1</integer>
+	<key>Sensors_stack_position</key>
+	<integer>0</integer>
+	<key>Sensors_state</key>
+	<true/>
+	<key>Sensors_widget</key>
+	<string>sensors</string>
+	<key>fan_0_mode</key>
+	<integer>0</integer>
+	<key>fan_0_speed</key>
+	<integer>5779</integer>
+	<key>fan_1_mode</key>
+	<integer>0</integer>
+	<key>fan_1_speed</key>
+	<integer>6241</integer>
+	<key>sensor_Average CPU</key>
+	<true/>
+	<key>sensor_Hottest CPU</key>
+	<true/>
+	<key>setupProcess</key>
+	<true/>
+	<key>telemetry</key>
+	<false/>
+	<key>temperature_units</key>
+	<string>celsius</string>
+	<key>update-interval</key>
+	<string>Never</string>
+	<key>updater_check_ts</key>
+	<integer>1738732776</integer>
+	<key>version</key>
+	<string>2.11.48</string>
+</dict>
+</plist>

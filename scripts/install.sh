@@ -4,7 +4,7 @@
 # Define the fixed location
 fixed_location="$HOME/dotfiles"
 # List of directories to ignore
-IGNORE_LIST=("raycast" "stylus" "custom-cursor-extensions")
+IGNORE_LIST=("raycast" "stats" "stylus" "custom-cursor-extensions")
 
 # Loop through all subdirectories
 for subdir in "$fixed_location"/*; do
