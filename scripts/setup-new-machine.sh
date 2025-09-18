@@ -44,7 +44,7 @@ install_homebrew() {
     if ! command_exists brew; then
         print_status "Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        
+
         # Add Homebrew to PATH for this session
         if is_macos; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -59,6 +59,7 @@ install_homebrew() {
 
 setup_mac_configs() {
   defaults write -g ApplePressAndHoldEnabled -bool false
+  defaults -currentHost write -globalDomain NSStatusItemSpacing -int 8
   print_success "Custom macOS configs applied"
 }
 
@@ -94,7 +95,7 @@ setup_github_auth() {
 # Function to clone dotfiles
 clone_dotfiles() {
     print_status "Cloning dotfiles..."
-    
+
     if [[ -d ~/dotfiles ]]; then
         print_warning "dotfiles directory already exists"
         read -p "Do you want to remove it and re-clone? (y/N): " -n 1 -r
@@ -106,7 +107,7 @@ clone_dotfiles() {
             exit 1
         fi
     fi
-    
+
     git clone https://github.com/ferntheplant/dotfiles.git ~/dotfiles
     cd ~/dotfiles
     print_success "Dotfiles cloned"
@@ -124,12 +125,12 @@ clear_existing_configs() {
 # Function to install Homebrew packages
 install_brew_packages() {
     print_status "Installing Homebrew packages..."
-    
+
     if [[ ! -f .Brewfile ]]; then
         print_error ".Brewfile not found"
         return 1
     fi
-    
+
     brew update
     brew bundle install --file=.Brewfile --cleanup --force --upgrade
 
@@ -158,7 +159,7 @@ setup_mise() {
 # Function to setup Zsh themes
 setup_zsh_themes() {
     print_status "Setting up Zsh themes..."
-    
+
     # Create zsh directory if it doesn't exist
     mkdir -p ~/.zsh
 
@@ -166,26 +167,26 @@ setup_zsh_themes() {
     if [[ ! -d ~/.zsh/fzf-tab ]]; then
         git clone https://github.com/Aloxaf/fzf-tab ~/.zsh/fzf-tab
     fi
-    
+
     # Clone and setup catppuccin theme
     if [[ ! -d ~/zsh-catppuccin-highlighting-theme ]]; then
         git clone https://github.com/catppuccin/zsh-syntax-highlighting.git ~/zsh-catppuccin-highlighting-theme
         cd ~/zsh-catppuccin-highlighting-theme
-        cp -v themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh ~/.zsh/
-        cp -v themes/catppuccin_latte-zsh-syntax-highlighting.zsh ~/.zsh/
+        cp -v themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh ~/.zsh/catppuccin-macchiato-zsh-syntax-highlighting.zsh
+        cp -v themes/catppuccin_latte-zsh-syntax-highlighting.zsh ~/.zsh/catppuccin-latte-zsh-syntax-highlighting.zsh
         cd - > /dev/null
     fi
-    
+
     print_success "Zsh themes setup complete"
 }
 
 # Function to setup LTeX
 setup_ltex() {
     print_status "Setting up LTeX..."
-    
+
     # Create bin directory if it doesn't exist
     mkdir -p ~/bin
-    
+
     # Download and install ltex-ls
     if [[ ! -d ~/bin/ltex-ls-16.0.0 ]]; then
         curl -L -o "$HOME/bin/ltex-ls.tar.gz" https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz
@@ -195,7 +196,7 @@ setup_ltex() {
         sudo ln -s ~/bin/ltex-ls-16.0.0/bin/ltex-ls ~/.local/bin/ltex-ls
         cd - > /dev/null
     fi
-    
+
     print_success "LTeX setup complete"
 }
 
@@ -203,7 +204,7 @@ setup_ltex() {
 # Must happen after mise is setup
 setup_java_macos() {
     print_status "Setting up Java (macOS)..."
-    
+
     if is_macos; then
         sudo mkdir -p /Library/Java/JavaVirtualMachines/17.0.2.jdk
         sudo ln -s /Users/fjorn/.local/share/mise/installs/java/17.0.2/Contents /Library/Java/JavaVirtualMachines/17.0.2.jdk/Contents
@@ -226,7 +227,22 @@ install_buildx() {
 
 setup_cursor() {
     print_status "Setting up Cursor..."
-    cat cursor-extensions.txt | xargs -L 1 cursor --install-extension
+
+    # Install extensions one by one to handle failures gracefully
+    while IFS= read -r extension; do
+        # Skip empty lines
+        if [ -z "$extension" ]; then
+            continue
+        fi
+
+        print_status "Installing extension: $extension"
+        if cursor --install-extension "$extension" 2>/dev/null; then
+            print_success "✓ Installed: $extension"
+        else
+            print_warning "✗ Failed to install: $extension"
+        fi
+    done < cursor-extensions.txt
+
     print_success "Cursor setup complete"
 }
 
@@ -241,7 +257,7 @@ make_zsh_default() {
 parse_args() {
     SKIP_PREREQUISITES=false
     SKIP_CLONE=false
-    
+
     while [[ $# -gt 0 ]]; do
         case $1 in
             --skip-prerequisites)
@@ -286,55 +302,53 @@ main() {
     echo "🚀 Starting new machine setup..."
     echo "This script will set up a fresh machine with all your dotfiles and packages."
     echo
-    
+
     # Check if we're on a supported OS
     if ! is_macos; then
         print_warning "This script is primarily designed for macOS. Some features may not work on other systems."
+        print_error "Aborting setup"
+        exit 1
     fi
-    
+
     # Install prerequisites (unless skipped)
     if [[ "$SKIP_PREREQUISITES" == "false" ]]; then
         install_homebrew
         install_gh
     fi
-    
+
     # Setup authentication and clone dotfiles (unless skipped)
     if [[ "$SKIP_CLONE" == "false" ]]; then
         setup_github_auth
         clone_dotfiles
     fi
-    
+
     # Ensure we're in dotfiles directory
     if [[ ! -f "scripts/install.sh" ]]; then
         print_error "Not in dotfiles directory. Please run this script from the dotfiles directory."
         exit 1
     fi
-    
+
     # Clear existing configs
     clear_existing_configs
     setup_mac_configs
-    
+
     # Setup dotfiles
     install_brew_packages
     run_dotfiles_install
-    
+
     # Setup base tools
     setup_mise
     setup_cursor
-    
+
     # Setup tools
     setup_zsh_themes
     setup_ltex
     setup_java_macos
+    install_kanata
 
-    # Setup Kanata - highly interactive setup, only on macOS
-    if is_macos; then
-        install_kanata
-    fi
-    
     # Make zsh default
     make_zsh_default
-    
+
     echo
     print_success "🎉 New machine setup complete!"
     echo
@@ -350,4 +364,4 @@ main() {
 parse_args "$@"
 
 # Run main function
-main 
+main
