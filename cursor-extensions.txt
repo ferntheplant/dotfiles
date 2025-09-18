@@ -42,6 +42,7 @@ quicktype.quicktype
 redhat.vscode-xml
 redhat.vscode-yaml
 rimuruchan.vscode-fix-checksums-next
+rszyma.vscode-kanata
 slevesque.shader
 tamasfe.even-better-toml
 tomrijndorp.find-it-faster

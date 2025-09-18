@@ -52,6 +52,8 @@ brew "httpie"
 brew "jq"
 # Handy way to save and run project-specific commands
 brew "just"
+# Cross-platform software keyboard remapper for Linux, macOS and Windows
+brew "kanata"
 # Pager program similar to more
 brew "less"
 # Implementation of the file(1) command
@@ -104,15 +106,12 @@ cask "cursor"
 cask "discord"
 # Privacy-focused Firefox-based browser
 cask "floorp"
+cask "font-hack-nerd-font"
 cask "font-monaspace"
-# Set of tools to manage resources and applications hosted on Google Cloud
-cask "gcloud-cli"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 # Utility to hide menu bar items
 cask "hiddenbar"
-# Keyboard customiser
-cask "karabiner-elements"
 # Utility that shows the latest app updates
 cask "latest"
 # App to manage software development and track bugs
@@ -125,6 +124,8 @@ cask "macfuse"
 cask "meetingbar"
 # Tool to control external monitor brightness & volume
 cask "monitorcontrol"
+# Reverse proxy, secure introspectable tunnels to localhost
+cask "ngrok"
 # App to write, plan, collaborate, and get organised
 cask "notion"
 # Control your tools with a few keystrokes
