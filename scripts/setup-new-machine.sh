@@ -305,7 +305,7 @@ main() {
     fi
     
     # Ensure we're in dotfiles directory
-    if [[ ! -f "scripts/install" ]]; then
+    if [[ ! -f "scripts/install.sh" ]]; then
         print_error "Not in dotfiles directory. Please run this script from the dotfiles directory."
         exit 1
     fi
