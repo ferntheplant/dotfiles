@@ -125,7 +125,7 @@ clear_existing_configs() {
 install_brew_packages() {
     print_status "Installing Homebrew packages..."
     
-    if [[ ! -f brew-packages.txt ]]; then
+    if [[ ! -f .Brewfile ]]; then
         print_error ".Brewfile not found"
         return 1
     fi
