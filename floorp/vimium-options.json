@@ -1,0 +1,14 @@
+{
+  "grabBackFocus": true,
+  "settingsVersion": "2.3",
+  "exclusionRules": [
+    {
+      "passKeys": "All",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://www.youtube.com/*"
+    }
+  ]
+}

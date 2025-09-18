@@ -1,0 +1,78 @@
+[
+  {
+    "id": "uBlock0@raymondhill.net",
+    "name": "uBlock Origin"
+  },
+  {
+    "id": "addon@darkreader.org",
+    "name": "Dark Reader"
+  },
+  {
+    "id": "jid1-ZAdIEUB7XOzOJw@jetpack",
+    "name": "DuckDuckGo Search & Tracker Protection"
+  },
+  {
+    "id": "treestyletab@piro.sakura.ne.jp",
+    "name": "Tree Style Tab"
+  },
+  {
+    "id": "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}",
+    "name": "Stylus"
+  },
+  {
+    "id": "{00000f2a-7cde-4f20-83ed-434fcb420d71}",
+    "name": "Imagus"
+  },
+  {
+    "id": "{9ed7d361-ccd9-4cad-9846-977da2651fb5}",
+    "name": "automaticDark - Time-Based Theme Changer"
+  },
+  {
+    "id": "{d634138d-c276-4fc8-924b-40a0ea21d284}",
+    "name": "1Password: Password Manager"
+  },
+  {
+    "id": "@react-devtools",
+    "name": "React Developer Tools"
+  },
+  {
+    "id": "{aecec67f-0d10-4fa7-b7c7-609a2db280cf}",
+    "name": "Violentmonkey"
+  },
+  {
+    "id": "FirefoxColor@mozilla.com",
+    "name": "Firefox Color"
+  },
+  {
+    "id": "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}",
+    "name": "Video Speed Controller"
+  },
+  {
+    "id": "{d7742d87-e61d-4b78-b8a1-b469842139fa}",
+    "name": "Vimium"
+  },
+  {
+    "id": "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}",
+    "name": "Refined GitHub"
+  },
+  {
+    "id": "tst-more-tree-commands@piro.sakura.ne.jp",
+    "name": "TST More Tree Commands"
+  },
+  {
+    "id": "{7aa0a466-58f8-427b-8cd2-e94645c4edc2}",
+    "name": "Tab Unloader for Tree Style Tab"
+  },
+  {
+    "id": "{731bf636-c808-4c86-b02f-af462eccc963}",
+    "name": "Move unloaded tabs for Tree Style Tab"
+  },
+  {
+    "id": "{bbb880ce-43c9-47ae-b746-c3e0096c5b76}",
+    "name": "Catppuccin for Web File Explorer Icons"
+  },
+  {
+    "id": "TST-Active-and-Total-Tabs-Counter@irvinm.addons.mozilla.org",
+    "name": "TST Active and Total Tabs Counter"
+  }
+]
