@@ -106,7 +106,6 @@ cask "cursor"
 cask "discord"
 # Privacy-focused Firefox-based browser
 cask "floorp"
-cask "font-hack-nerd-font"
 cask "font-monaspace"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
@@ -124,8 +123,6 @@ cask "macfuse"
 cask "meetingbar"
 # Tool to control external monitor brightness & volume
 cask "monitorcontrol"
-# Reverse proxy, secure introspectable tunnels to localhost
-cask "ngrok"
 # App to write, plan, collaborate, and get organised
 cask "notion"
 # Control your tools with a few keystrokes

@@ -53,7 +53,6 @@
   "editor.lightbulb.enabled": "off",
   "window.customTitleBarVisibility": "never",
   "window.titleBarStyle": "native",
-  "editor.codeLens": false,
   "accessibility.signalOptions.volume": 0,
   "vscode_custom_css.imports": ["file:///Users/fjorn/dotfiles/cursor-trail.js"],
   "application.shellEnvironmentResolutionTimeout": 30,
@@ -92,7 +91,7 @@
   "interactiveWindow.executeWithShiftEnter": true,
   "jupyter.askForKernelRestart": false,
   "jupyter.interactiveWindow.creationMode": "perFile",
-  "ltex.ltex-ls.path": "/Users/fjorn/.local/bin/ltex-ls",
+  "ltex.ltex-ls-plus.path": "/Users/fjorn/.local/bin/ltex-ls-plus-18.5.1/bin/ltex-ls",
   "ltex.configurationTarget": {
     "dictionary": "userExternalFile",
     "disabledRules": "userExternalFile",
@@ -229,7 +228,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "//": "Last update at 9/18/2025, 3:30:07 PM",
+    "//": "Last update at 9/19/2025, 11:12:54 AM",
     ".clang-tidy": ".clang-format, .clangd, compile_commands.json",
     ".env": "*.env, .env.*, .envrc, env.d.ts",
     ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .lfsconfig, .mailmap, .git-blame*",

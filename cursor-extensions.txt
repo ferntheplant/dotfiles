@@ -25,6 +25,7 @@ gregoire.dance
 gruntfuggly.todo-tree
 janisdd.vscode-edit-csv
 kevinrose.vsc-python-indent
+ltex-plus.vscode-ltex-plus
 mikestead.dotenv
 ms-azuretools.vscode-containers
 ms-azuretools.vscode-docker
@@ -48,5 +49,4 @@ tamasfe.even-better-toml
 tomrijndorp.find-it-faster
 unifiedjs.vscode-mdx
 usernamehw.errorlens
-valentjn.vscode-ltex
 yoavbls.pretty-ts-errors

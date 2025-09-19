@@ -184,16 +184,12 @@ setup_zsh_themes() {
 setup_ltex() {
     print_status "Setting up LTeX..."
 
-    # Create bin directory if it doesn't exist
-    mkdir -p ~/bin
-
     # Download and install ltex-ls
     if [[ ! -d ~/bin/ltex-ls-16.0.0 ]]; then
-        curl -L -o "$HOME/bin/ltex-ls.tar.gz" https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz
-        cd ~/bin
+        curl -L -o "$HOME/.local/bin/ltex-ls.tar.gz" "https://github.com/ltex-plus/ltex-ls-plus/releases/download/18.5.1/ltex-ls-plus-18.5.1-mac-aarch64.tar.gz"
+        cd ~/.local/bin
         tar -xvzf ltex-ls.tar.gz
         rm ltex-ls.tar.gz
-        sudo ln -s ~/bin/ltex-ls-16.0.0/bin/ltex-ls ~/.local/bin/ltex-ls
         cd - > /dev/null
     fi
 
