@@ -228,7 +228,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "//": "Last update at 9/19/2025, 11:12:54 AM",
+    "//": "Last update at 9/22/2025, 11:52:14 AM",
     ".clang-tidy": ".clang-format, .clangd, compile_commands.json",
     ".env": "*.env, .env.*, .envrc, env.d.ts",
     ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .lfsconfig, .mailmap, .git-blame*",
@@ -332,5 +332,6 @@
   "git.autofetch": true,
   "biome.suggestInstallingGlobally": false,
   "biome.requireConfiguration": true,
-  "editor.accessibilitySupport": "on"
+  "editor.accessibilitySupport": "on",
+  "git.ignoreMissingGitWarning": true
 }

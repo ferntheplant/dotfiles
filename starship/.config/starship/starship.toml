@@ -88,6 +88,7 @@ format = '\[[$symbol]($style)\]'
 
 [git_branch]
 format = '\[[$symbol$branch]($style)\]'
+symbol = ' '
 
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style))'

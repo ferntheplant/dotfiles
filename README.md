@@ -11,7 +11,6 @@ Prerequisites: Make sure the machine has a terminal and bash installed then:
 cd ~/dotfiles
 # Floorp export settings: stylus, violentmonkey, vimium, dark reader, get-addons-list.js
 # Stats export settings
-# Stylus export settings
 # Raycast: "Export Settings and Data" to ~/dotfiles/raycast
 leave-machine -c
 
@@ -21,7 +20,6 @@ leave-machine -c
 curl -fsSL https://raw.githubusercontent.com/ferntheplant/dotfiles/main/scripts/setup-new-machine | bash
 
 # set global macos settings (see below)
-# load Stylus config dump into browser
 # load Raycast config dump into Raycast (will add itself to login items)
 # load Stats config (will add itself to login items)
 # login to cursor
@@ -33,24 +31,20 @@ curl -fsSL https://raw.githubusercontent.com/ferntheplant/dotfiles/main/scripts/
 # Floorp import: stylus, violentmonkey, vimium, dark reader
 ```
 
-TODO: find way to automate generating `.Brewfile` and `cursor-extensions.txt`
-
-TODO: automate generating Stats config dump
-
-TODO: automate generating Raycast config dump
+TODO: find way to automate dumping and loading all the settings in the comments above
 
 TODO: [Raycast plaintext config](https://gist.github.com/jeremy-code/50117d5b4f29e04fcbbb1f55e301b893)
 
 TODO: somehow put other macOS level settings in here
 
 - key repeat timing
-- finder settings (show hidden files, no tags, list view, etc)
+- finder settings (show hidden files, no tags, list view, etc.)
 - disable all notifications
 - auto-hide dock, always show menu bar
 - 24h clock + menu bar clock
 - disable spotlight shortcut (for raycast)
 
-TODO: automate all the Floorp settings (a lot of the settings are so fucked inside of user.js)
+TODO: find way to keep `.Brewfile` clean
 
 ## Colima vs Docker Desktop (vs Orbstack)
 
@@ -60,7 +54,6 @@ See this [thread](https://github.com/abiosoft/colima/discussions/273) for instal
 
 - Neat.run install and config
 - spicetify install and config
-- bctl install and config
 - Beeper config
 - meetingbar configs
 - hiddenbar config
