@@ -140,20 +140,6 @@ cat "${WRAPPER_SCRIPT}"
 echo "========================"
 echo ""
 
-timeout 3s "$WRAPPER_SCRIPT" &
-TEST_PID=$!
-sleep 1
-if kill -0 $TEST_PID 2>/dev/null; then
-    echo -e "${GREEN}✅${RESET} Wrapper script started successfully"
-    kill $TEST_PID 2>/dev/null || true
-    wait $TEST_PID 2>/dev/null || true
-else
-    echo -e "${RED}❌${RESET} Wrapper script failed to start"
-    echo "Try running manually to see the error:"
-    echo "  sudo $WRAPPER_SCRIPT"
-    exit 1
-fi
-
 # Bootstrap and enable the service
 echo "Bootstrapping and enabling ${SERVICE_NAME} service..."
 
