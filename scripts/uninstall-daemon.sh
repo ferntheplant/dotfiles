@@ -23,6 +23,7 @@ SERVICE_NAME="$1"
 PLIST_DIR="/Library/LaunchDaemons"
 PLIST_FILE="${PLIST_DIR}/dev.fjorn.${SERVICE_NAME}.plist"
 LABEL="dev.fjorn.${SERVICE_NAME}"
+LOG_DIR="/var/log/${SERVICE_NAME}"
 
 echo -e "${ARROW} Uninstalling ${SERVICE_NAME} LaunchDaemon..."
 
@@ -59,6 +60,22 @@ if sudo rm -f "$PLIST_FILE"; then
 else
     echo -e "${RED}❌${RESET} Failed to remove plist file"
     exit 1
+fi
+
+# Ask about removing logs
+if [ -d "$LOG_DIR" ]; then
+    echo ""
+    read -p "Remove log directory $LOG_DIR? [y/N]: " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        if sudo rm -rf "$LOG_DIR"; then
+            echo -e "${GREEN}✅${RESET} Log directory removed: $LOG_DIR"
+        else
+            echo -e "${RED}❌${RESET} Failed to remove log directory"
+        fi
+    else
+        echo "Log directory preserved: $LOG_DIR"
+    fi
 fi
 
 echo -e "${ARROW} ${SERVICE_NAME} LaunchDaemon uninstalled successfully!"

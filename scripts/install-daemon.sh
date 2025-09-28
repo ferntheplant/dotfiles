@@ -32,8 +32,17 @@ fi
 PLIST_DIR="/Library/LaunchDaemons"
 PLIST_FILE="${PLIST_DIR}/dev.fjorn.${SERVICE_NAME}.plist"
 LABEL="dev.fjorn.${SERVICE_NAME}"
+LOG_DIR="/var/log/${SERVICE_NAME}"
+STDOUT_LOG="${LOG_DIR}/stdout.log"
+STDERR_LOG="${LOG_DIR}/stderr.log"
 
 echo -e "${ARROW} Installing ${SERVICE_NAME} as a LaunchDaemon..."
+
+# Create log directory
+echo "Creating log directory at ${LOG_DIR}..."
+sudo mkdir -p "${LOG_DIR}"
+sudo chown root:wheel "${LOG_DIR}"
+sudo chmod 755 "${LOG_DIR}"
 
 # Create the plist file
 echo "Creating plist file at ${PLIST_FILE}..."
@@ -57,6 +66,8 @@ done
 # Complete the plist
 sudo tee -a "${PLIST_FILE}" >/dev/null <<EOF
   </array>
+  <key>StandardOutPath</key><string>${STDOUT_LOG}</string>
+  <key>StandardErrorPath</key><string>${STDERR_LOG}</string>
   <key>RunAtLoad</key><true/>
   <key>KeepAlive</key><true/>
 </dict></plist>
@@ -75,10 +86,14 @@ sudo launchctl enable "system/${LABEL}"
 echo -e "${ARROW} ${SERVICE_NAME} service installed and enabled successfully!"
 echo "Service label: ${LABEL}"
 echo "Plist file: ${PLIST_FILE}"
+echo "Logs directory: ${LOG_DIR}"
 echo ""
 echo "Useful commands:"
 echo "  Check status: sudo launchctl print system/${LABEL}"
 echo "  Stop service: sudo launchctl stop ${LABEL}"
 echo "  Start service: sudo launchctl start ${LABEL}"
+echo "  View stdout: sudo tail -f ${STDOUT_LOG}"
+echo "  View stderr: sudo tail -f ${STDERR_LOG}"
+echo "  View all logs: sudo tail -f ${LOG_DIR}/*.log"
 echo "  Uninstall: ./uninstall-daemon.sh ${SERVICE_NAME}"
 echo "  Manual uninstall: sudo launchctl bootout system ${PLIST_FILE} && sudo rm ${PLIST_FILE}"
