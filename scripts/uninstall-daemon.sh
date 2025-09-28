@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Generic uninstaller for LaunchDaemon services
 # Usage: ./uninstall-daemon.sh <service-name>
 # Example: ./uninstall-daemon.sh myservice

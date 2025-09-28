@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Generic installer for running CLI programs as LaunchDaemons on macOS
 # Usage: ./install-daemon.sh <service-name> <binary-path> [args...]
 # Example: ./install-daemon.sh myservice /usr/local/bin/myprogram --config /path/to/config

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Installs Karabiner DriverKit, Kanata, and sets up LaunchDaemons (no disk logging)
 # https://gist.github.com/Jaycedam/4db80fc49c1d23c76c90c9b3e653c07f
 
