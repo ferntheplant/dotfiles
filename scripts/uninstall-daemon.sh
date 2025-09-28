@@ -24,6 +24,7 @@ PLIST_DIR="/Library/LaunchDaemons"
 PLIST_FILE="${PLIST_DIR}/dev.fjorn.${SERVICE_NAME}.plist"
 LABEL="dev.fjorn.${SERVICE_NAME}"
 LOG_DIR="/var/log/${SERVICE_NAME}"
+WRAPPER_SCRIPT="/usr/local/bin/${SERVICE_NAME}-daemon-wrapper"
 
 echo -e "${ARROW} Uninstalling ${SERVICE_NAME} LaunchDaemon..."
 
@@ -60,6 +61,15 @@ if sudo rm -f "$PLIST_FILE"; then
 else
     echo -e "${RED}❌${RESET} Failed to remove plist file"
     exit 1
+fi
+
+# Remove wrapper script
+if [ -f "$WRAPPER_SCRIPT" ]; then
+    if sudo rm -f "$WRAPPER_SCRIPT"; then
+        echo -e "${GREEN}✅${RESET} Wrapper script removed: $WRAPPER_SCRIPT"
+    else
+        echo -e "${RED}❌${RESET} Failed to remove wrapper script"
+    fi
 fi
 
 # Ask about removing logs

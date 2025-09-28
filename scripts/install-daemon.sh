@@ -6,9 +6,9 @@
 set -euo pipefail
 
 # Color variables
+MAGENTA='\033[35m'
 RED='\033[31m'
 GREEN='\033[32m'
-MAGENTA='\033[35m'
 RESET='\033[0m'
 ARROW="${MAGENTA}==>${RESET}"
 
@@ -46,6 +46,35 @@ sudo mkdir -p "${LOG_DIR}"
 sudo chown root:wheel "${LOG_DIR}"
 sudo chmod 755 "${LOG_DIR}"
 
+# Create wrapper script to handle environment
+WRAPPER_SCRIPT="/usr/local/bin/${SERVICE_NAME}-daemon-wrapper"
+echo "Creating wrapper script at ${WRAPPER_SCRIPT}..."
+sudo tee "${WRAPPER_SCRIPT}" >/dev/null <<EOF
+#!/usr/bin/env bash
+# Wrapper script for ${SERVICE_NAME} daemon
+# This ensures proper environment setup
+
+# Set basic PATH (common locations where binaries might be)
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+# Set HOME (some programs need this)
+export HOME="/var/root"
+
+# Add any other environment variables your program might need
+# export SOME_VAR="some_value"
+
+# Change to a safe working directory
+cd /tmp
+
+# Run the actual command
+exec "${BINARY_PATH}" $(printf '%q ' "${ARGS[@]}")
+EOF
+
+sudo chmod +x "${WRAPPER_SCRIPT}"
+sudo chown root:wheel "${WRAPPER_SCRIPT}"
+
+echo -e "${GREEN}✅${RESET} Wrapper script created: ${WRAPPER_SCRIPT}"
+
 # Create the plist file
 echo "Creating plist file at ${PLIST_FILE}..."
 sudo tee "${PLIST_FILE}" >/dev/null <<EOF
@@ -55,18 +84,7 @@ sudo tee "${PLIST_FILE}" >/dev/null <<EOF
 <plist version="1.0"><dict>
   <key>Label</key><string>${LABEL}</string>
   <key>ProgramArguments</key><array>
-    <string>${BINARY_PATH}</string>
-EOF
-
-# Add arguments to the plist
-for arg in "${ARGS[@]}"; do
-    sudo tee -a "${PLIST_FILE}" >/dev/null <<EOF
-    <string>${arg}</string>
-EOF
-done
-
-# Complete the plist
-sudo tee -a "${PLIST_FILE}" >/dev/null <<EOF
+    <string>${WRAPPER_SCRIPT}</string>
   </array>
   <key>StandardOutPath</key><string>${STDOUT_LOG}</string>
   <key>StandardErrorPath</key><string>${STDERR_LOG}</string>
@@ -110,19 +128,25 @@ if [ ! -x "$BINARY_PATH" ]; then
     exit 1
 fi
 
-# Test running the command briefly
-echo "Testing if command runs (will kill after 3 seconds)..."
-timeout 3s "$BINARY_PATH" "${ARGS[@]}" &
+# Test the wrapper script
+echo "Testing wrapper script..."
+echo "Wrapper script content:"
+echo "========================"
+cat "${WRAPPER_SCRIPT}"
+echo "========================"
+echo ""
+
+timeout 3s "$WRAPPER_SCRIPT" &
 TEST_PID=$!
 sleep 1
 if kill -0 $TEST_PID 2>/dev/null; then
-    echo -e "${GREEN}✅${RESET} Command started successfully"
+    echo -e "${GREEN}✅${RESET} Wrapper script started successfully"
     kill $TEST_PID 2>/dev/null || true
     wait $TEST_PID 2>/dev/null || true
 else
-    echo -e "${RED}❌${RESET} Command failed to start or exited immediately"
+    echo -e "${RED}❌${RESET} Wrapper script failed to start"
     echo "Try running manually to see the error:"
-    echo "  $BINARY_PATH ${ARGS[*]}"
+    echo "  sudo $WRAPPER_SCRIPT"
     exit 1
 fi
 
