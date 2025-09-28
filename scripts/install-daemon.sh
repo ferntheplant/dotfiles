@@ -30,8 +30,8 @@ fi
 
 # Configuration
 PLIST_DIR="/Library/LaunchDaemons"
-PLIST_FILE="${PLIST_DIR}/com.example.${SERVICE_NAME}.plist"
-LABEL="com.example.${SERVICE_NAME}"
+PLIST_FILE="${PLIST_DIR}/dev.fjorn.${SERVICE_NAME}.plist"
+LABEL="dev.fjorn.${SERVICE_NAME}"
 
 echo -e "${ARROW} Installing ${SERVICE_NAME} as a LaunchDaemon..."
 
@@ -80,4 +80,5 @@ echo "Useful commands:"
 echo "  Check status: sudo launchctl print system/${LABEL}"
 echo "  Stop service: sudo launchctl stop ${LABEL}"
 echo "  Start service: sudo launchctl start ${LABEL}"
-echo "  Uninstall: sudo launchctl bootout system ${PLIST_FILE} && sudo rm ${PLIST_FILE}"
+echo "  Uninstall: ./uninstall-daemon.sh ${SERVICE_NAME}"
+echo "  Manual uninstall: sudo launchctl bootout system ${PLIST_FILE} && sudo rm ${PLIST_FILE}"
