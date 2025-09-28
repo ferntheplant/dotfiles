@@ -6,8 +6,6 @@
 set -euo pipefail
 
 # Color variables
-RED='\033[31m'
-GREEN='\033[32m'
 MAGENTA='\033[35m'
 RESET='\033[0m'
 ARROW="${MAGENTA}==>${RESET}"
@@ -96,6 +94,35 @@ echo "========================"
 cat "${PLIST_FILE}"
 echo "========================"
 echo ""
+
+# Test the binary and arguments manually
+echo "Testing binary and arguments..."
+echo "Command that will be run: ${BINARY_PATH} ${ARGS[*]}"
+echo ""
+
+# Check if binary exists and is executable
+if [ ! -x "$BINARY_PATH" ]; then
+    echo -e "${RED}❌${RESET} Binary is not executable or doesn't exist!"
+    echo "File info:"
+    ls -la "$BINARY_PATH" 2>/dev/null || echo "File not found"
+    exit 1
+fi
+
+# Test running the command briefly
+echo "Testing if command runs (will kill after 3 seconds)..."
+timeout 3s "$BINARY_PATH" "${ARGS[@]}" &
+TEST_PID=$!
+sleep 1
+if kill -0 $TEST_PID 2>/dev/null; then
+    echo -e "${GREEN}✅${RESET} Command started successfully"
+    kill $TEST_PID 2>/dev/null || true
+    wait $TEST_PID 2>/dev/null || true
+else
+    echo -e "${RED}❌${RESET} Command failed to start or exited immediately"
+    echo "Try running manually to see the error:"
+    echo "  $BINARY_PATH ${ARGS[*]}"
+    exit 1
+fi
 
 # Bootstrap and enable the service
 echo "Bootstrapping and enabling ${SERVICE_NAME} service..."
