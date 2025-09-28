@@ -77,11 +77,55 @@ EOF
 sudo chown root:wheel "${PLIST_FILE}"
 sudo chmod 644 "${PLIST_FILE}"
 
+# Validate the plist file
+echo "Validating plist file..."
+if ! plutil -lint "${PLIST_FILE}" >/dev/null 2>&1; then
+    echo -e "${RED}❌${RESET} Plist file is invalid!"
+    echo "Running plutil to show errors:"
+    plutil -lint "${PLIST_FILE}"
+    exit 1
+fi
+echo -e "${GREEN}✅${RESET} Plist file is valid"
+
+# Show the generated plist for debugging
+echo ""
+echo "Generated plist content:"
+echo "========================"
+cat "${PLIST_FILE}"
+echo "========================"
+echo ""
+
 # Bootstrap and enable the service
 echo "Bootstrapping and enabling ${SERVICE_NAME} service..."
+
+# First, make sure it's not already loaded
 sudo launchctl bootout system "${PLIST_FILE}" 2>/dev/null || true
-sudo launchctl bootstrap system "${PLIST_FILE}"
-sudo launchctl enable "system/${LABEL}"
+
+# Bootstrap the service
+if sudo launchctl bootstrap system "${PLIST_FILE}"; then
+    echo -e "${GREEN}✅${RESET} Service bootstrapped successfully"
+else
+    echo -e "${RED}❌${RESET} Bootstrap failed!"
+    echo ""
+    echo "Troubleshooting steps:"
+    echo "1. Check if binary exists and is executable:"
+    echo "   ls -la ${BINARY_PATH}"
+    echo "2. Try running the command manually:"
+    echo "   ${BINARY_PATH} ${ARGS[*]}"
+    echo "3. Check system logs:"
+    echo "   sudo dmesg | tail -20"
+    echo "4. Validate plist again:"
+    echo "   plutil -lint ${PLIST_FILE}"
+    exit 1
+fi
+
+# Enable the service
+if sudo launchctl enable "system/${LABEL}"; then
+    echo -e "${GREEN}✅${RESET} Service enabled successfully"
+else
+    echo -e "${RED}❌${RESET} Failed to enable service"
+    exit 1
+fi
 
 echo -e "${ARROW} ${SERVICE_NAME} service installed and enabled successfully!"
 echo "Service label: ${LABEL}"
