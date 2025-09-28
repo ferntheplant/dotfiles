@@ -140,27 +140,57 @@ cat "${WRAPPER_SCRIPT}"
 echo "========================"
 echo ""
 
+timeout 10s "$WRAPPER_SCRIPT" &
+TEST_PID=$!
+sleep 1
+if kill -0 $TEST_PID 2>/dev/null; then
+    echo -e "${GREEN}✅${RESET} Wrapper script started successfully"
+    kill $TEST_PID 2>/dev/null || true
+    wait $TEST_PID 2>/dev/null || true
+else
+    echo -e "${RED}❌${RESET} Wrapper script failed to start"
+    echo "Try running manually to see the error:"
+    echo "  sudo $WRAPPER_SCRIPT"
+    exit 1
+fi
+
 # Bootstrap and enable the service
 echo "Bootstrapping and enabling ${SERVICE_NAME} service..."
 
 # First, make sure it's not already loaded
 sudo launchctl bootout system "${PLIST_FILE}" 2>/dev/null || true
 
-# Bootstrap the service
-if sudo launchctl bootstrap system "${PLIST_FILE}"; then
+# Try to bootstrap and capture detailed error output
+echo "Attempting to bootstrap..."
+if BOOTSTRAP_OUTPUT=$(sudo launchctl bootstrap system "${PLIST_FILE}" 2>&1); then
     echo -e "${GREEN}✅${RESET} Service bootstrapped successfully"
 else
-    echo -e "${RED}❌${RESET} Bootstrap failed!"
+    BOOTSTRAP_EXIT_CODE=$?
+    echo -e "${RED}❌${RESET} Bootstrap failed with exit code: $BOOTSTRAP_EXIT_CODE"
+    echo "Bootstrap output:"
+    echo "$BOOTSTRAP_OUTPUT"
+    echo ""
+
+    # Try to get more detailed information
+    echo "Checking system logs for more details..."
+    echo "Recent system log entries:"
+    sudo dmesg | tail -10 2>/dev/null || echo "Could not read dmesg"
+
+    echo ""
+    echo "Console logs (last 5 entries):"
+    sudo log show --predicate 'subsystem == "com.apple.xpc.launchd"' --last 5m --style compact 2>/dev/null || echo "Could not read console logs"
+
     echo ""
     echo "Troubleshooting steps:"
-    echo "1. Check if binary exists and is executable:"
-    echo "   ls -la ${BINARY_PATH}"
-    echo "2. Try running the command manually:"
-    echo "   ${BINARY_PATH} ${ARGS[*]}"
-    echo "3. Check system logs:"
-    echo "   sudo dmesg | tail -20"
-    echo "4. Validate plist again:"
+    echo "1. Try running wrapper manually:"
+    echo "   sudo ${WRAPPER_SCRIPT}"
+    echo "2. Check if service name conflicts with existing service:"
+    echo "   sudo launchctl list | grep ${SERVICE_NAME}"
+    echo "3. Verify plist syntax:"
     echo "   plutil -lint ${PLIST_FILE}"
+    echo "4. Try loading with more verbose output:"
+    echo "   sudo launchctl load -w ${PLIST_FILE}"
+
     exit 1
 fi
 
