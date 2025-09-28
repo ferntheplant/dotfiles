@@ -49,6 +49,10 @@ sudo chmod 755 "${LOG_DIR}"
 # Create wrapper script to handle environment
 WRAPPER_SCRIPT="/usr/local/bin/${SERVICE_NAME}-daemon-wrapper"
 echo "Creating wrapper script at ${WRAPPER_SCRIPT}..."
+
+# Get the actual user's home directory (not root)
+ACTUAL_USER_HOME=$(eval echo "~${SUDO_USER:-$USER}")
+
 sudo tee "${WRAPPER_SCRIPT}" >/dev/null <<EOF
 #!/usr/bin/env bash
 # Wrapper script for ${SERVICE_NAME} daemon
@@ -57,14 +61,14 @@ sudo tee "${WRAPPER_SCRIPT}" >/dev/null <<EOF
 # Set basic PATH (common locations where binaries might be)
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-# Set HOME (some programs need this)
-export HOME="/var/root"
+# Set HOME to the actual user's home directory (not root's)
+export HOME="${ACTUAL_USER_HOME}"
 
 # Add any other environment variables your program might need
 # export SOME_VAR="some_value"
 
-# Change to a safe working directory
-cd /tmp
+# Change to the user's home directory
+cd "\${HOME}"
 
 # Run the actual command
 exec "${BINARY_PATH}" $(printf '%q ' "${ARGS[@]}")
