@@ -326,7 +326,7 @@
     "*.xaml": "$(capture).xaml.cs"
   },
   "git.openRepositoryInParentFolders": "never",
-  "workbench.iconTheme": "catppuccin-latte",
+  "workbench.iconTheme": "catppuccin-macchiato",
   "debug.disassemblyView.showSourceCode": false,
   "cursor.cpp.enablePartialAccepts": true,
   "git.autofetch": true,

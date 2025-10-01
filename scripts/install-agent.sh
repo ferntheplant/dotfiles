@@ -57,12 +57,14 @@ cat > "${PLIST_FILE}" <<EOF
     <string>${BINARY_PATH}</string>
 EOF
 
-# Add arguments to the plist
-for arg in "${ARGS[@]}"; do
-    cat >> "${PLIST_FILE}" <<EOF
+# Add arguments to the plist only if there are args
+if [ ${#ARGS[@]} -gt 0 ]; then
+    for arg in "${ARGS[@]}"; do
+        cat >> "${PLIST_FILE}" <<EOF
     <string>${arg}</string>
 EOF
-done
+    done
+fi
 
 # Complete the plist
 cat >> "${PLIST_FILE}" <<EOF
@@ -93,9 +95,15 @@ echo ""
 
 # Test the command
 echo "Testing command..."
-echo "Command: ${BINARY_PATH} ${ARGS[*]}"
-timeout 3s "$BINARY_PATH" "${ARGS[@]}" &
-TEST_PID=$!
+if [ ${#ARGS[@]} -gt 0 ]; then
+    echo "Command: ${BINARY_PATH} ${ARGS[*]}"
+    timeout 3s "$BINARY_PATH" "${ARGS[@]}" &
+    TEST_PID=$!
+else
+    echo "Command: ${BINARY_PATH}"
+    timeout 3s "$BINARY_PATH" &
+    TEST_PID=$!
+fi
 sleep 1
 if kill -0 $TEST_PID 2>/dev/null; then
     echo -e "${GREEN}✅${RESET} Command started successfully"
@@ -108,11 +116,11 @@ fi
 
 # Load the agent
 echo "Loading LaunchAgent..."
-# Unload if already loaded
-launchctl unload "${PLIST_FILE}" 2>/dev/null || true
+# Bootout if already loaded
+launchctl bootout "gui/$(id -u)/${LABEL}" 2>/dev/null || true
 
-# Load the agent
-if launchctl load "${PLIST_FILE}"; then
+# Bootstrap the agent
+if launchctl bootstrap "gui/$(id -u)" "${PLIST_FILE}"; then
     echo -e "${GREEN}✅${RESET} LaunchAgent loaded successfully"
 else
     echo -e "${RED}❌${RESET} Failed to load LaunchAgent"
@@ -126,7 +134,7 @@ echo "Logs directory: ${LOG_DIR}"
 echo ""
 echo "Useful commands:"
 echo "  Check status: launchctl list | grep ${SERVICE_NAME}"
-echo "  Stop service: launchctl unload ${PLIST_FILE}"
-echo "  Start service: launchctl load ${PLIST_FILE}"
+echo "  Stop service: launchctl bootout gui/$(id -u)/${LABEL}"
+echo "  Start service: launchctl bootstrap gui/$(id -u) ${PLIST_FILE}"
 echo "  View logs: tail -f ${LOG_DIR}/*.log"
 echo "  Uninstall: ./uninstall-agent.sh ${SERVICE_NAME}"
