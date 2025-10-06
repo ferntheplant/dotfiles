@@ -1,7 +1,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = true
-palette = "catppuccin-macchiato"
+palette = "catppuccin-latte"
 continuation_prompt = '▶▶ '
 
 [battery]
