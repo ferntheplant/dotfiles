@@ -64,9 +64,9 @@ eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(atuin init zsh --disable-up-arrow)"
 
-source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
-# Only load autosuggestions if not in SSH session
+# Only load these if not in SSH session
 if [[ -z "$SSH_CONNECTION" ]]; then
+  source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
   source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
