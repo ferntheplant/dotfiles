@@ -62,13 +62,14 @@ eval "$(mise hook-env)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
-eval "$(atuin init zsh --disable-up-arrow)"
 
-# Only load these if not in SSH session
+# Only load atuin if not in SSH session
 if [[ -z "$SSH_CONNECTION" ]]; then
-  source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
-  source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  eval "$(atuin init zsh --disable-up-arrow)"
 fi
+
+source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
+source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
