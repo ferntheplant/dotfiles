@@ -17,16 +17,6 @@ alias dab="databricks"
 alias dbx="databricks"
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 
-beep() {
-	(
-		trap "kill 0" EXIT
-		~/Downloads/bbctl-macos-arm64 run sh-messenger &
-		~/Downloads/bbctl-macos-arm64 run --param 'imessage_platform=mac' sh-imessage &
-		~/Downloads/bbctl-macos-arm64 run sh-signal &
-		wait
-	)
-}
-
 jab() {
 	just dab/"$1" "${@:2}"
 }
@@ -75,7 +65,10 @@ eval "$(starship init zsh)"
 eval "$(atuin init zsh --disable-up-arrow)"
 
 source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
-source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+# Only load autosuggestions if not in SSH session
+if [[ -z "$SSH_CONNECTION" ]]; then
+  source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
