@@ -63,13 +63,13 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
-# Only load atuin if not in SSH session
+# Only load async renderers if not in SSH session
 if [[ -z "$SSH_CONNECTION" ]]; then
   eval "$(atuin init zsh --disable-up-arrow)"
+  source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
+  source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
-source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
-source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
