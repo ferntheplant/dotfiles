@@ -53,10 +53,6 @@ else
   theme 'dark'
 fi
 
-export CARAPACE_BRIDGES='zsh,bash,inshellisense' # optional
-# zstyle ':completion:*' format $'\e[3m\e[38;2;220;138;120m[ Completing %d ]\e[0m'
-source <(carapace _carapace)
-
 eval "$(mise activate zsh)"
 eval "$(mise hook-env)"
 eval "$(fzf --zsh)"
@@ -65,6 +61,9 @@ eval "$(starship init zsh)"
 
 # Only load async renderers if not in SSH session
 if [[ -z "$SSH_CONNECTION" ]]; then
+  export CARAPACE_BRIDGES='zsh,bash,inshellisense' # optional
+  # zstyle ':completion:*' format $'\e[3m\e[38;2;220;138;120m[ Completing %d ]\e[0m'
+  source <(carapace _carapace)
   eval "$(atuin init zsh --disable-up-arrow)"
   source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
   source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
