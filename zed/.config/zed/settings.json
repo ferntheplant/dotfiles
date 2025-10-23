@@ -1,0 +1,89 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "tabs": {
+    "show_diagnostics": "errors",
+    "close_position": "right",
+    "git_status": true
+  },
+  "title_bar": {
+    "show_sign_in": false,
+    "show_user_picture": false,
+    "show_onboarding_banner": false,
+    "show_project_items": true,
+    "show_branch_name": true,
+    "show_branch_icon": false
+  },
+  "debugger": {
+    "button": false
+  },
+  "search": {
+    "button": false
+  },
+  "diagnostics": {
+    "button": false
+  },
+  "status_bar": {
+    "cursor_position_button": true,
+    "active_language_button": true
+  },
+  "helix_mode": true,
+  "terminal": {
+    "button": false,
+    "font_family": "MesloLGS NF",
+    "cursor_shape": "block"
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "project_panel": {
+    "starts_open": false,
+    "entry_spacing": "standard",
+    "dock": "right",
+    "button": false,
+    "auto_fold_dirs": false
+  },
+  "preview_tabs": {
+    "enabled": false
+  },
+  "tab_bar": {
+    "show": true
+  },
+  "cursor_shape": "block",
+  "use_system_window_tabs": false,
+  "buffer_font_fallbacks": ["MesloLGS NF"],
+  "buffer_font_family": "Monaspace Neon",
+  "file_types": {
+    "plaintext": [".eslintignore"]
+  },
+  "linked_edits": true,
+  "show_whitespaces": "boundary",
+  "ensure_final_newline_on_save": true,
+  "wrap_guides": [80],
+  "soft_wrap": "none",
+  "hard_tabs": false,
+  "tab_size": 2,
+  "base_keymap": "VSCode",
+  "ui_font_size": 16,
+  "buffer_font_size": 12,
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Macchiato"
+  },
+  "cursor_blink": false,
+  "vim": {
+    "cursor_shape": {
+      "insert": "hollow",
+      "normal": "block",
+      "visual": "underline"
+    }
+  }
+}

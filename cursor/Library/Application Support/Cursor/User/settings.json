@@ -228,7 +228,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "//": "Last update at 9/22/2025, 11:52:14 AM",
+    "//": "Last update at 10/22/2025, 11:07:03 AM",
     ".clang-tidy": ".clang-format, .clangd, compile_commands.json",
     ".env": "*.env, .env.*, .envrc, env.d.ts",
     ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .lfsconfig, .mailmap, .git-blame*",
@@ -326,12 +326,15 @@
     "*.xaml": "$(capture).xaml.cs"
   },
   "git.openRepositoryInParentFolders": "never",
-  "workbench.iconTheme": "catppuccin-macchiato",
+  "workbench.iconTheme": "catppuccin-latte",
   "debug.disassemblyView.showSourceCode": false,
   "cursor.cpp.enablePartialAccepts": true,
   "git.autofetch": true,
   "biome.suggestInstallingGlobally": false,
   "biome.requireConfiguration": true,
   "editor.accessibilitySupport": "on",
-  "git.ignoreMissingGitWarning": true
+  "git.ignoreMissingGitWarning": true,
+  "remote.SSH.remotePlatform": {
+    "lil-homie": "macOS"
+  }
 }
