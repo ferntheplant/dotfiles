@@ -14,8 +14,8 @@ brew "bat"
 brew "btop"
 # Multi-shell multi-command argument completer
 brew "carapace"
-# Container runtimes on MacOS (and Linux) with minimal setup
-brew "colima", restart_service: :changed
+# Cloudflare Tunnel client (formerly Argo Tunnel)
+brew "cloudflared"
 # Good-lookin' diffs with diff-highlight and more
 brew "diff-so-fancy"
 # Bash, Zsh and Fish completion for Docker
@@ -123,6 +123,8 @@ cask "macfuse"
 cask "meetingbar"
 # Tool to control external monitor brightness & volume
 cask "monitorcontrol"
+# Reverse proxy, secure introspectable tunnels to localhost
+cask "ngrok"
 # App to write, plan, collaborate, and get organised
 cask "notion"
 # Control your tools with a few keystrokes
@@ -137,6 +139,10 @@ cask "slack"
 cask "spotify"
 # System monitor for the menu bar
 cask "stats"
+# Real time file synchronisation software
+cask "syncthing-app"
+# Multiplayer code editor
+cask "zed"
 # Video communication and virtual meeting platform
 cask "zoom"
 mas "Equinox", id: 1591510203
