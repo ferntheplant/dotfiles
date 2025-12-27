@@ -2,6 +2,7 @@ tap "databricks/tap"
 tap "datawire/blackbird"
 tap "felixkratz/formulae"
 tap "gromgit/fuse"
+tap "jesseduffield/lazydocker"
 tap "nikitabobko/tap"
 tap "screenplaydev/tap"
 # Improved shell history for zsh, bash, fish and nushell
@@ -16,6 +17,8 @@ brew "btop"
 brew "carapace"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
 brew "cloudflared"
+# Container runtimes on MacOS (and Linux) with minimal setup
+brew "colima"
 # Good-lookin' diffs with diff-highlight and more
 brew "diff-so-fancy"
 # Bash, Zsh and Fish completion for Docker
@@ -66,6 +69,8 @@ brew "mas"
 brew "mprocs"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# AI coding agent, built for the terminal
+brew "opencode"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # Cross-shell prompt for astronauts
@@ -88,6 +93,8 @@ brew "zsh-syntax-highlighting"
 brew "databricks/tap/databricks"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
+# A simple terminal UI for docker, written in Go
+brew "jesseduffield/lazydocker/lazydocker"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
@@ -96,8 +103,6 @@ cask "1password-cli"
 cask "aerospace"
 # Cross platform SQL editor and database management app
 cask "beekeeper-studio"
-# Universal chat app powered by Matrix
-cask "beeper"
 # Automated testing of webapps for Google Chrome
 cask "chromedriver"
 # Write, edit, and chat about your code with AI
