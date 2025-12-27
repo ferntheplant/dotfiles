@@ -3,6 +3,7 @@ tap "datawire/blackbird"
 tap "felixkratz/formulae"
 tap "gromgit/fuse"
 tap "jesseduffield/lazydocker"
+tap "hashicorp/tap"
 tap "nikitabobko/tap"
 tap "screenplaydev/tap"
 # Improved shell history for zsh, bash, fish and nushell
@@ -95,6 +96,8 @@ brew "databricks/tap/databricks"
 brew "felixkratz/formulae/borders"
 # A simple terminal UI for docker, written in Go
 brew "jesseduffield/lazydocker/lazydocker"
+# Terraform
+brew "hashicorp/tap/terraform"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password

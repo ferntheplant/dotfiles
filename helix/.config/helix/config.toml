@@ -36,3 +36,8 @@ nbsp = "⍽"
 tab = "→"
 newline = "⏎"
 tabpad = "·"  # Tabs will look like "→···" (depending on tab width)
+
+[keys.normal]
+C-a = "goto_line_start"
+C-e = "goto_line_end"
+Cmd-s = ":w"

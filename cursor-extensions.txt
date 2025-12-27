@@ -1,4 +1,5 @@
 antfu.file-nesting
+antfu.smart-clicks
 antfu.where-am-i
 anysphere.cursorpyright
 anysphere.pyright
@@ -25,6 +26,7 @@ gregoire.dance
 gruntfuggly.todo-tree
 janisdd.vscode-edit-csv
 kevinrose.vsc-python-indent
+ltex-plus.vscode-ltex-plus
 mikestead.dotenv
 ms-azuretools.vscode-containers
 ms-azuretools.vscode-docker
@@ -40,14 +42,18 @@ nefrob.vscode-just-syntax
 oliverkovacs.word-count
 orta.vscode-twoslash-queries
 patbenatar.advanced-new-file
+quicktype.quicktype
 redhat.vscode-xml
 redhat.vscode-yaml
 rimuruchan.vscode-fix-checksums-next
 rszyma.vscode-kanata
+rust-lang.rust
+simonsiefke.svg-preview
 slevesque.shader
 tamasfe.even-better-toml
 tomrijndorp.find-it-faster
 unifiedjs.vscode-mdx
 usernamehw.errorlens
 valentjn.vscode-ltex
+vitest.explorer
 yoavbls.pretty-ts-errors
