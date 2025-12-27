@@ -48,9 +48,13 @@ precmd() {
 source "$HOME/dotfiles/scripts/zsh-functions/loader"
 
 if grep -q 'palette = "catppuccin-latte"' "$HOME/.config/starship/starship.toml"; then
-  theme 'light'
+  if [[ "$TERM_PROGRAM" != "vscode" ]] && [[ "$TERM_PROGRAM" != "cursor" ]] && [[ -z "$VSCODE_INJECTION" ]]; then
+    theme 'light'
+  fi
 else
-  theme 'dark'
+  if [[ "$TERM_PROGRAM" != "vscode" ]] && [[ "$TERM_PROGRAM" != "cursor" ]] && [[ -z "$VSCODE_INJECTION" ]]; then
+    theme 'dark'
+  fi
 fi
 
 eval "$(mise activate zsh)"
@@ -72,3 +76,9 @@ fi
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/fjorn/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/fjorn/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/fjorn/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/fjorn/google-cloud-sdk/completion.zsh.inc'; fi
