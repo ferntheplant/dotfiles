@@ -15,16 +15,6 @@
   hold-time 250
 )
 
-(defsrc
-  =      1     2     3     4     5     6     7     8     9     0     -
-  tab    q     w     e     r     t     y     u     i     o     p     \
-  caps   a     s     d     f     g     h     j     k     l     ;     '
-  lsft   z     x     c     v     b     n     m     ,     .     /     rsft
-         grv   ins   ◀     ▶                 ▲     ▼     [     ]
-                     lctl  lalt              rmet  rctl
-         bspc  del   home  end               pgdn  pgup  ret   spc
-)
-
 (defalias
   fn (tap-hold $tap-time $hold-time fn (layer-toggle fn))
   esctl (tap-hold $tap-time $hold-time esc lctl)
@@ -38,6 +28,16 @@
   ; (tap-hold $tap-time $hold-time ; rctl)
 )
 
+(defsrc
+  =      1     2     3     4     5     6     7     8     9     0     -
+  tab    q     w     e     r     t     y     u     i     o     p     \
+  caps   a     s     d     f     g     h     j     k     l     ;     '
+  lsft   z     x     c     v     b     n     m     ,     .     /     rsft
+         grv   ins   ◀     ▶                 ▲     ▼     [     ]
+                     lctl  lalt              rmet  rctl
+         bspc  del   home  end               pgdn  pgup  ret   spc
+)
+
 (deflayer base
   _      _     _     _     _     _     _     _     _     _     _     _
   _      _     _     _     _     _     _     _     _     _     _     _
@@ -45,7 +45,7 @@
   _      _     _     _     _     _     _     _     _     _     _     _
          _     _     _     _                 _     _     _     _
                      lctl  lalt              rmet  rctl
-         _     lmet  home  end               pgdn  pgup  _     _
+         _     lmet  @fn   _                 _     @fn   _     _
 )
 
 (deflayer fn

@@ -1,0 +1,69 @@
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold   yes
+  macos-dev-names-exclude (
+    "Advantage2 Keyboard"
+    "Apple Internal Keyboard / Trackpad"
+    "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
+  )
+  macos-dev-names-include (
+    "TODO: get cornish-zen name"
+  )
+)
+
+(defvar
+  tap-time 150
+  hold-time 250
+)
+
+(defalias
+  l2 (tap-hold $tap-time $hold-time grv (layer-toggle l2))
+  nav (tap-hold $tap-time $hold-time esc (layer-toggle nav))
+  esctl (tap-hold $tap-time $hold-time esc lctl)
+  a (tap-hold $tap-time $hold-time a lctl)
+  s (tap-hold $tap-time $hold-time s lmet)
+  d (tap-hold $tap-time $hold-time d lalt)
+  f (tap-hold $tap-time $hold-time f lsft)
+  j (tap-hold $tap-time $hold-time j rsft)
+  k (tap-hold $tap-time $hold-time k ralt)
+  l (tap-hold $tap-time $hold-time l rmet)
+  ; (tap-hold $tap-time $hold-time ; rctl)
+  bang (tap-hold $tap-time $hold-time S-1 lctl)
+  at (tap-hold $tap-time $hold-time S-2 lmet)
+  hash (tap-hold $tap-time $hold-time S-3 lalt)
+  cash (tap-hold $tap-time $hold-time S-4 lsft)
+  and (tap-hold $tap-time $hold-time S-7 rsft)
+  star (tap-hold $tap-time $hold-time S-8 ralt)
+  lpar (tap-hold $tap-time $hold-time S-9 rmet)
+  rpar (tap-hold $tap-time $hold-time S-0 rctl)
+)
+
+(defsrc
+  q     w     e     r     t     y     u     i     o     p
+  a     s     d     f     g     h     j     k     l     ;
+  z     x     c     v     b     n     m     ,     .     /
+              esc   tab   bspc  spc   ret   grv
+)
+
+(deflayer base
+  _     _     _     _     _     _     _     _     _     _
+  @a    @s    @d    @f    _     _     @j    @k    @l    @;
+  _     _     _     _     _     _     _     _     _     _
+              @nav  _     _     _     _     @l2
+)
+
+;; thumbs can be changed since we still have home-row mods
+(deflayer l2
+  1     2     3     4     5     6     7     8     9     0
+  @bang @at   @hash @cash S-5   S-6   @and  @star @lpar @rpar
+  grv   S-grv [     ]     \     S-\   {     }     '     S-'
+              _     _     _     _     _     _
+)
+
+;; fuck with the thumbs since I didn't want to set up tap-holds for the special keys
+(deflayer nav
+  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10
+  lctl  f11   🔇     🔉     🔊     ◀     ▼     ▲     ▶     rctl
+  lsft  f12   ▶⏸    ◀◀    ▶▶    home  pgdn  pgup  end   rsft
+              _     lmet  lalt  ralt  rmet  _
+)
