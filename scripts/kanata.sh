@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LABEL="com.kanata"
-PLIST_PATH="/Library/LaunchDaemons/${LABEL}.plist"
+# Define config files to install as daemons
+# Add more config files here as needed
+CONFIG_FILES=(
+  "macbook.kbd"
+  "advantage.kbd"
+)
 
-LOG_OUT="/var/log/kanata.log"
-LOG_ERR="/var/log/kanata.err"
-
-# Your config (already managed by your dotfiles scripts)
-USER_CONFIG="${HOME}/.config/kanata/config.kbd"
-
-# Root-readable config location (good for daemons)
+# Base paths
+USER_CONFIG_DIR="${HOME}/.config/kanata"
 ROOT_CONFIG_DIR="/etc/kanata"
-ROOT_CONFIG="${ROOT_CONFIG_DIR}/config.kbd"
+PLIST_DIR="/Library/LaunchDaemons"
 
 say() { printf "\n\033[1m==> %s\033[0m\n" "$*"; }
 need_cmd() { command -v "$1" >/dev/null 2>&1; }
@@ -22,51 +21,48 @@ die() {
   exit 1
 }
 
-# --- Preconditions ---
-if [[ "$(uname -s)" != "Darwin" ]]; then
-  die "This script is for macOS only."
-fi
+# Function to install a single kanata daemon
+install_kanata_daemon() {
+  local config_file="$1"
+  local config_name="${config_file%.kbd}"  # Remove .kbd extension
 
-if [[ ! -f "${USER_CONFIG}" ]]; then
-  die "Kanata config not found at: ${USER_CONFIG}
-Make sure your dotfiles install ran first."
-fi
+  local user_config="${USER_CONFIG_DIR}/${config_file}"
+  local root_config="${ROOT_CONFIG_DIR}/${config_file}"
+  local label="com.kanata.${config_name}"
+  local plist_path="${PLIST_DIR}/${label}.plist"
+  local log_out="/var/log/kanata-${config_name}.log"
+  local log_err="/var/log/kanata-${config_name}.err"
 
-# --- Install Homebrew if missing ---
-if ! need_cmd brew; then
-  say "Homebrew not found"
-  exit 1
-fi
+  say "Installing daemon for ${config_file}..."
 
-# --- Install Kanata ---
-say "Installing kanata via Homebrew..."
-brew install kanata >/dev/null 2>&1 || brew upgrade kanata
+  # Check if user config exists
+  if [[ ! -f "${user_config}" ]]; then
+    echo "⚠️  Config not found: ${user_config}, skipping..."
+    return 1
+  fi
 
-KANATA_BIN="$(command -v kanata)"
-say "Using kanata at: ${KANATA_BIN}"
+  # Copy config to root-readable location
+  say "  Copying config to ${root_config}..."
+  sudo mkdir -p "${ROOT_CONFIG_DIR}"
+  sudo cp "${user_config}" "${root_config}"
+  sudo chown root:wheel "${root_config}"
+  sudo chmod 644 "${root_config}"
 
-# --- Copy config to a root-readable location ---
-say "Copying config to ${ROOT_CONFIG}..."
-sudo mkdir -p "${ROOT_CONFIG_DIR}"
-sudo cp "${USER_CONFIG}" "${ROOT_CONFIG}"
-sudo chown root:wheel "${ROOT_CONFIG}"
-sudo chmod 644 "${ROOT_CONFIG}"
-
-# --- Write LaunchDaemon plist ---
-say "Writing LaunchDaemon plist to ${PLIST_PATH}..."
-sudo tee "${PLIST_PATH}" >/dev/null <<EOF
+  # Write LaunchDaemon plist
+  say "  Writing LaunchDaemon plist to ${plist_path}..."
+  sudo tee "${plist_path}" >/dev/null <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>${LABEL}</string>
+    <string>${label}</string>
 
     <key>ProgramArguments</key>
     <array>
       <string>${KANATA_BIN}</string>
       <string>-c</string>
-      <string>${ROOT_CONFIG}</string>
+      <string>${root_config}</string>
     </array>
 
     <key>RunAtLoad</key>
@@ -76,71 +72,112 @@ sudo tee "${PLIST_PATH}" >/dev/null <<EOF
     <true/>
 
     <key>StandardOutPath</key>
-    <string>${LOG_OUT}</string>
+    <string>${log_out}</string>
 
     <key>StandardErrorPath</key>
-    <string>${LOG_ERR}</string>
+    <string>${log_err}</string>
   </dict>
 </plist>
 EOF
 
-# LaunchDaemons must be owned by root and not group/world-writable
-say "Fixing plist permissions..."
-sudo chown root:wheel "${PLIST_PATH}"
-sudo chmod 644 "${PLIST_PATH}"
+  # Fix plist permissions
+  say "  Fixing plist permissions..."
+  sudo chown root:wheel "${plist_path}"
+  sudo chmod 644 "${plist_path}"
 
-# --- Ensure logs exist (optional but nice) ---
-say "Ensuring log files exist..."
-sudo touch "${LOG_OUT}" "${LOG_ERR}"
-sudo chmod 644 "${LOG_OUT}" "${LOG_ERR}"
+  # Ensure logs exist
+  say "  Ensuring log files exist..."
+  sudo touch "${log_out}" "${log_err}"
+  sudo chmod 644 "${log_out}" "${log_err}"
 
-# --- Reload daemon ---
-say "Reloading LaunchDaemon..."
-sudo launchctl unload -w "${PLIST_PATH}" >/dev/null 2>&1 || true
-sudo launchctl load -w "${PLIST_PATH}"
+  # Reload daemon
+  say "  Reloading LaunchDaemon..."
+  sudo launchctl unload -w "${plist_path}" >/dev/null 2>&1 || true
+  sudo launchctl load -w "${plist_path}"
 
-# --- Health check ---
-say "Health check..."
+  # Health check
+  say "  Health check for ${config_name}..."
+  sleep 0.7
 
-# Give launchd a moment to spawn
-sleep 0.7
+  # Check launchd knows about it
+  if ! sudo launchctl list | grep -q "${label}"; then
+    echo "❌ launchctl does not list ${label}"
+    echo "Last errors:"
+    sudo tail -n 40 "${log_err}" || true
+    return 1
+  fi
 
-# 1) Check launchd knows about it
-if ! sudo launchctl list | grep -q "${LABEL}"; then
-  echo "❌ launchctl does not list ${LABEL}"
-  echo "Last errors:"
-  sudo tail -n 40 "${LOG_ERR}" || true
-  exit 1
+  # Check process is running
+  if ! pgrep -f "kanata.*-c.*${root_config}" >/dev/null 2>&1; then
+    echo "❌ kanata process not running for ${config_name}"
+    echo
+    echo "Recent stdout:"
+    sudo tail -n 40 "${log_out}" || true
+    echo
+    echo "Recent stderr:"
+    sudo tail -n 80 "${log_err}" || true
+    echo
+    echo "launchctl entry:"
+    sudo launchctl list | grep "${label}" || true
+    return 1
+  fi
+
+  echo "✅ ${config_name} daemon installed and running"
+  return 0
+}
+
+# --- Preconditions ---
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  die "This script is for macOS only."
 fi
 
-# 2) Check process is running
-if ! pgrep -f "kanata.*-c.*${ROOT_CONFIG}" >/dev/null 2>&1; then
-  echo "❌ kanata process not running (or not matched)"
-  echo
-  echo "Recent stdout:"
-  sudo tail -n 40 "${LOG_OUT}" || true
-  echo
-  echo "Recent stderr:"
-  sudo tail -n 80 "${LOG_ERR}" || true
-  echo
-  echo "launchctl entry:"
-  sudo launchctl list | grep "${LABEL}" || true
-  exit 1
+if [[ ! -d "${USER_CONFIG_DIR}" ]]; then
+  die "Kanata config directory not found at: ${USER_CONFIG_DIR}
+Make sure your dotfiles install ran first."
 fi
 
-echo "✅ Kanata is installed + running as a LaunchDaemon."
+# --- Install Kanata ---
+say "Installing kanata via Homebrew..."
+brew install kanata >/dev/null 2>&1 || brew upgrade kanata
+
+KANATA_BIN="$(command -v kanata)"
+say "Using kanata at: ${KANATA_BIN}"
+
+# --- Install daemons for each config file ---
+SUCCESS_COUNT=0
+FAILED_CONFIGS=()
+
+for config_file in "${CONFIG_FILES[@]}"; do
+  if install_kanata_daemon "${config_file}"; then
+    ((SUCCESS_COUNT++))
+  else
+    FAILED_CONFIGS+=("${config_file}")
+  fi
+done
+
+# --- Summary ---
+echo
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+if [[ ${SUCCESS_COUNT} -eq ${#CONFIG_FILES[@]} ]]; then
+  echo "✅ All ${SUCCESS_COUNT} kanata daemon(s) installed and running."
+else
+  echo "⚠️  ${SUCCESS_COUNT}/${#CONFIG_FILES[@]} daemon(s) installed successfully."
+  if [[ ${#FAILED_CONFIGS[@]} -gt 0 ]]; then
+    echo "Failed configs: ${FAILED_CONFIGS[*]}"
+  fi
+fi
 echo
 echo "Status:   sudo launchctl list | grep kanata"
-echo "Logs:     tail -f ${LOG_OUT}"
-echo "Errors:   tail -f ${LOG_ERR}"
-
+echo "Logs:     tail -f /var/log/kanata-*.log"
+echo "Errors:   tail -f /var/log/kanata-*.err"
+echo
 cat <<'NOTE'
-
 NOTE:
 - You may still need to grant macOS permissions:
   System Settings → Privacy & Security → Accessibility + Input Monitoring
   (Depending on your setup, macOS may require approval for the driver/tools.)
-- If it doesn't work after a reboot, check these logs:
-  /var/log/kanata.log and /var/log/kanata.err
+- If it doesn't work after a reboot, check the logs:
+  /var/log/kanata-*.log and /var/log/kanata-*.err
+- To add more config files, edit the CONFIG_FILES array at the top of this script.
 
 NOTE

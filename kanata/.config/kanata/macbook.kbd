@@ -1,6 +1,18 @@
 (defcfg
   process-unmapped-keys yes
   concurrent-tap-hold   yes
+  macos-dev-names-exclude (
+    "Advantage2 Keyboard"
+  )
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+    "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
+  )
+)
+
+(defvar
+  tap-time 150
+  hold-time 250
 )
 
 (defsrc
@@ -16,7 +28,7 @@
   _      🔅     🔆     mctl  sls   dtn   dnd   ◀◀    ▶⏸    ▶▶    🔇     🔉     🔊
   _      _     _     _     _     _     _     _     _     _     _     _     _     _
   _      _     _     _     _     _     _     _     _     _     _     _     _
-  @esctl _     _     _     _     _     _     _     _     _     _     _     _     _
+  @esctl @a    @s    @d    @f    _     _     @j    @k    @l    @;    _     _     _
   _    _ _     _     _     _     _     _     _     _     _     _     _
   @fn    _     _     _                 _                 _     _     _    _ _    _
 )
@@ -31,6 +43,14 @@
 )
 
 (defalias
-  fn (tap-hold 250 250 fn (layer-toggle fn))
-  esctl (tap-hold 250 150 esc lctl)
+  fn (tap-hold $tap-time $hold-time fn (layer-toggle fn))
+  esctl (tap-hold $tap-time $hold-time esc lctl)
+  a (tap-hold $tap-time $hold-time a lctl)
+  s (tap-hold $tap-time $hold-time s lmet)
+  d (tap-hold $tap-time $hold-time d lalt)
+  f (tap-hold $tap-time $hold-time f lsft)
+  j (tap-hold $tap-time $hold-time j rsft)
+  k (tap-hold $tap-time $hold-time k ralt)
+  l (tap-hold $tap-time $hold-time l rmet)
+  ; (tap-hold $tap-time $hold-time ; rctl)
 )

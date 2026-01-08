@@ -27,9 +27,30 @@ if ! cli_password=$(security find-generic-password -w -s "$pw_name" -a "$pw_acco
   exit 1
 fi
 
-if echo "$cli_password" | sudo -S -k launchctl bootout system /Library/LaunchDaemons/com.example.kanata.plist >/dev/null 2>&1; then
-  echo "✅ Kanata stopped successfully!"
+# Find all kanata plists
+plists=$(ls /Library/LaunchDaemons/com.kanata.*.plist 2>/dev/null || true)
+
+if [ -z "$plists" ]; then
+  echo "❌ No kanata daemons found"
+  exit 1
+fi
+
+success_count=0
+failed_count=0
+
+for plist in $plists; do
+  if echo "$cli_password" | sudo -S -k launchctl bootout system "$plist" >/dev/null 2>&1; then
+    ((success_count++))
+  else
+    ((failed_count++))
+    label=$(basename "$plist" .plist)
+    echo "⚠️  Failed to stop $label"
+  fi
+done
+
+if [ $failed_count -eq 0 ]; then
+  echo "✅ All $success_count kanata daemon(s) stopped successfully!"
 else
-  echo "❌ Failed to stop Kanata."
+  echo "⚠️  $success_count/$((success_count + failed_count)) daemon(s) stopped successfully"
   exit 1
 fi

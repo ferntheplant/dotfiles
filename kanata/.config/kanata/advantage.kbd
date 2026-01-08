@@ -1,0 +1,59 @@
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold   yes
+  macos-dev-names-exclude (
+    "Apple Internal Keyboard / Trackpad"
+    "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
+  )
+  macos-dev-names-include (
+    "Advantage2 Keyboard"
+  )
+)
+
+(defvar
+  tap-time 150
+  hold-time 250
+)
+
+(defsrc
+  =      1     2     3     4     5     6     7     8     9     0     -
+  tab    q     w     e     r     t     y     u     i     o     p     \
+  caps   a     s     d     f     g     h     j     k     l     ;     '
+  lsft   z     x     c     v     b     n     m     ,     .     /     rsft
+         grv   ins   ◀     ▶                 ▲     ▼     [     ]
+                     lctl  lalt              rmet  rctl
+         bspc  del   home  end               pgdn  pgup  ret   spc
+)
+
+(defalias
+  fn (tap-hold $tap-time $hold-time fn (layer-toggle fn))
+  esctl (tap-hold $tap-time $hold-time esc lctl)
+  a (tap-hold $tap-time $hold-time a lctl)
+  s (tap-hold $tap-time $hold-time s lmet)
+  d (tap-hold $tap-time $hold-time d lalt)
+  f (tap-hold $tap-time $hold-time f lsft)
+  j (tap-hold $tap-time $hold-time j rsft)
+  k (tap-hold $tap-time $hold-time k ralt)
+  l (tap-hold $tap-time $hold-time l rmet)
+  ; (tap-hold $tap-time $hold-time ; rctl)
+)
+
+(deflayer base
+  _      _     _     _     _     _     _     _     _     _     _     _
+  _      _     _     _     _     _     _     _     _     _     _     _
+  @esctl @a    @s    @d    @f    _     _     @j    @k    @l    @;    _
+  _      _     _     _     _     _     _     _     _     _     _     _
+         _     _     _     _                 _     _     _     _
+                     lctl  lalt              rmet  rctl
+         _     lmet  home  end               pgdn  pgup  _     _
+)
+
+(deflayer fn
+  f12    f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11
+  _      _     _     _     _     _     _     _     _     _     _     _
+  _      _     _     _     _     _     _     _     _     _     _     _
+  _      _     _     _     _     _     _     _     _     _     _     _
+         _     ▶⏸    ◀◀    ▶▶                🔊     🔉     _     _
+                     _     _                 _     _
+         _     _     _     _                 _     _     _     _
+)
