@@ -38,6 +38,8 @@ on-focus-changed = "move-mouse window-lazy-center"
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
 
+alt-f = 'layout floating tiling' # Toggle between floating and tiling layout
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
 alt-h = 'focus left --boundaries-action wrap-around-the-workspace'
 alt-j = 'focus down --boundaries-action wrap-around-the-workspace'
@@ -89,11 +91,7 @@ alt-semicolon = 'mode service'
 [mode.service.binding]
 alt-semicolon = ['reload-config', 'mode main']
 esc = ['reload-config', 'mode main']
-r = ['flatten-workspace-tree', 'mode main'] # reset layout
-f = [
-  'layout floating tiling',
-  'mode main',
-] # Toggle between floating and tiling layout
+r = ['flatten-workspace-tree', 'mode main']                # reset layout
 backspace = ['close-all-windows-but-current', 'mode main']
 
 # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
@@ -103,10 +101,6 @@ alt-shift-h = ['join-with left', 'mode main']
 alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
-
-down = 'volume down'
-up = 'volume up'
-shift-down = ['volume set 0', 'mode main']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'
@@ -132,11 +126,6 @@ run = ['layout floating']
 if.app-id = 'eu.exelban.Stats'
 check-further-callbacks = true
 run = []
-
-# [[on-window-detected]]
-# if.app-id = 'com.apple.Notes'
-# check-further-callbacks = true
-# run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.sproutcube.Shortcat'

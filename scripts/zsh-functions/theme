@@ -1,9 +1,27 @@
 theme() {
-	~/dotfiles/scripts/update-catppuccin.sh "$HOME/.config/starship/starship.toml" --"$1"
-	~/dotfiles/scripts/update-catppuccin.sh "$HOME/.config/bat/config.conf" --"$1"
-	~/dotfiles/scripts/update-catppuccin.sh "$HOME/.config/helix/config.toml" --"$1" --underscore
-	~/dotfiles/scripts/update-catppuccin.sh "$HOME/.config/btop/btop.conf" --"$1" --underscore
-	~/dotfiles/scripts/update-catppuccin.sh "$HOME/.gitconfig" --"$1"
+	# Prevent concurrent execution using lockf (macOS native file locking)
+	local lock_file="$HOME/.cache/theme-update.lock"
+
+	# Create cache directory if it doesn't exist
+	mkdir -p "$HOME/.cache"
+
+	# Create lock file if it doesn't exist (lockf needs the file to exist)
+	touch "$lock_file"
+
+	# Use lockf to atomically acquire lock and run all file updates
+	# -k: keep lock until command finishes
+	# -n: non-blocking (skip if lock can't be acquired)
+	local theme_arg="$1"
+	lockf -kn "$lock_file" sh -c "
+		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/starship/starship.toml\" --$theme_arg
+		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/bat/config.conf\" --$theme_arg
+		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
+		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg --underscore
+		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.gitconfig\" --$theme_arg
+	" || {
+		# Lock couldn't be acquired (another instance is running), skip silently
+		return 0
+	}
 
   if [[ "$1" == "light" ]]; then
     export LS_COLORS="$(vivid generate catppuccin-latte)"

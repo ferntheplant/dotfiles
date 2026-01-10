@@ -91,7 +91,7 @@
 		}
 	},
 	"features": {
-		"edit_prediction_provider": "supermaven"
+		"edit_prediction_provider": "zed"
 	},
 	"agent": {
 		"dock": "left"

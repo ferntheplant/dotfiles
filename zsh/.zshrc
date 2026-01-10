@@ -47,13 +47,20 @@ precmd() {
 
 source "$HOME/dotfiles/scripts/zsh-functions/loader"
 
-if grep -q 'palette = "catppuccin-latte"' "$HOME/.config/starship/starship.toml"; then
-  if [[ "$TERM_PROGRAM" != "vscode" ]] && [[ "$TERM_PROGRAM" != "cursor" ]] && [[ -z "$VSCODE_INJECTION" ]]; then
-    theme 'light'
-  fi
-else
-  if [[ "$TERM_PROGRAM" != "vscode" ]] && [[ "$TERM_PROGRAM" != "cursor" ]] && [[ -z "$VSCODE_INJECTION" ]]; then
-    theme 'dark'
+# Only run theme update if not in VSCode/Cursor and starship config exists
+if [[ -f "$HOME/.config/starship/starship.toml" ]]; then
+  # Check multiple ways to detect VSCode/Cursor to be more robust
+  if [[ "$TERM_PROGRAM" != "vscode" ]] && \
+     [[ "$TERM_PROGRAM" != "cursor" ]] && \
+     [[ -z "$VSCODE_INJECTION" ]] && \
+     [[ -z "$CURSOR_SESSION" ]] && \
+     [[ "$(ps -o comm= -p $PPID 2>/dev/null)" != *"cursor"* ]] && \
+     [[ "$(ps -o comm= -p $PPID 2>/dev/null)" != *"code"* ]]; then
+    if grep -q 'palette = "catppuccin-latte"' "$HOME/.config/starship/starship.toml"; then
+      theme 'light'
+    else
+      theme 'dark'
+    fi
   fi
 fi
 

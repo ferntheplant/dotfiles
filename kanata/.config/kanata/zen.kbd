@@ -5,9 +5,9 @@
     "Advantage2 Keyboard"
     "Apple Internal Keyboard / Trackpad"
     "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
-  )
-  macos-dev-names-include (
-    "TODO: get cornish-zen name"
+    "Fernando’s Magic Keyboard"
+    "AVA"
+    "TODO: add agar to this list"
   )
 )
 
@@ -17,9 +17,8 @@
 )
 
 (defalias
-  l2 (tap-hold $tap-time $hold-time grv (layer-toggle l2))
-  nav (tap-hold $tap-time $hold-time esc (layer-toggle nav))
-  esctl (tap-hold $tap-time $hold-time esc lctl)
+  grvsym (tap-hold $tap-time $hold-time grv (layer-toggle sym))
+  escnav (tap-hold $tap-time $hold-time esc (layer-toggle nav))
   a (tap-hold $tap-time $hold-time a lctl)
   s (tap-hold $tap-time $hold-time s lmet)
   d (tap-hold $tap-time $hold-time d lalt)
@@ -49,11 +48,11 @@
   _     _     _     _     _     _     _     _     _     _
   @a    @s    @d    @f    _     _     @j    @k    @l    @;
   _     _     _     _     _     _     _     _     _     _
-              @nav  _     _     _     _     @l2
+              @escnav _     _     _     _     @grvsym
 )
 
 ;; thumbs can be changed since we still have home-row mods
-(deflayer l2
+(deflayer sym
   1     2     3     4     5     6     7     8     9     0
   @bang @at   @hash @cash S-5   S-6   @and  @star @lpar @rpar
   grv   S-grv [     ]     \     S-\   {     }     '     S-'

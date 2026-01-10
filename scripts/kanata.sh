@@ -6,6 +6,7 @@ set -euo pipefail
 CONFIG_FILES=(
   "macbook.kbd"
   "advantage.kbd"
+  "ava.kbd"
 )
 
 # Base paths
@@ -149,7 +150,7 @@ FAILED_CONFIGS=()
 
 for config_file in "${CONFIG_FILES[@]}"; do
   if install_kanata_daemon "${config_file}"; then
-    ((SUCCESS_COUNT++))
+    SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
   else
     FAILED_CONFIGS+=("${config_file}")
   fi

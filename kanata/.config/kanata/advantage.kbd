@@ -4,9 +4,8 @@
   macos-dev-names-exclude (
     "Apple Internal Keyboard / Trackpad"
     "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
-  )
-  macos-dev-names-include (
-    "Advantage2 Keyboard"
+    "Fernando’s Magic Keyboard"
+    "AVA"
   )
 )
 

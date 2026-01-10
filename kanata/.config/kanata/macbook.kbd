@@ -3,9 +3,7 @@
   concurrent-tap-hold   yes
   macos-dev-names-exclude (
     "Advantage2 Keyboard"
-  )
-  macos-dev-names-include (
-    "Apple Internal Keyboard / Trackpad"
+    "AVA"
     "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
   )
 )
