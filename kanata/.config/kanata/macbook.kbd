@@ -2,15 +2,30 @@
   process-unmapped-keys yes
   concurrent-tap-hold   yes
   macos-dev-names-exclude (
+    "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
     "Advantage2 Keyboard"
     "AVA"
-    "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
+    "Corne-ish Zen"
+    "TODO: add agar to this list"
   )
 )
 
 (defvar
   tap-time 150
   hold-time 250
+)
+
+(defalias
+  fn (tap-hold $tap-time $hold-time fn (layer-toggle fn))
+  esctl (tap-hold $tap-time $hold-time esc lctl)
+  a (tap-hold $tap-time $hold-time a lctl)
+  s (tap-hold $tap-time $hold-time s lmet)
+  d (tap-hold $tap-time $hold-time d lalt)
+  f (tap-hold $tap-time $hold-time f lsft)
+  j (tap-hold $tap-time $hold-time j rsft)
+  k (tap-hold $tap-time $hold-time k ralt)
+  l (tap-hold $tap-time $hold-time l rmet)
+  ; (tap-hold $tap-time $hold-time ; rctl)
 )
 
 (defsrc
@@ -38,17 +53,4 @@
   _      _     _     _     _     _     _     _     _     _     _     _     _     _
   _    _ _     _     _     _     _     _     _     _     _     _     _
   _      _     _     _                 _                 _     _     ⤒    ⇞ ⇟    ⤓
-)
-
-(defalias
-  fn (tap-hold $tap-time $hold-time fn (layer-toggle fn))
-  esctl (tap-hold $tap-time $hold-time esc lctl)
-  a (tap-hold $tap-time $hold-time a lctl)
-  s (tap-hold $tap-time $hold-time s lmet)
-  d (tap-hold $tap-time $hold-time d lalt)
-  f (tap-hold $tap-time $hold-time f lsft)
-  j (tap-hold $tap-time $hold-time j rsft)
-  k (tap-hold $tap-time $hold-time k ralt)
-  l (tap-hold $tap-time $hold-time l rmet)
-  ; (tap-hold $tap-time $hold-time ; rctl)
 )

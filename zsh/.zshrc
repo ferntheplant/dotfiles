@@ -13,13 +13,7 @@ export PATH
 alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*' --time-style='relative' --no-permissions --modified"
 alias l1="l --level=1 --time-style='+%y-%m-%d %H:%M'"
 alias g="git"
-alias dab="databricks"
-alias dbx="databricks"
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
-
-jab() {
-	just dab/"$1" "${@:2}"
-}
 
 # Function to capture command start time
 preexec() {
@@ -81,8 +75,6 @@ if [[ -z "$SSH_CONNECTION" ]]; then
 fi
 
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/fjorn/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/fjorn/google-cloud-sdk/path.zsh.inc'; fi

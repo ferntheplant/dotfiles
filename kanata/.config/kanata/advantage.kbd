@@ -2,10 +2,12 @@
   process-unmapped-keys yes
   concurrent-tap-hold   yes
   macos-dev-names-exclude (
-    "Apple Internal Keyboard / Trackpad"
     "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
+    "Apple Internal Keyboard / Trackpad"
     "Fernando’s Magic Keyboard"
     "AVA"
+    "Corne-ish Zen"
+    "TODO: add agar to this list"
   )
 )
 

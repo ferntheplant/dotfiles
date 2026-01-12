@@ -2,10 +2,10 @@
   process-unmapped-keys yes
   concurrent-tap-hold   yes
   macos-dev-names-exclude (
-    "Advantage2 Keyboard"
-    "Apple Internal Keyboard / Trackpad"
     "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
+    "Apple Internal Keyboard / Trackpad"
     "Fernando’s Magic Keyboard"
+    "Advantage2 Keyboard"
     "AVA"
     "TODO: add agar to this list"
   )
@@ -17,52 +17,167 @@
 )
 
 (defalias
-  grvsym (tap-hold $tap-time $hold-time grv (layer-toggle sym))
-  escnav (tap-hold $tap-time $hold-time esc (layer-toggle nav))
+  nav (layer-while-held nav)
+  sym (layer-while-held sym)
+  fn (layer-while-held fn)
+  CRAZY (layer-toggle damb-alpha)
+
+  tabnav (tap-hold $tap-time $hold-time tab (layer-toggle nav))
+
+  ;; left hand home-row mods
   a (tap-hold $tap-time $hold-time a lctl)
   s (tap-hold $tap-time $hold-time s lmet)
   d (tap-hold $tap-time $hold-time d lalt)
   f (tap-hold $tap-time $hold-time f lsft)
+  ;; right hand home-row mods
   j (tap-hold $tap-time $hold-time j rsft)
   k (tap-hold $tap-time $hold-time k ralt)
   l (tap-hold $tap-time $hold-time l rmet)
   ; (tap-hold $tap-time $hold-time ; rctl)
-  bang (tap-hold $tap-time $hold-time S-1 lctl)
-  at (tap-hold $tap-time $hold-time S-2 lmet)
-  hash (tap-hold $tap-time $hold-time S-3 lalt)
-  cash (tap-hold $tap-time $hold-time S-4 lsft)
-  and (tap-hold $tap-time $hold-time S-7 rsft)
-  star (tap-hold $tap-time $hold-time S-8 ralt)
-  lpar (tap-hold $tap-time $hold-time S-9 rmet)
-  rpar (tap-hold $tap-time $hold-time S-0 rctl)
 )
 
 (defsrc
-  q     w     e     r     t     y     u     i     o     p
-  a     s     d     f     g     h     j     k     l     ;
-  z     x     c     v     b     n     m     ,     .     /
-              esc   tab   bspc  spc   ret   grv
+  q     w     e      r     t       y     u     i     o     p
+  a     s     d      f     g       h     j     k     l     ;
+  z     x     c      v     b       n     m     ,     .     /
+              lmet   tab   spc     ret   esc   ralt
 )
 
 (deflayer base
-  _     _     _     _     _     _     _     _     _     _
-  @a    @s    @d    @f    _     _     @j    @k    @l    @;
-  _     _     _     _     _     _     _     _     _     _
-              @escnav _     _     _     _     @grvsym
+  _     _     _      _     _       _     _     _     _     _
+  @a    @s    @d     @f    _       _     @j    @k    @l    @;
+  _     _     _      _     _       _     _     _     _     _
+              esc    @tabnav spc     bspc  @sym  ret
 )
 
-;; thumbs can be changed since we still have home-row mods
+;; needs 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
+;; simulate numpad and fill up remaining space
 (deflayer sym
-  1     2     3     4     5     6     7     8     9     0
-  @bang @at   @hash @cash S-5   S-6   @and  @star @lpar @rpar
-  grv   S-grv [     ]     \     S-\   {     }     '     S-'
-              _     _     _     _     _     _
+  grv   7     8      9     [       XX    XX    XX    XX    XX
+  -     4     5      6     ]       XX    rsft  ralt  rmet  rctl
+  =     1     2      3     '       XX    XX    XX    XX    XX
+              \      @fn   0       XX    _     XX
 )
 
-;; fuck with the thumbs since I didn't want to set up tap-holds for the special keys
+
+;; basically just arrow keys
 (deflayer nav
-  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10
-  lctl  f11   🔇     🔉     🔊     ◀     ▼     ▲     ▶     rctl
-  lsft  f12   ▶⏸    ◀◀    ▶▶    home  pgdn  pgup  end   rsft
-              _     lmet  lalt  ralt  rmet  _
+  XX    XX    XX     XX    XX      XX    XX    XX    XX    XX
+  lctl  lmet  lalt   lsft  XX      lft   down  up    rght  XX
+  XX    XX    XX     XX    XX      home  pgdn  pgup  end   XX
+              XX     _     XX      XX    @fn   XX
 )
+
+;; keep home row mods in the same place to use with fkeys
+(deflayer fn
+  f1    f2    f3     f4    f5      f6    f7    f8    f9    f10
+  lctl  lmet  lalt   lsft  f11     f12   rsft  ralt  rmet  rctl
+  XX    prev  pp     next  XX      XX    voldwn volu  XX    @CRAZY
+              XX     _     XX      XX    _     XX
+)
+
+;; ------------------------------------------------------------
+;; Damb keyboard layout
+;; ------------------------------------------------------------
+
+;; we're only using columns for index, middle, and ring finger + 2 keys for pinky
+;; overall 28 key layout
+
+(defvar
+  combo-time 30
+  standard-layers (base nav sym fn)
+)
+
+(defalias
+  damb-num (layer-while-held damb-num)
+  dtab-nav (tap-hold $tap-time $hold-time tab (layer-toggle damb-nav))
+  damb-fun (layer-while-held damb-fun)
+  EXIT (layer-toggle base)
+)
+
+;; combos are anchored to the home key for that hand and add in the closest key to the target on an available finger
+;; this means for all alphas we only need to move at most 1 finger
+(defchordsv2
+  (f w) q $combo-time first-release $standard-layers
+  (f e) t $combo-time first-release $standard-layers
+  (f d) g $combo-time first-release $standard-layers
+  (f c) b $combo-time first-release $standard-layers
+  (j o) p $combo-time first-release $standard-layers
+  (j i) y $combo-time first-release $standard-layers
+  (j k) h $combo-time first-release $standard-layers
+  (j ,) n $combo-time first-release $standard-layers
+)
+
+;; COMBOS: q, t, g, b, p, y, h, n
+;; extra possibility for tap-hold on num layer
+(deflayer damb-alpha
+  XX    w     e      r     XX      XX    u     i     o     @EXIT
+  @a    @s    @d     @f    XX      XX    @j    @k    @l    @;
+  z     x     c      v     XX      XX    m     ,     .     /
+              esc    @dtab-nav spc     bspc  @damb-num ret
+)
+
+;; extra thumb key
+(deflayer damb-num
+  XX    9     8      7     XX      XX    XX    XX    XX    XX
+  -     6     5      4     XX      XX    rsft  ralt  rmet  rctl
+  =     3     2      1     XX      XX    XX    XX    XX    XX
+              XX     @damb-fun 0       XX    _     XX
+)
+
+;; extra pinky and both thumbs
+(deflayer damb-nav
+  XX    XX    XX     XX    XX      XX    [     ]     \     XX
+  lctl  lmet  lalt   lsft  XX      XX    lft   down  up    rght
+  XX    XX    XX     XX    XX      XX    ;     '     grv   XX
+              XX     _     XX      XX    @damb-fun XX
+)
+
+;; ok with using dead inner columns just for service keys on fun layer
+;; one extra key per pinky
+(deflayer damb-fun
+  XX    f1    f2     f3    pp      XX    f4    f5    f6    XX
+  lctl  lmet  lalt   lsft  voldwn  volu  rsft  ralt  rmet  rctl
+  XX    f7    f8     f9    prev    next  f10   f11   f12   XX
+              XX     _     XX      XX    _     XX
+)
+
+;; needed keys:
+;; mods: ctl, met, alt, sft (4) => but all can be tap-hold mods so becomes (0)
+;; alpha: a b c d e f g h i j k l m n o p q r s t u v w x y z (26)
+;; num: 1 2 3 4 5 6 7 8 9 0 (10)
+;; sym: - = [ ] \ ; ' , . / ` (11)
+;; cursor: spc tab esc ret bspc (5)
+;; nav: lft dwn up rght (4)
+;; ------------------------
+;; service: prev pp next voldwn volu (5)
+;; fun: f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 (12)
+;; TOTAL: 26 + 21 + 5 + 4 + 5 + 12 = 73 keys
+
+;; 22 main keys and 6 thumbs per layer => 28 keys base layer and fun layer
+;; side layers only get 11 main keys and 2 thumbs => 13 keys per side layer
+;; => at least 3 layers worth of keys (homerow mods already included via tap-hold)
+;; not counting possibly dedicated keys for layer switching
+;; all keys must also be accessible with homerow mods from other the other hand
+
+;; other considerations:
+;; if absolutely necessary fun and service can be dropped (in that order)
+;; it would be lit if all the cursor keys were accessible from the main layer
+;; h j k l on/near right hand home row for vim-bindings
+;; ring and index fingers are strongest going left-to-right (not symmetric which is weird)
+;; if a letter is not in it's QWERTY position then put it far away to avoid confusion when switching layouts
+;; common bigrams: th, he, in, en, nt, re, er, an, ti, es, on, at, se, nd, or, ar, al, te, co, de, to, ra, et, ed, it, sa, em, ro.
+;; common trigrams: the, and, tha, ent, ing, ion, tio, for, nde, has, nce, edt, tis, oft, sth, men
+;; typescript symbols: () {} => ? : ,
+
+;; key totals of note:
+;; sym + alpha = 47 total => 2 layers
+;; nav + service + fun = 21 => 1 layer needed for "superfluous" keys
+;; cursor keys only need to be accessible from main layer
+
+;; some key strategies to consider:
+;; tap-hold
+;; combos
+;;   - o+u => w ?
+;;   - p, b, v, x, q, z => least common letters (in order, without j, k)
+;; one-shot

@@ -13,19 +13,28 @@
 # @raycast.author plasmadice
 # @raycast.authorURL https://github.com/plasmadice
 
-# Find all kanata error logs
-error_logs=$(ls /var/log/kanata-*.err 2>/dev/null || true)
+# Source shared helper functions
+source "$HOME/.local/bin/kanata-common.sh"
 
-if [ -z "$error_logs" ]; then
-  echo "No kanata error logs found"
+# Get configs for available devices
+configs=()
+while IFS= read -r config; do
+  configs+=("$config")
+done < <(get_configs_for_available_devices)
+
+if [ ${#configs[@]} -eq 0 ]; then
+  echo "No kanata error logs found for detected devices"
   exit 0
 fi
 
-for log in $error_logs; do
-  config_name=$(basename "$log" .err | sed 's/kanata-//')
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo "📋 Error log for: $config_name"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  tail -n 100 "$log"
-  echo
+# Find error logs for the available configs
+for config in "${configs[@]}"; do
+  log="/var/log/kanata-${config}.err"
+  if [ -f "$log" ]; then
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "📋 Error log for: $config"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    tail -n 100 "$log"
+    echo
+  fi
 done

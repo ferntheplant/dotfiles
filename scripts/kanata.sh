@@ -7,6 +7,7 @@ CONFIG_FILES=(
   "macbook.kbd"
   "advantage.kbd"
   "ava.kbd"
+  "zen.kbd"
 )
 
 # Base paths
@@ -67,7 +68,7 @@ install_kanata_daemon() {
     </array>
 
     <key>RunAtLoad</key>
-    <true/>
+    <false/>
 
     <key>KeepAlive</key>
     <true/>
@@ -91,39 +92,16 @@ EOF
   sudo touch "${log_out}" "${log_err}"
   sudo chmod 644 "${log_out}" "${log_err}"
 
-  # Reload daemon
-  say "  Reloading LaunchDaemon..."
+  # Load daemon (but don't start it - RunAtLoad is false)
+  say "  Loading LaunchDaemon..."
   sudo launchctl unload -w "${plist_path}" >/dev/null 2>&1 || true
   sudo launchctl load -w "${plist_path}"
 
-  # Health check
-  say "  Health check for ${config_name}..."
-  sleep 0.7
+  # Immediately stop the daemon if it started
+  say "  Stopping daemon..."
+  sudo launchctl bootout system "${plist_path}" >/dev/null 2>&1 || true
 
-  # Check launchd knows about it
-  if ! sudo launchctl list | grep -q "${label}"; then
-    echo "❌ launchctl does not list ${label}"
-    echo "Last errors:"
-    sudo tail -n 40 "${log_err}" || true
-    return 1
-  fi
-
-  # Check process is running
-  if ! pgrep -f "kanata.*-c.*${root_config}" >/dev/null 2>&1; then
-    echo "❌ kanata process not running for ${config_name}"
-    echo
-    echo "Recent stdout:"
-    sudo tail -n 40 "${log_out}" || true
-    echo
-    echo "Recent stderr:"
-    sudo tail -n 80 "${log_err}" || true
-    echo
-    echo "launchctl entry:"
-    sudo launchctl list | grep "${label}" || true
-    return 1
-  fi
-
-  echo "✅ ${config_name} daemon installed and running"
+  echo "✅ ${config_name} daemon installed (stopped - use kanata-start to start for connected devices)"
   return 0
 }
 
@@ -160,13 +138,15 @@ done
 echo
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 if [[ ${SUCCESS_COUNT} -eq ${#CONFIG_FILES[@]} ]]; then
-  echo "✅ All ${SUCCESS_COUNT} kanata daemon(s) installed and running."
+  echo "✅ All ${SUCCESS_COUNT} kanata daemon(s) installed (stopped)."
 else
   echo "⚠️  ${SUCCESS_COUNT}/${#CONFIG_FILES[@]} daemon(s) installed successfully."
   if [[ ${#FAILED_CONFIGS[@]} -gt 0 ]]; then
     echo "Failed configs: ${FAILED_CONFIGS[*]}"
   fi
 fi
+echo
+echo "💡 Use 'kanata-start' (Raycast script) to start daemons for currently connected devices."
 echo
 echo "Status:   sudo launchctl list | grep kanata"
 echo "Logs:     tail -f /var/log/kanata-*.log"
