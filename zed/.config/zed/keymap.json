@@ -27,5 +27,11 @@
     "bindings": {
       "space": null
     }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-w": null
+    }
   }
 ]

@@ -7,11 +7,20 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "agent_servers": {
+    "opencode": {
+      "type": "extension",
+      "favorite_models": [],
+      "default_config_options": {},
+      "favorite_config_option_values": {}
+    }
+  },
   "which_key": { "enabled": true, "delay_ms": 100 },
 	"disable_ai": false,
  "edit_predictions": {
 		"disabled_globs": [".env*"]
 	},
+	"format_on_save": "on",
 	"tabs": {
 		"show_diagnostics": "errors",
 		"close_position": "right",

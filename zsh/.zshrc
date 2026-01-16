@@ -14,6 +14,8 @@ alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignor
 alias l1="l --level=1 --time-style='+%y-%m-%d %H:%M'"
 alias g="git"
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+alias zel="zellij"
+alias wco="~/.local/bin/setup-ticket.ts"
 
 # Function to capture command start time
 preexec() {
@@ -63,6 +65,7 @@ eval "$(mise hook-env)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+eval "$(zellij setup --generate-auto-start zsh)"
 
 # Only load async renderers if not in SSH session
 if [[ -z "$SSH_CONNECTION" ]]; then

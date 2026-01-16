@@ -18,6 +18,7 @@ theme() {
 		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
 		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg --underscore
 		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.gitconfig\" --$theme_arg
+		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/zellij/config.kdl\" --$theme_arg
 	" || {
 		# Lock couldn't be acquired (another instance is running), skip silently
 		return 0
