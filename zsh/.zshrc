@@ -65,7 +65,6 @@ eval "$(mise hook-env)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
-eval "$(zellij setup --generate-auto-start zsh)"
 
 # Only load async renderers if not in SSH session
 if [[ -z "$SSH_CONNECTION" ]]; then
