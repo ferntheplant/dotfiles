@@ -2,10 +2,10 @@
   process-unmapped-keys yes
   concurrent-tap-hold   yes
   macos-dev-names-exclude (
-    "Advantage2 Keyboard"
-    "Apple Internal Keyboard / Trackpad"
     "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
+    "Apple Internal Keyboard / Trackpad"
     "Fernando’s Magic Keyboard"
+    "Advantage2 Keyboard"
     "AVA"
     "Corne-ish Zen"
   )
@@ -22,6 +22,11 @@
   fn (layer-while-held fn)
 
   tabnav (tap-hold $tap-time $hold-time tab (layer-toggle nav))
+  spcnav (tap-hold $tap-time $hold-time spc (layer-toggle nav))
+  bspsym (tap-hold $tap-time $hold-time bspc (layer-toggle sym))
+
+  symone (one-shot-release-pcancel 2000 (layer-while-held sym))
+  navone (one-shot-release-pcancel 2000 (layer-while-held nav))
 
   ;; left hand home-row mods
   a (tap-hold $tap-time $hold-time a lctl)
@@ -45,17 +50,17 @@
 (deflayer base
   XX      _     _     _     _     _     _     _     _     _     _     XX    XX
   esc     @a    @s    @d    @f    _     _     @j    @k    @l    @;    ret
-  XX      _     _     _     _     _     _     _     _     _     /     XX
-                esc   @tabnav spc   bspc  @sym  ret
+  @navone _     _     _     _     _     _     _     _     _     /     XX
+                XX    @tabnav @spcnav @bspsym @symone XX
 )
 
 ;; needs 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
 ;; simulate numpad and fill up remaining space
 (deflayer sym
   XX      grv   7     8     9     [     XX    XX    XX    XX    XX    XX    XX
-  XX      -     4     5     6     ]     XX    rsft  ralt  rmet  rctl  XX
+  \       -     4     5     6     ]     XX    rsft  ralt  rmet  rctl  XX
   XX      =     1     2     3     '     XX    XX    XX    XX    XX    XX
-                \     @fn   0     XX    _     XX
+                XX    @fn   0     XX    _     XX
 )
 
 

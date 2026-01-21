@@ -40,11 +40,11 @@ done
 TMPFILE=$(mktemp) || exit 1
 trap 'rm -f "$TMPFILE"' EXIT
 
-# Perform replacement only on lines containing '='
+# Perform replacement on lines containing '=' (key=value) or '"' (KDL key "value" syntax)
 if [ "$REPLACEMENT_ACTION" == "light" ]; then
-    sed -E '/=/s/catppuccin[_-]macchiato/catppuccin'${SEPARATOR}'latte/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
+    sed -E '/(=|")/s/catppuccin[_-]macchiato/catppuccin'${SEPARATOR}'latte/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
 elif [ "$REPLACEMENT_ACTION" == "dark" ]; then
-    sed -E '/=/s/catppuccin[_-]latte/catppuccin'${SEPARATOR}'macchiato/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
+    sed -E '/(=|")/s/catppuccin[_-]latte/catppuccin'${SEPARATOR}'macchiato/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
 else
     usage
 fi

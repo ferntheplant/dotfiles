@@ -164,6 +164,7 @@ keybinds clear-defaults=true {
                 floating true
             }
         }
+        bind "Ctrl j" { FocusNextPane; }
     }
     shared_except "locked" "move" {
         bind "Ctrl h" { SwitchToMode "move"; }
@@ -291,7 +292,7 @@ web_client {
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "catppuccin-latte"
+theme "catppuccin-macchiato"
 
 // Choose the base input mode of zellij.
 // Default: normal
