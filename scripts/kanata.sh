@@ -8,6 +8,7 @@ CONFIG_FILES=(
   "advantage.kbd"
   "ava.kbd"
   "zen.kbd"
+  "agar.kbd"
 )
 
 # Base paths

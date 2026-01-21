@@ -19,6 +19,9 @@ get_config_for_device() {
     "Corne-ish Zen")
       echo "zen"
       ;;
+    "Agar Mini BLE (USB)")
+      echo "agar"
+      ;;
     *)
       echo ""
       ;;
@@ -45,6 +48,7 @@ get_available_devices() {
     "Advantage2 Keyboard"
     "AVA"
     "Corne-ish Zen"
+    "Agar Mini BLE (USB)"
   )
 
   for device in "${devices[@]}"; do

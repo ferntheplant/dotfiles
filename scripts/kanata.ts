@@ -8,7 +8,8 @@ const CONFIG_FILES = [
   "macbook.kbd",
   "advantage.kbd",
   "ava.kbd",
-  "zen.kbd"
+  "zen.kbd",
+  "agar.kbd"
 ]
 
 // Base paths
@@ -93,12 +94,12 @@ const install_kanata_daemon = async (config_file: string) => {
 
   // Load daemon (but don't start it - RunAtLoad is false)
   say(`  Loading LaunchDaemon...`)
-  await $`sudo launchctl unload -w ${plist_path}`.quiet().catch(() => {})
+  await $`sudo launchctl unload -w ${plist_path}`.quiet().catch(() => { })
   await $`sudo launchctl load -w ${plist_path}`
 
   // Immediately stop the daemon if it started
   say(`  Stopping daemon...`)
-  await $`sudo launchctl bootout system ${plist_path}`.quiet().catch(() => {})
+  await $`sudo launchctl bootout system ${plist_path}`.quiet().catch(() => { })
 
   console.log(`✅ ${config_name} daemon installed (stopped - use kanata-start to start for connected devices)`)
   return true
@@ -123,7 +124,7 @@ say(`Using kanata at: ${KANATA_BIN.stdout.trim()}`)
 
 // --- Install daemons for each config file ---
 let SUCCESS_COUNT = 0
-const FAILED_CONFIGS = []
+const FAILED_CONFIGS: string[] = []
 
 for (const config_file of CONFIG_FILES) {
   if (await install_kanata_daemon(config_file)) {
