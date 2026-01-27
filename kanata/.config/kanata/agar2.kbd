@@ -1,0 +1,122 @@
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold   yes
+  macos-dev-names-exclude (
+    "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
+    "Apple Internal Keyboard / Trackpad"
+    "Fernando’s Magic Keyboard"
+    "Advantage2 Keyboard"
+    "AVA"
+    "Corne-ish Zen"
+  )
+)
+
+(deffakekeys
+  to-base (layer-switch base)
+)
+
+(defvar
+  tap-time 200
+  hold-time 150
+  ;; Note: consider using different time values for your different fingers.
+  ;; For example, your pinkies might be slower to release keys and index
+  ;; fingers faster.
+
+  combo-time 30
+  standard-layers (base nomods nav sym fn)
+
+  left-hand-keys (
+    q w e r t
+    a s d f g
+    z x c v b
+  )
+  right-hand-keys (
+    y u i o p
+    h j k l ;
+    n m , . /
+  )
+)
+
+(defchordsv2
+  (w e) tab $combo-time first-release $standard-layers
+  (i o) bspc $combo-time first-release $standard-layers
+  (, .) ret $combo-time first-release $standard-layers
+)
+
+(defalias
+  nav (layer-while-held nav)
+  sym (layer-while-held sym)
+  fn (layer-while-held fn)
+
+  spcnav (tap-hold $tap-time $hold-time spc (layer-toggle nav))
+  bspsym (tap-hold $tap-time $hold-time bspc (layer-toggle sym))
+
+  ;; symone (one-shot-release-pcancel 2000 (layer-while-held sym))
+  ;; navone (one-shot-release-pcancel 2000 (layer-while-held nav))
+
+  ;; This example is similar to the default caps-word behaviour but it moves the
+  ;; 0-9 keys to the capitalized key list from the extra non-terminating key list.
+  capw (caps-word 2000)
+  tap (multi
+    (layer-switch nomods)
+    (on-idle-fakekey to-base tap 20)
+  )
+
+  a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lmet $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lalt $left-hand-keys)
+  d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lctl $left-hand-keys)
+  f (tap-hold-release-keys $tap-time $hold-time (multi f @tap) lsft $left-hand-keys)
+  j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rsft $right-hand-keys)
+  k (tap-hold-release-keys $tap-time $hold-time (multi k @tap) rctl $right-hand-keys)
+  l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) ralt $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time (multi ; @tap) rmet $right-hand-keys)
+)
+
+(defsrc
+  tab  q     w     e     r     t     y     u     i     o     p     [     ]
+  caps   a     s     d     f     g     h     j     k     l     ;      ret
+  lsft     z     x     c     v     b     n     m     ,     .     rsft   rctl
+           lmet     lalt        spc     bspc        ralt     rmet
+)
+
+(deflayer base
+  tab  q     w     e     r     t     y     u     i     o     p     '     XX
+  esc    @a    @s    @d    @f    g     h     @j    @k    @l    @;     ret
+  @capw    z     x     c     v     b     n     m     ,     .     /      XX
+           XX       lmet        @spcnav @bspsym     ralt     XX
+)
+
+
+(deflayer nomods
+  tab  q     w     e     r     t     y     u     i     o     p     '     XX
+  esc    a     s     d     f     g     h     j     k     l     ;      ret
+  XX       z     x     c     v     b     n     m     ,     .     /      XX
+           XX       lmet        spc     bspc        ralt     XX
+)
+
+
+;; needs 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
+;; simulate numpad and fill up remaining space
+(deflayer sym
+  XX   grv   7     8     9     [     XX    XX    XX    XX    XX    XX    XX
+  \      -     4     5     6     ]     XX    rsft  ralt  rmet  rctl   XX
+  XX       =     1     2     3     '     XX    XX    XX    XX    XX     XX
+           XX       @fn         0       _           XX       XX
+)
+
+
+;; basically just arrow keys
+(deflayer nav
+  XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX     lctl  lmet  lalt  lsft  XX    lft   down  up    rght  XX     XX
+  XX       XX    XX    XX    XX    XX    home  pgdn  pgup  end   XX     XX
+           XX       XX          _       XX          @fn      XX
+)
+
+;; keep home row mods in the same place to use with fkeys
+(deflayer fn
+  XX   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
+  XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl   XX
+  XX       XX    prev  pp    next  XX    XX    voldwn volu  XX    XX     XX
+           XX       _           _       _           _        XX
+)
