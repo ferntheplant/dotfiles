@@ -52,7 +52,7 @@ if [[ -f "$HOME/.config/starship/starship.toml" ]]; then
      [[ -z "$CURSOR_SESSION" ]] && \
      [[ "$(ps -o comm= -p $PPID 2>/dev/null)" != *"cursor"* ]] && \
      [[ "$(ps -o comm= -p $PPID 2>/dev/null)" != *"code"* ]]; then
-    if grep -q 'palette = "catppuccin-latte"' "$HOME/.config/starship/starship.toml"; then
+    if grep -q 'palette = "rose-pine-dawn"' "$HOME/.config/starship/starship.toml"; then
       theme 'light'
     else
       theme 'dark'

@@ -40,11 +40,11 @@ done
 TMPFILE=$(mktemp) || exit 1
 trap 'rm -f "$TMPFILE"' EXIT
 
-# Perform replacement only on lines that set the theme
+# Perform replacement only on lines that set the theme or palette
 if [ "$REPLACEMENT_ACTION" == "light" ]; then
-    sed -E '/^[[:space:]]*theme[[:space:]]*(=|")/s/catppuccin[_-]macchiato/catppuccin'${SEPARATOR}'latte/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
+    sed -E '/^[[:space:]]*(theme|palette)[[:space:]]*(=|")/s/rose[_-]pine[_-]moon/rose'${SEPARATOR}'pine'${SEPARATOR}'dawn/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
 elif [ "$REPLACEMENT_ACTION" == "dark" ]; then
-    sed -E '/^[[:space:]]*theme[[:space:]]*(=|")/s/catppuccin[_-]latte/catppuccin'${SEPARATOR}'macchiato/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
+    sed -E '/^[[:space:]]*(theme|palette)[[:space:]]*(=|")/s/rose[_-]pine[_-]dawn/rose'${SEPARATOR}'pine'${SEPARATOR}'moon/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
 else
     usage
 fi

@@ -1,8 +1,32 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = true
-palette = "catppuccin-macchiato"
+#palette = "catppuccin-macchiato"
+palette = "rose-pine-dawn"
 continuation_prompt = '▶▶ '
+
+# format = """
+# $username\
+# $directory\
+# $git_branch\
+# $git_status\
+# $fill\
+# $c\
+# $elixir\
+# $elm\
+# $golang\
+# $haskell\
+# $java\
+# $julia\
+# $nodejs\
+# $nim\
+# $rust\
+# $scala\
+# $conda\
+# $python\
+# $time\n  \
+# [󱞪](fg:iris) \
+# """
 
 [battery]
 disabled = true
@@ -299,3 +323,22 @@ surface0 = "#363a4f"
 base = "#24273a"
 mantle = "#1e2030"
 crust = "#181926"
+
+
+[palettes.rose-pine-dawn]
+overlay = '#f2e9e1'
+love = '#b4637a'
+gold = '#ea9d34'
+rose = '#d7827e'
+pine = '#286983'
+foam = '#56949f'
+iris = '#907aa9'
+
+[palettes.rose-pine-moon]
+overlay = '#393552'
+love = '#eb6f92'
+gold = '#f6c177'
+rose = '#ea9a97'
+pine = '#3e8fb0'
+foam = '#9ccfd8'
+iris = '#c4a7e7'

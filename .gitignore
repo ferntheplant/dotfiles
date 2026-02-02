@@ -2,3 +2,4 @@ gh/.config/gh/hosts.yml
 .DS_STORE
 **/*.mdb
 node_modules
+.env

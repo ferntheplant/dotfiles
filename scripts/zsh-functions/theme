@@ -6,47 +6,132 @@ theme() {
 	mkdir -p "$HOME/.cache"
 
 	# Create lock file if it doesn't exist (lockf needs the file to exist)
-	touch "$lock_file"
-
+	# touch "$lock_file"
+	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/starship/starship.toml\" --$theme_arg
+	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/bat/config.conf\" --$theme_arg
+	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
+	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg --underscore
+	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.gitconfig\" --$theme_arg
+	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/zellij/config.kdl\" --$theme_arg
 	# Use lockf to atomically acquire lock and run all file updates
 	# -k: keep lock until command finishes
 	# -n: non-blocking (skip if lock can't be acquired)
 	local theme_arg="$1"
 	lockf -kn "$lock_file" sh -c "
-		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/starship/starship.toml\" --$theme_arg
-		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/bat/config.conf\" --$theme_arg
-		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
-		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg --underscore
-		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.gitconfig\" --$theme_arg
-		~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/zellij/config.kdl\" --$theme_arg
+    ~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/starship/starship.toml\" --$theme_arg
+		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/bat/config.conf\" --$theme_arg
+		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
+		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg --underscore
+		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.gitconfig\" --$theme_arg
+		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/zellij/config.kdl\" --$theme_arg
 	" || {
 		# Lock couldn't be acquired (another instance is running), skip silently
 		return 0
 	}
 
   if [[ "$1" == "light" ]]; then
-    export LS_COLORS="$(vivid generate catppuccin-latte)"
+    # export LS_COLORS="$(vivid generate catppuccin-latte)"
+    export LS_COLORS="$(vivid generate rose-pine-dawn)"
   else
-    export LS_COLORS="$(vivid generate catppuccin-macchiato)"
+    # export LS_COLORS="$(vivid generate catppuccin-macchiato)"
+    export LS_COLORS="$(vivid generate rose-pine-moon)"
   fi
 
 	if [[ "$1" == "light" ]]; then
 		# shellcheck disable=SC1091
-		source "$HOME/.zsh/catppuccin-latte-zsh-syntax-highlighting.zsh"
-    export FZF_DEFAULT_OPTS=" \
-      --color=bg+:#CCD0DA,bg:#EFF1F5,spinner:#DC8A78,hl:#D20F39 \
-      --color=fg:#4C4F69,header:#D20F39,info:#8839EF,pointer:#DC8A78 \
-      --color=marker:#7287FD,fg+:#4C4F69,prompt:#8839EF,hl+:#D20F39 \
-      --color=selected-bg:#BCC0CC \
-      --color=border:#9CA0B0,label:#4C4F69"
+		# source "$HOME/.zsh/catppuccin-latte-zsh-syntax-highlighting.zsh"
+    # rose-pine-dawn
+    export FZF_DEFAULT_OPTS="
+    --color=fg:#797593,bg:#faf4ed,hl:#d7827e
+    --color=fg+:#575279,bg+:#f2e9e1,hl+:#d7827e
+    --color=border:#dfdad9,header:#286983,gutter:#faf4ed
+    --color=spinner:#ea9d34,info:#56949f
+    --color=pointer:#907aa9,marker:#b4637a,prompt:#797593"
+    # rose-pine-dawn
+    #
+    # Rosé Pine Dawn (light)
+    #
+    # (C) 2024 const void*, free + open
+
+    export TERM16M_THEME="rose-pine-dawn"
+
+    # Background
+    export TERM16M_BASE="250;244;237"    #rose-pine-dawn-base
+    export TERM16M_SURFACE="255;250;243"    #rose-pine-dawn-surface
+    export TERM16M_OVERLAY="242;233;222"    #rose-pine-dawn-overlay
+
+    # Foreground
+    export TERM16M_MUTED="152;147;165"    #rose-pine-dawn-muted
+    export TERM16M_SUBTLE="121;117;147"    #rose-pine-dawn-subtle
+    export TERM16M_TEXT="87;82;121"    #rose-pine-dawn-text
+
+    # Accents
+    export TERM16M_LOVE="180;99;122"    #rose-pine-dawn-love
+    export TERM16M_GOLD="234;157;52"    #rose-pine-dawn-gold
+    export TERM16M_ROSE="215;130;126"    #rose-pine-dawn-rose
+    export TERM16M_PINE="40;105;131"    #rose-pine-dawn-pine
+    export TERM16M_FOAM="86;148;159"    #rose-pine-dawn-foam
+    export TERM16M_IRIS="144;122;169"    #rose-pine-dawn-iris
+
+    # Highlights
+    export TERM16M_SEL_L="244;237;232"    #rose-pine-dawn-highlightLow
+    export TERM16M_SEL_M="223;218;217"    #rose-pine-dawn-highlightMed
+    export TERM16M_SEL_H="206;202;205"    #rose-pine-dawn-highlightHigh
+    # catppuccin-latte
+		# source "$HOME/.zsh/catppuccin-latte-zsh-syntax-highlighting.zsh"
+    # export FZF_DEFAULT_OPTS=" \
+    #   --color=bg+:#CCD0DA,bg:#EFF1F5,spinner:#DC8A78,hl:#D20F39 \
+    #   --color=fg:#4C4F69,header:#D20F39,info:#8839EF,pointer:#DC8A78 \
+    #   --color=marker:#7287FD,fg+:#4C4F69,prompt:#8839EF,hl+:#D20F39 \
+    #   --color=selected-bg:#BCC0CC \
+    #   --color=border:#9CA0B0,label:#4C4F69"
 	else
 		# shellcheck disable=SC1091
-		source "$HOME/.zsh/catppuccin-macchiato-zsh-syntax-highlighting.zsh"
-    export FZF_DEFAULT_OPTS=" \
-    --color=bg+:#363A4F,bg:#24273A,spinner:#F4DBD6,hl:#ED8796 \
-    --color=fg:#CAD3F5,header:#ED8796,info:#C6A0F6,pointer:#F4DBD6 \
-    --color=marker:#B7BDF8,fg+:#CAD3F5,prompt:#C6A0F6,hl+:#ED8796 \
-    --color=selected-bg:#494D64 \
-    --color=border:#6E738D,label:#CAD3F5"
+    # rose-pine-moon
+    export FZF_DEFAULT_OPTS="
+    --color=fg:#908caa,bg:#232136,hl:#ea9a97
+    --color=fg+:#e0def4,bg+:#393552,hl+:#ea9a97
+    --color=border:#44415a,header:#3e8fb0,gutter:#232136
+    --color=spinner:#f6c177,info:#9ccfd8
+    --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
+    # rose-pine-moon
+    #
+    # Rosé Pine Moon (dark)
+    #
+    # (C) 2024 const void*, free + open
+
+    export TERM16M_THEME="rose-pine-moon"
+
+    # Background
+    export TERM16M_BASE="35;33;54"    #rose-pine-moon-base
+    export TERM16M_SURFACE="42;39;63"    #rose-pine-moon-surface
+    export TERM16M_OVERLAY="57;53;82"    #rose-pine-moon-overlay
+
+    # Foreground
+    export TERM16M_MUTED="110;106;134"    #rose-pine-moon-muted
+    export TERM16M_SUBTLE="144;140;170"    #rose-pine-moon-subtle
+    export TERM16M_TEXT="224;222;244"    #rose-pine-moon-text
+
+    # Accents
+    export TERM16M_LOVE="235;111;146"    #rose-pine-moon-love
+    export TERM16M_GOLD="246;193;119"    #rose-pine-moon-gold
+    export TERM16M_ROSE="234;154;151"    #rose-pine-moon-rose
+    export TERM16M_PINE="62;143;176"    #rose-pine-moon-pine
+    export TERM16M_FOAM="156;207;216"    #rose-pine-moon-foam
+    export TERM16M_IRIS="196;167;231"    #rose-pine-moon-iris
+
+    # Highlights
+    export TERM16M_SEL_L="42;40;62"    #rose-pine-moon-highlightLow
+    export TERM16M_SEL_M="68;65;90"    #rose-pine-moon-highlightMed
+    export TERM16M_SEL_H="86;82;110"    #rose-pine-moon-highlightHigh
+
+    # catppuccin-macchiato
+		# source "$HOME/.zsh/catppuccin-macchiato-zsh-syntax-highlighting.zsh"
+    # export FZF_DEFAULT_OPTS=" \
+    # --color=bg+:#363A4F,bg:#24273A,spinner:#F4DBD6,hl:#ED8796 \
+    # --color=fg:#CAD3F5,header:#ED8796,info:#C6A0F6,pointer:#F4DBD6 \
+    # --color=marker:#B7BDF8,fg+:#CAD3F5,prompt:#C6A0F6,hl+:#ED8796 \
+    # --color=selected-bg:#494D64 \
+    # --color=border:#6E738D,label:#CAD3F5"
 	fi
 }

@@ -3,7 +3,8 @@ font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 
-theme = light:Catppuccin Latte,dark:Catppuccin Macchiato
+# theme = light:Catppuccin Latte,dark:Catppuccin Macchiato
+theme = dark:Rose Pine Moon,light:Rose Pine Dawn
 
 window-theme = system
 window-save-state = always
@@ -19,5 +20,5 @@ macos-titlebar-style = transparent
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 
-# custom-shader = shaders/cursor_smear.glsl
+custom-shader = shaders/cursor_smear.glsl
 # custom-shader = shaders/cursor_blaze_no_trail.glsl

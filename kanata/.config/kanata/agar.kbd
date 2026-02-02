@@ -4,78 +4,98 @@
   macos-dev-names-exclude (
     "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
     "Apple Internal Keyboard / Trackpad"
-    "Fernando’s Magic Keyboard"
+    "Fernando's Magic Keyboard"
     "Advantage2 Keyboard"
     "AVA"
     "Corne-ish Zen"
   )
 )
 
+
 (defvar
   tap-time 150
-  hold-time 250
+  hold-time 200
 )
+
 
 (defalias
   nav (layer-while-held nav)
   sym (layer-while-held sym)
   fn (layer-while-held fn)
 
-  tabnav (tap-hold $tap-time $hold-time tab (layer-toggle nav))
   spcnav (tap-hold $tap-time $hold-time spc (layer-toggle nav))
-  bspsym (tap-hold $tap-time $hold-time bspc (layer-toggle sym))
+  spcsym (tap-hold $tap-time $hold-time bspc (layer-toggle sym))
 
+  ;; consider one-shots
   symone (one-shot-release-pcancel 2000 (layer-while-held sym))
-  navone (one-shot-release-pcancel 2000 (layer-while-held nav))
+  symmy (tap-hold $tap-time $hold-time @symone (layer-toggle sym))
+
+  ;; This example is similar to the default caps-word behaviour but it moves the
+  ;; 0-9 keys to the capitalized key list from the extra non-terminating key list.
+  capw (caps-word 2000)
 
   ;; left hand home-row mods
-  a (tap-hold $tap-time $hold-time a lctl)
-  s (tap-hold $tap-time $hold-time s lmet)
-  d (tap-hold $tap-time $hold-time d lalt)
-  f (tap-hold $tap-time $hold-time f lsft)
+  amod (tap-hold $tap-time $hold-time a lctl)
+  smod (tap-hold $tap-time $hold-time s lmet)
+  dmod (tap-hold $tap-time $hold-time d lalt)
+  fmod (tap-hold $tap-time $hold-time f lsft)
   ;; right hand home-row mods
-  j (tap-hold $tap-time $hold-time j rsft)
-  k (tap-hold $tap-time $hold-time k ralt)
-  l (tap-hold $tap-time $hold-time l rmet)
-  ; (tap-hold $tap-time $hold-time ; rctl)
+  jmod (tap-hold $tap-time $hold-time j rsft)
+  kmod (tap-hold $tap-time $hold-time k ralt)
+  lmod (tap-hold $tap-time $hold-time l rmet)
+  ;mod (tap-hold $tap-time $hold-time ; rctl)
+
+  ;; double tap skips home-row mods
+  a (tap-dance 200 (@amod a))
+  s (tap-dance 200 (@smod s))
+  d (tap-dance 200 (@dmod d))
+  f (tap-dance 200 (@fmod f))
+  j (tap-dance 200 (@jmod j))
+  k (tap-dance 200 (@kmod k))
+  l (tap-dance 200 (@lmod l))
+  ; (tap-dance 200 (@;mod ;))
 )
+
 
 (defsrc
-  tab     q     w     e     r     t     y     u     i     o     p     [     ]
-  caps    a     s     d     f     g     h     j     k     l     ;     ret
-  lsft    z     x     c     v     b     n     m     ,     .     rsft  rctl
-                lmet  lalt  spc   bspc  ralt  rmet
+  tab  q     w     e     r     t     y     u     i     o     p     [     ]
+  caps   a     s     d     f     g     h     j     k     l     ;         ret
+  lsft     z     x     c     v     b     n     m     ,     .     rsft    rctl
+            lmet    lalt        spc     bspc        ralt    rmet
 )
 
+
 (deflayer base
-  XX      _     _     _     _     _     _     _     _     _     _     XX    XX
-  esc     @a    @s    @d    @f    _     _     @j    @k    @l    @;    ret
-  @navone _     _     _     _     _     _     _     _     _     /     XX
-                XX    @tabnav @spcnav @bspsym @symone XX
+  esc  q     w     e     r     t     y     u     i     o     p     bspc  XX
+  tab    @a    @s    @d    @f    g     h     @j    @k    @l    @;        ret
+  @capw    z     x     c     v     b     n     m     ,     .     /       @symone
+            XX      lmet        @spcnav @spcsym     ralt    XX
 )
+
 
 ;; needs 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
 ;; simulate numpad and fill up remaining space
 (deflayer sym
-  XX      grv   7     8     9     [     XX    XX    XX    XX    XX    XX    XX
-  \       -     4     5     6     ]     XX    rsft  ralt  rmet  rctl  XX
-  XX      =     1     2     3     '     XX    XX    XX    XX    XX    XX
-                XX    @fn   0     XX    _     XX
+  XX   grv   7     8     9     [     XX    XX    XX    XX    XX    XX    XX
+  \      -     4     5     6     ]     XX    rsft  ralt  rmet  rctl      XX
+  XX       =     1     2     3     '     XX    XX    XX    XX    XX      XX
+            XX      @fn         0       _           XX      XX
 )
 
 
 ;; basically just arrow keys
 (deflayer nav
-  XX      XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX      lctl  lmet  lalt  lsft  XX    lft   down  up    rght  XX    XX
-  XX      XX    XX    XX    XX    XX    home  pgdn  pgup  end   XX    XX
-                XX    _     XX    XX    @fn   XX
+  XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX     lctl  lmet  lalt  lsft  XX    lft   down  up    rght  XX        XX
+  XX       XX    XX    XX    XX    XX    home  pgdn  pgup  end   XX      XX
+            XX      XX          _       XX          @fn     XX
 )
+
 
 ;; keep home row mods in the same place to use with fkeys
 (deflayer fn
-  XX      f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
-  XX      lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl  XX
-  XX      XX    prev  pp    next  XX    XX    voldwn volu  XX    XX    XX
-                XX    _     XX    XX    _     XX
+  XX   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
+  XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
+  XX       XX    prev  pp    next  XX    XX    voldwn volu  XX    XX      XX
+            XX      _           _       _           _       XX
 )

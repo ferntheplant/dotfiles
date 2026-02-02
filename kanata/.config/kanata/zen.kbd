@@ -23,6 +23,8 @@
   CRAZY (layer-toggle damb-alpha)
 
   tabnav (tap-hold $tap-time $hold-time tab (layer-toggle nav))
+  spcnav (tap-hold $tap-time $hold-time spc (layer-toggle nav))
+  bspsym (tap-hold $tap-time $hold-time bspc (layer-toggle sym))
 
   ;; left hand home-row mods
   a (tap-hold $tap-time $hold-time a lctl)
@@ -47,7 +49,7 @@
   _     _     _      _     _       _     _     _     _     _
   @a    @s    @d     @f    _       _     @j    @k    @l    @;
   _     _     _      _     _       _     _     _     _     _
-              esc    @tabnav spc     bspc  @sym  ret
+              '      @spcnav tab     esc   @bspsym ret
 )
 
 ;; needs 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
@@ -72,7 +74,7 @@
 (deflayer fn
   f1    f2    f3     f4    f5      f6    f7    f8    f9    f10
   lctl  lmet  lalt   lsft  f11     f12   rsft  ralt  rmet  rctl
-  XX    prev  pp     next  XX      XX    voldwn volu  XX    @CRAZY
+  XX    prev  pp     next  XX      XX    voldwn volu  XX    XX
               XX     _     XX      XX    _     XX
 )
 

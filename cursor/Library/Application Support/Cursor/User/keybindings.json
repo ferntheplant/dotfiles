@@ -21,7 +21,7 @@
   {
     "key": "shift+x",
     "command": "dance.selections.expandToLines",
-    "when": "editorTextFocus && dance.mode == 'normal' || editorTextFocus && dance.mode == 'select'" 
+    "when": "editorTextFocus && dance.mode == 'normal' || editorTextFocus && dance.mode == 'select'"
   },
   {
     "key": "cmd+shift+D",
@@ -69,5 +69,20 @@
             }
         }
     }
+  },
+  {
+    "key": "cmd+j",
+    "command": "-workbench.action.togglePanel",
+    "when": "!isAuxiliaryWindowFocusedContext"
+  },
+  {
+    "key": "cmd+j",
+    "command": "editor.action.showHover",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+r cmd+i",
+    "command": "-editor.action.showHover",
+    "when": "editorTextFocus"
   }
 ]

@@ -37,11 +37,11 @@
   )
 )
 
-(defchordsv2
-  (w e) tab $combo-time first-release $standard-layers
-  (i o) bspc $combo-time first-release $standard-layers
-  (, .) ret $combo-time first-release $standard-layers
-)
+;; (defchordsv2
+;;   (w e) tab $combo-time first-release $standard-layers
+;;   (i o) bspc $combo-time first-release $standard-layers
+;;   (, .) ret $combo-time first-release $standard-layers
+;; )
 
 (defalias
   nav (layer-while-held nav)

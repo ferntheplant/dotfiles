@@ -1,4 +1,5 @@
-theme = "catppuccin_macchiato"
+# theme = "catppuccin_macchiato"
+theme = "rose_pine_dawn"
 
 [editor]
 cursorline = true
