@@ -98,6 +98,24 @@ get_configs_for_available_devices() {
   return 0
 }
 
+# Get all kanata plist paths (regardless of device connection)
+# Outputs plist paths to stdout, one per line
+get_all_kanata_plists() {
+  local plists=()
+  local plist
+  for plist in /Library/LaunchDaemons/com.kanata.*.plist; do
+    [[ -f "$plist" ]] && plists+=("$plist")
+  done
+  printf '%s\n' "${plists[@]}"
+}
+
+# Get service labels for kanata daemons that are currently loaded/running
+# Requires CLI_PASSWORD to be set (e.g. via get_keychain_password)
+# Outputs service labels to stdout, one per line (e.g. com.kanata.macbook)
+get_running_kanata_services() {
+  echo "$CLI_PASSWORD" | sudo -S -k launchctl list 2>/dev/null | grep kanata | awk '{print $3}'
+}
+
 # Get plist paths for currently available devices
 # Outputs plist paths to stdout, one per line
 get_plists_for_available_devices() {
