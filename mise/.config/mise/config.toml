@@ -1,7 +1,4 @@
 [tools]
-fzf = "latest"
-shfmt = "latest"
-lazygit = "latest"
 bun = "latest"
 node = "23.8"
 ruby = "3.2.2"

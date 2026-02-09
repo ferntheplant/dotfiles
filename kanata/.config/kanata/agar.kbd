@@ -13,8 +13,9 @@
 
 
 (defvar
-  tap-time 150
-  hold-time 200
+  tap-time 50
+  hold-time 150
+  dance-time 100
 )
 
 
@@ -24,7 +25,7 @@
   fn (layer-while-held fn)
 
   spcnav (tap-hold $tap-time $hold-time spc (layer-toggle nav))
-  spcsym (tap-hold $tap-time $hold-time bspc (layer-toggle sym))
+  spcsym (tap-hold $tap-time $hold-time spc (layer-toggle sym))
 
   ;; consider one-shots
   symone (one-shot-release-pcancel 2000 (layer-while-held sym))
@@ -46,14 +47,14 @@
   ;mod (tap-hold $tap-time $hold-time ; rctl)
 
   ;; double tap skips home-row mods
-  a (tap-dance 200 (@amod a))
-  s (tap-dance 200 (@smod s))
-  d (tap-dance 200 (@dmod d))
-  f (tap-dance 200 (@fmod f))
-  j (tap-dance 200 (@jmod j))
-  k (tap-dance 200 (@kmod k))
-  l (tap-dance 200 (@lmod l))
-  ; (tap-dance 200 (@;mod ;))
+  a (tap-dance $dance-time (@amod a))
+  s (tap-dance $dance-time (@smod s))
+  d (tap-dance $dance-time (@dmod d))
+  f (tap-dance $dance-time (@fmod f))
+  j (tap-dance $dance-time (@jmod j))
+  k (tap-dance $dance-time (@kmod k))
+  l (tap-dance $dance-time (@lmod l))
+  ; (tap-dance $dance-time (@;mod ;))
 )
 
 

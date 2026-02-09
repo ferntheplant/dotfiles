@@ -90,6 +90,8 @@ brew "zoxide"
 brew "zsh-autosuggestions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
+# Tool for writing better scripts
+brew "zx"
 # Command-line interface for the Databricks platform
 brew "databricks/tap/databricks"
 # A window border system for macOS
@@ -108,6 +110,8 @@ cask "aerospace"
 cask "beekeeper-studio"
 # Automated testing of webapps for Google Chrome
 cask "chromedriver"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
 # Write, edit, and chat about your code with AI
 cask "cursor"
 # Voice and text chat software
@@ -150,7 +154,7 @@ cask "stats"
 # Real time file synchronisation software
 cask "syncthing-app"
 # Multiplayer code editor
-cask "zed"
+cask "zed@preview"
 # Video communication and virtual meeting platform
 cask "zoom"
 mas "Equinox", id: 1591510203
