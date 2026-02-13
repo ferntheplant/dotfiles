@@ -2,8 +2,8 @@ tap "databricks/tap"
 tap "datawire/blackbird"
 tap "felixkratz/formulae"
 tap "gromgit/fuse"
-tap "jesseduffield/lazydocker"
 tap "hashicorp/tap"
+tap "jesseduffield/lazydocker"
 tap "nikitabobko/tap"
 tap "screenplaydev/tap"
 # Improved shell history for zsh, bash, fish and nushell
@@ -19,7 +19,7 @@ brew "carapace"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
 brew "cloudflared"
 # Container runtimes on MacOS (and Linux) with minimal setup
-brew "colima"
+brew "colima", restart_service: :changed
 # Good-lookin' diffs with diff-highlight and more
 brew "diff-so-fancy"
 # Bash, Zsh and Fish completion for Docker
@@ -38,6 +38,8 @@ brew "duckdb"
 brew "eza"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# Command-line fuzzy finder written in Go
+brew "fzf"
 # GitHub command-line tool
 brew "gh"
 # Syntax-highlighting pager for git and diff output
@@ -84,6 +86,8 @@ brew "tree"
 brew "unzip"
 # Generator for LS_COLORS with support for multiple color themes
 brew "vivid"
+# Pluggable terminal workspace, with terminal multiplexer as the base feature
+brew "zellij"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Fish-like fast/unobtrusive autosuggestions for zsh
@@ -96,20 +100,24 @@ brew "zx"
 brew "databricks/tap/databricks"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
-# A simple terminal UI for docker, written in Go
-brew "jesseduffield/lazydocker/lazydocker"
 # Terraform
 brew "hashicorp/tap/terraform"
+# A simple terminal UI for docker, written in Go
+brew "jesseduffield/lazydocker/lazydocker"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
 cask "1password-cli"
 # AeroSpace is an i3-like tiling window manager for macOS
-cask "aerospace"
+cask "nikitabobko/tap/aerospace"
 # Cross platform SQL editor and database management app
 cask "beekeeper-studio"
+# Universal chat app powered by Matrix
+cask "beeper"
 # Automated testing of webapps for Google Chrome
 cask "chromedriver"
+# Terminal-based AI coding assistant
+cask "claude-code"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 # Write, edit, and chat about your code with AI
