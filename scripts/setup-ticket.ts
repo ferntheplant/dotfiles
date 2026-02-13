@@ -59,51 +59,6 @@ const COMMIT_TITLE = CONVENTIONAL_COMMIT
 console.log(`Branch: ${BRANCH_NAME}`)
 console.log(`Commit: ${COMMIT_TITLE}`)
 
-// Check if we're in a zellij session
-const inZellij = () => {
-  return process.env.ZELLIJ_SESSION_NAME !== undefined
-}
-
-// Kill existing dev server panes if they exist
-if (inZellij()) {
-  console.log('Detected zellij session, checking for existing dev server panes...')
-  try {
-    // List all clients to see what's running in each pane
-    const clients = await $`zellij action list-clients`.quiet()
-    const devServerPanes = []
-    
-    // Parse the output to find panes running dev servers
-    for (const line of clients.stdout.trim().split('\n')) {
-      if (line.includes('pnpm dev') || line.includes('npm run dev') || line.includes('yarn dev')) {
-        const parts = line.trim().split(/\s+/)
-        if (parts.length >= 2) {
-          const paneId = parts[1]
-          devServerPanes.push(paneId)
-        }
-      }
-    }
-    
-    if (devServerPanes.length > 0) {
-      console.log(`Found ${devServerPanes.length} dev server pane(s), closing them...`)
-      
-      // Navigate to each dev server pane and close it
-      for (const paneId of devServerPanes) {
-        try {
-          // Focus the pane by navigating through panes
-          await $`zellij action focus-next-pane`.quiet()
-          await $`zellij action close-pane`.quiet()
-        } catch (error) {
-          console.warn(`Could not close dev server pane ${paneId}:`, error)
-        }
-      }
-    } else {
-      console.log('No existing dev server panes found')
-    }
-  } catch (error) {
-    console.warn('Could not check for existing dev server panes:', error)
-  }
-}
-
 // Check if there are any changes to stash
 const hasChanges = await $`git status --porcelain`.quiet()
 let STASHED = false
@@ -138,16 +93,6 @@ if (STASHED) {
   await $`git stash pop`
 }
 
-// Restart dev server at the end
-if (inZellij()) {
-  console.log('Creating new dev server pane...')
-  await $`zellij action new-pane --name "dev server" --cwd ${process.cwd()} -- pnpm dev`
-  console.log('✓ Dev server started in new zellij pane')
-}
-
 console.log('✓ Setup complete!')
 console.log(`✓ Branch: ${BRANCH_NAME}`)
 console.log('✓ Draft PR created')
-if (inZellij()) {
-  console.log('✓ Dev server running in "dev server" pane')
-}

@@ -8,6 +8,7 @@ export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 path+=("/opt/homebrew/bin")
 path+=("$HOME/.local/bin")
 path+=("$HOME/.spicetify")
+path+=("$HOME/.bun/bin")
 export PATH
 
 alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*' --time-style='relative' --no-permissions --modified"
