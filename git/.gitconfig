@@ -14,6 +14,7 @@
 [init]
 	defaultBranch = main
 [alias]
+    wt = worktree
 	st = status
 	ci = commit -v
 	pf = push --no-verify
@@ -23,7 +24,7 @@
 	lola = log --oneline --all --graph --decorate
 	lol = log --oneline --graph --decorate
 	undo = reset --soft HEAD^
-  cleanup = "!git checkout main && git pull && git fetch --prune && git for-each-ref --format=\"%(refname:short) %(upstream:track)\" refs/heads | grep \"\\[gone\\]\" | cut -d\" \" -f1 | xargs -r git branch -D"
+    cleanup = "!git checkout main && git pull && git fetch --prune && git for-each-ref --format=\"%(refname:short) %(upstream:track)\" refs/heads | grep \"\\[gone\\]\" | cut -d\" \" -f1 | xargs -r git branch -D"
 [core]
 	editor = hx
 	pager = delta
