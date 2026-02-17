@@ -11,46 +11,75 @@
 )
 
 (defvar
-  tap-time 150
-  hold-time 250
+  tap-time 50
+  hold-time 150
+  dance-time 100
 )
 
+
 (defalias
-  fn (tap-hold $tap-time $hold-time fn (layer-toggle fn))
+  fn (layer-while-held fn)
+
+  ;; This example is similar to the default caps-word behaviour but it moves the
+  ;; 0-9 keys to the capitalized key list from the extra non-terminating key list.
+  capw (caps-word 2000)
+
+  ;; left hand home-row mods
+  amod (tap-hold $tap-time $hold-time a lctl)
+  smod (tap-hold $tap-time $hold-time s lmet)
+  dmod (tap-hold $tap-time $hold-time d lalt)
+  fmod (tap-hold $tap-time $hold-time f lsft)
+  ;; right hand home-row mods
+  jmod (tap-hold $tap-time $hold-time j rsft)
+  kmod (tap-hold $tap-time $hold-time k ralt)
+  lmod (tap-hold $tap-time $hold-time l rmet)
+  ;mod (tap-hold $tap-time $hold-time ; rctl)
+
+  ;; double tap skips home-row mods
+  a (tap-dance $dance-time (@amod a))
+  s (tap-dance $dance-time (@smod s))
+  d (tap-dance $dance-time (@dmod d))
+  f (tap-dance $dance-time (@fmod f))
+  j (tap-dance $dance-time (@jmod j))
+  k (tap-dance $dance-time (@kmod k))
+  l (tap-dance $dance-time (@lmod l))
+  ; (tap-dance $dance-time (@;mod ;))
+
   esctl (tap-hold $tap-time $hold-time esc lctl)
-  a (tap-hold $tap-time $hold-time a lctl)
-  s (tap-hold $tap-time $hold-time s lmet)
-  d (tap-hold $tap-time $hold-time d lalt)
-  f (tap-hold $tap-time $hold-time f lsft)
-  j (tap-hold $tap-time $hold-time j rsft)
-  k (tap-hold $tap-time $hold-time k ralt)
-  l (tap-hold $tap-time $hold-time l rmet)
-  ; (tap-hold $tap-time $hold-time ; rctl)
+
+  meh  (multi ctl alt sft)
+)
+
+(defchordsv2
+  (j k) @meh $tap-time all-released ()
+  (d f) @meh $tap-time all-released ()
+  (rsft ralt) @meh $tap-time all-released ()
+  (lalt lsft) @meh $tap-time all-released ()
 )
 
 (defsrc
   esc    f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
   grv    1     2     3     4     5     6     7     8     9     0     -     =     bspc
-  tab    q     w     e     r     t     y     u     i     o     p     [     ]
-  caps   a     s     d     f     g     h     j     k     l     ;     '     \     ret
-  lsft < z     x     c     v     b     n     m     ,     .     /     rsft
+  tab    q     w     e     r     t     y     u     i     o     p     [     ]     \
+  caps   a     s     d     f     g     h     j     k     l     ;     '     ret
+  lsft   z     x     c     v     b     n     m     ,     .     /     rsft
   fn     lctl  lalt  lmet              spc               rmet  ralt  ◀    ▲ ▼    ▶
 )
 
 (deflayer base
   _      🔅     🔆     mctl  sls   dtn   dnd   ◀◀    ▶⏸    ▶▶    🔇     🔉     🔊
   _      _     _     _     _     _     _     _     _     _     _     _     _     _
-  _      _     _     _     _     _     _     _     _     _     _     _     _
-  @esctl @a    @s    @d    @f    _     _     @j    @k    @l    @;    _     _     _
-  _    _ _     _     _     _     _     _     _     _     _     _     _
-  @fn    _     _     _                 _                 _     _     _    _ _    _
+  _      _     _     _     _     _     _     _     _     _     _     _     _     _
+  @esctl @a    @s    @d    @f    _     _     @j    @k    @l    @;    _     _
+  _      _     _     _     _     _     _     _     _     _     _     _
+  @fn    _     @meh  _                 _                 _     @meh     _    _ _    _
 )
 
 (deflayer fn
   _      f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
   _      _     _     _     _     _     _     _     _     _     _     _     _     del
-  _      _     _     _     lrld  _     _     _     _     _     _     _     _
-  _      _     _     _     _     _     _     _     _     _     _     _     _     _
-  _    _ _     _     _     _     _     _     _     _     _     _     _
+  _      _     _     _     lrld  _     _     _     _     _     _     _     _     _
+  _      _     _     _     _     _     _     _     _     _     _     _     _
+  _      _     _     _     _     _     _     _     _     _     _     _
   _      _     _     _                 _                 _     _     ⤒    ⇞ ⇟    ⤓
 )

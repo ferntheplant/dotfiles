@@ -6,8 +6,6 @@ import { $, fs } from 'zx'
 // Add more config files here as needed
 const CONFIG_FILES = [
   "macbook.kbd",
-  "advantage.kbd",
-  "ava.kbd",
   "zen.kbd",
   "agar.kbd"
 ]
