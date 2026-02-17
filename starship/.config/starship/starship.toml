@@ -2,7 +2,7 @@
 
 add_newline = true
 #palette = "catppuccin-macchiato"
-palette = "rose-pine-dawn"
+palette = "rose-pine-moon"
 continuation_prompt = '▶▶ '
 
 # format = """
