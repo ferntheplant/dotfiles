@@ -9,6 +9,7 @@ rulers = [80, 120]
 text-width = 120
 shell = ["zsh", "-c"]
 bufferline = "always"
+clipboard-provider = "termcode"
 
 [editor.soft-wrap]
 enable = true
@@ -37,3 +38,4 @@ nbsp = "⍽"
 tab = "→"
 newline = "⏎"
 tabpad = "·"  # Tabs will look like "→···" (depending on tab width)
+

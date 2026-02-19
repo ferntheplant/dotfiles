@@ -6,7 +6,7 @@ theme() {
 	mkdir -p "$HOME/.cache"
 
 	# Create lock file if it doesn't exist (lockf needs the file to exist)
-	# touch "$lock_file"
+	touch "$lock_file"
 	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/starship/starship.toml\" --$theme_arg
 	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/bat/config.conf\" --$theme_arg
 	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
