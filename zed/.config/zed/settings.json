@@ -16,9 +16,10 @@
     }
   },
   "which_key": { "enabled": true, "delay_ms": 100 },
-	"disable_ai": false,
+	"disable_ai": true,
  "edit_predictions": {
-		"disabled_globs": [".env*"]
+		"provider": "zed",
+  "disabled_globs": [".env*"]
 	},
 	"format_on_save": "on",
 	"tabs": {
@@ -89,7 +90,7 @@
 	"buffer_font_size": 12,
 	"theme": {
 		"mode": "system",
-		"light": "Catppuccin Latte",
+		"light": "Rosé Pine Dawn",
 		"dark": "Catppuccin Macchiato"
 	},
 	"cursor_blink": false,
@@ -99,9 +100,6 @@
 			"normal": "block",
 			"visual": "underline"
 		}
-	},
-	"features": {
-		"edit_prediction_provider": "zed"
 	},
 	"agent": {
 		"dock": "left"

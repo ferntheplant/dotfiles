@@ -52,10 +52,7 @@ See this [thread](https://github.com/abiosoft/colima/discussions/273) for instal
 
 ## Config TODOs
 
-- Neat.run install and config
-- spicetify install and config
 - Beeper config
-- meetingbar configs
 - hiddenbar config
 - setup global prettier/biome with mise
 
@@ -104,16 +101,17 @@ else
   exit 1
 fi
 ```
+
 ## Manual list of packages
 
 TODO:
+
 ```
 cat > ~/.local/bin/osc52 <<'EOF'
 #!/usr/bin/env bash
 printf "\033]52;c;%s\a" "$(base64 | tr -d '\n')"
 EOF
 ```
-
 
 ### CLI
 
