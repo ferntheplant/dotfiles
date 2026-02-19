@@ -104,3 +104,80 @@ else
   exit 1
 fi
 ```
+## Manual list of packages
+
+TODO:
+```
+cat > ~/.local/bin/osc52 <<'EOF'
+#!/usr/bin/env bash
+printf "\033]52;c;%s\a" "$(base64 | tr -d '\n')"
+EOF
+```
+
+
+### CLI
+
+atuin|`.config/atuin/config.toml`
+bat|`.config/bat`
+cloudflared|null
+carapace|`.zshrc`
+diff-so-fancy|`.gitconfig`
+docker|null
+docker-buildx|null
+docker-completion|null
+docker-compose|null
+docker-credential-helper|null
+duckdb|`.duckdbrc`
+eza|`.zshrc`
+fd|null
+fzf|`.zshrc`
+gh|`.gitconfig`
+git-delta|`.gitconfig`
+gitleaks|null
+grep|null
+helix|`.config/helix/config.tml`
+httpie|null
+jq|null
+just|null
+kanata|`.config/kanata`
+less|null
+mas|null (MAC)
+ripgrep|null
+opencode|null
+shellcheck|null
+starship|`.config/starship`
+stow|`dotfiles/scripts/instal.sh`
+unzip|null
+vivid|`theme`
+zelliij|`.config/zellij`
+zoxide|null
+zsh-autosuggestions|`.zshrc`
+zsh-syntax-highlighting|`theme`
+zx|null
+borders|null (MAC)
+1password-cli|null
+aerospace|`.config/aerospace/aerospace.toml` (MAC)
+claude-code|null
+codex|null
+font-monaspace|null
+
+### Apps
+
+cursor|`/Library/Application Support/Cursor/User`
+beeper|null
+ghostty|`.config/ghostty`
+hiddenbar|null (MAC)
+latest|null (MAC)
+linear-linear|null
+linearmouse|null (MAC)
+monitorcontrol|null (MAC)
+notion|null (MAC)
+raycast|`.config/raycast` (MAC)
+shottr|null (MAC)
+spotify|null
+stats|`dotfiles/stats/Stats.plist` (MAC)
+syncthing-app|null
+Equinox|null (MAC)
+Pandan|null (MAC)
+QuickShade|null (MAC)
+floorp|`dotfiles/floorp`

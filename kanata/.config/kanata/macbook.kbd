@@ -50,13 +50,6 @@
   meh  (multi ctl alt sft)
 )
 
-(defchordsv2
-  (j k) @meh $tap-time all-released ()
-  (d f) @meh $tap-time all-released ()
-  (rsft ralt) @meh $tap-time all-released ()
-  (lalt lsft) @meh $tap-time all-released ()
-)
-
 (defsrc
   esc    f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
   grv    1     2     3     4     5     6     7     8     9     0     -     =     bspc

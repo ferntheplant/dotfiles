@@ -88,7 +88,7 @@
   "files.insertFinalNewline": true,
   "editor.lightbulb.enabled": "off",
   "accessibility.signalOptions.volume": 0,
-  "vscode_custom_css.imports": ["file:///Users/fjorn/dotfiles/cursor-trail.js"],
+  "vscode_custom_css.imports": ["file:///Users/fjorn/.local/bin/cursor-trail.js"],
   "application.shellEnvironmentResolutionTimeout": 30,
   "editor.bracketPairColorization.enabled": true,
   "editor.cursorStyle": "block",
