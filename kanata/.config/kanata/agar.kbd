@@ -13,9 +13,8 @@
 
 
 (defvar
-  tap-time 50
-  hold-time 150
-  dance-time 100
+  tap-time 160
+  hold-time 170
 )
 
 
@@ -36,25 +35,23 @@
   capw (caps-word 2000)
 
   ;; left hand home-row mods
-  amod (tap-hold $tap-time $hold-time a lctl)
-  smod (tap-hold $tap-time $hold-time s lmet)
-  dmod (tap-hold $tap-time $hold-time d lalt)
-  fmod (tap-hold $tap-time $hold-time f lsft)
+  a (tap-hold $tap-time $hold-time a lctl)
+  s (tap-hold $tap-time $hold-time s lmet)
+  d (tap-hold $tap-time $hold-time d lalt)
+  f (tap-hold $tap-time $hold-time f lsft)
   ;; right hand home-row mods
-  jmod (tap-hold $tap-time $hold-time j rsft)
-  kmod (tap-hold $tap-time $hold-time k ralt)
-  lmod (tap-hold $tap-time $hold-time l rmet)
-  ;mod (tap-hold $tap-time $hold-time ; rctl)
+  j (tap-hold $tap-time $hold-time j rsft)
+  k (tap-hold 210 220 k ralt)
+  l (tap-hold $tap-time $hold-time l rmet)
+  ; (tap-hold $tap-time $hold-time ; rctl)
 
-  ;; double tap skips home-row mods
-  a (tap-dance $dance-time (@amod a))
-  s (tap-dance $dance-time (@smod s))
-  d (tap-dance $dance-time (@dmod d))
-  f (tap-dance $dance-time (@fmod f))
-  j (tap-dance $dance-time (@jmod j))
-  k (tap-dance $dance-time (@kmod k))
-  l (tap-dance $dance-time (@lmod l))
-  ; (tap-dance $dance-time (@;mod ;))
+  meh  (multi ctl alt sft)
+)
+
+
+(defchordsv2
+  (k m) @meh 100 first-release ()
+  (d c) @meh 100 first-release ()
 )
 
 
@@ -70,7 +67,7 @@
   esc  q     w     e     r     t     y     u     i     o     p     bspc  XX
   tab    @a    @s    @d    @f    g     h     @j    @k    @l    @;        ret
   @capw    z     x     c     v     b     n     m     ,     .     /       @symone
-            XX      lmet        @spcnav @spcsym     ralt    XX
+            @meh    lmet        @spcnav @spcsym     @meh    XX
 )
 
 

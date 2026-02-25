@@ -1,7 +1,6 @@
 [tools]
 bun = "latest"
-node = "23.8"
-ruby = "3.2.2"
+node = "latest"
 python = "3.12"
 uv = "latest"
 deno = "latest"
