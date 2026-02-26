@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { LinearClient, type WorkflowState } from '@linear/sdk'
 import { $, argv, question } from 'zx'
 
-type Mode = 'start' | 'status' | 'close'
+type Mode = 'start' | 'status' | 'close' | 'review' | 'resolve'
 type PullRequest = {
   number: number
   url: string
@@ -34,14 +34,16 @@ while (positionalArgs[0] && looksLikeScriptPath(positionalArgs[0])) {
   positionalArgs.shift()
 }
 
-const requestedMode = String(positionalArgs[0] ?? 'start').toLowerCase()
-const helpRequested = requestedMode === '--help' || requestedMode === '-h' || argv.help === true || argv.h === true
+const requestedMode = positionalArgs[0]?.toLowerCase() ?? ''
+const helpRequested = requestedMode === '--help' || requestedMode === '-h' || argv.help === true || argv.h === true || requestedMode === ''
 
 if (helpRequested || !isMode(requestedMode)) {
-  console.log('Usage: scripts/setup-ticket.ts <start|status|close>')
+  console.log('Usage: scripts/setup-ticket.ts <start|status|close|review|resolve>')
   console.log('  start  - create ticket branch + empty commit + draft PR')
   console.log('  status - verify current branch PR is ready (not draft, checks passing, no open review threads)')
   console.log('  close  - squash merge current branch PR, delete remote/local branch, return to main')
+  console.log('  review - show unresolved PR review comments for agents to address')
+  console.log('  resolve - resolve a review thread by ID (from review output)')
   process.exit(helpRequested ? 0 : 1)
 }
 
@@ -53,6 +55,14 @@ if (mode === 'start') {
   await runStart(currentBranch)
 } else if (mode === 'status') {
   await runStatus()
+} else if (mode === 'review') {
+  await runReview()
+} else if (mode === 'resolve') {
+  const threadId = positionalArgs[1]
+  if (!threadId) {
+    fail('Usage: setup-ticket.ts resolve <thread-id>')
+  }
+  await runResolve(threadId)
 } else {
   await runClose(currentBranch)
 }
@@ -179,6 +189,130 @@ async function runStatus() {
   console.log('✓ No unresolved review threads')
 }
 
+async function runReview() {
+  const prResult = await $`gh pr view --json number`.nothrow()
+  if (prResult.exitCode !== 0 || !prResult.stdout.trim()) {
+    console.log('No PR found for the current branch.')
+    return
+  }
+
+  const { number: prNumber } = JSON.parse(prResult.stdout) as { number: number }
+
+  const repoResult = await $`gh repo view --json nameWithOwner`.quiet()
+  const nameWithOwner = (JSON.parse(repoResult.stdout) as { nameWithOwner?: string }).nameWithOwner
+
+  if (!nameWithOwner || !nameWithOwner.includes('/')) {
+    fail('Could not determine repository owner/name from gh CLI')
+  }
+
+  const [owner, name] = nameWithOwner.split('/')
+  const query = `
+    query($owner: String!, $name: String!, $number: Int!) {
+      repository(owner: $owner, name: $name) {
+        pullRequest(number: $number) {
+          reviewThreads(first: 100) {
+            nodes {
+              id
+              isResolved
+              isOutdated
+              path
+              line
+              comments(first: 50) {
+                nodes {
+                  author { login }
+                  body
+                  createdAt
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `
+
+  const result = await $`gh api graphql -f query=${query} -F owner=${owner} -F name=${name} -F number=${prNumber}`.nothrow()
+  if (result.exitCode !== 0 || !result.stdout.trim()) {
+    fail('Could not query PR review threads')
+  }
+
+  type ReviewComment = { author: { login: string }; body: string; createdAt: string }
+  type ReviewThread = {
+    id: string
+    isResolved: boolean
+    isOutdated: boolean
+    path: string
+    line: number | null
+    comments: { nodes: ReviewComment[] }
+  }
+
+  const parsed = JSON.parse(result.stdout) as {
+    data?: { repository?: { pullRequest?: { reviewThreads?: { nodes?: ReviewThread[] } } } }
+  }
+
+  const threads = parsed.data?.repository?.pullRequest?.reviewThreads?.nodes ?? []
+  const unresolvedThreads = threads.filter((t) => !t.isResolved)
+
+  if (unresolvedThreads.length === 0) {
+    console.log(`PR #${prNumber} has no unresolved review comments.`)
+    return
+  }
+
+  console.log(`PR #${prNumber} has ${unresolvedThreads.length} unresolved review thread(s):\n`)
+
+  for (const thread of unresolvedThreads) {
+    const location = thread.line ? `${thread.path}:${thread.line}` : thread.path
+    const outdatedLabel = thread.isOutdated ? ' [OUTDATED]' : ''
+    console.log(`--- ${location}${outdatedLabel} ---\nThread ID: ${thread.id}`)
+
+    for (let i = 0; i < thread.comments.nodes.length; i++) {
+      const comment = thread.comments.nodes[i]
+      const body = stripBugbotLinks(comment.body)
+      const isReply = i > 0
+      const prefix = isReply ? '[REPLY] ' : ''
+      console.log(`${prefix}@${comment.author.login}:`)
+      console.log(body)
+      console.log('')
+    }
+}
+}
+
+async function runResolve(threadId: string) {
+  const mutation = `
+    mutation($threadId: ID!) {
+      resolveReviewThread(input: { threadId: $threadId }) {
+        thread {
+          id
+          isResolved
+        }
+      }
+    }
+  `
+
+  const result = await $`gh api graphql -f query=${mutation} -F threadId=${threadId}`.nothrow()
+  if (result.exitCode !== 0) {
+    const errorMsg = result.stderr || result.stdout
+    fail(`Could not resolve review thread: ${errorMsg}`)
+  }
+
+  type ResolveResponse = {
+    data?: { resolveReviewThread?: { thread?: { id: string; isResolved: boolean } } }
+    errors?: Array<{ message: string }>
+  }
+
+  const parsed = JSON.parse(result.stdout) as ResolveResponse
+  if (parsed.errors?.length) {
+    fail(`GraphQL error: ${parsed.errors.map((e) => e.message).join(', ')}`)
+  }
+
+  const thread = parsed.data?.resolveReviewThread?.thread
+  if (!thread?.isResolved) {
+    fail('Thread was not resolved (unexpected API response)')
+  }
+
+  console.log(`✓ Resolved review thread ${threadId}`)
+}
+
 async function runClose(currentBranch: string) {
   if (currentBranch === 'main') {
     fail('The "close" command must be run from a ticket branch, not main')
@@ -289,14 +423,15 @@ async function getUnresolvedThreadCount(prNumber: number): Promise<number> {
     query($owner: String!, $name: String!, $number: Int!) {
       repository(owner: $owner, name: $name) {
         pullRequest(number: $number) {
-          reviewThreads(first: 1, states: UNRESOLVED) {
-            totalCount
+          reviewThreads(first: 100) {
+            nodes {
+              isResolved
+            }
           }
         }
       }
     }
   `
-
   const unresolvedResult = await $`gh api graphql -f query=${query} -F owner=${owner} -F name=${name} -F number=${prNumber}`.nothrow()
   if (unresolvedResult.exitCode !== 0 || !unresolvedResult.stdout.trim()) {
     fail('Could not query unresolved review threads')
@@ -304,9 +439,10 @@ async function getUnresolvedThreadCount(prNumber: number): Promise<number> {
 
   try {
     const parsed = JSON.parse(unresolvedResult.stdout) as {
-      data?: { repository?: { pullRequest?: { reviewThreads?: { totalCount?: number } } } }
+      data?: { repository?: { pullRequest?: { reviewThreads?: { nodes?: Array<{ isResolved: boolean }> } } } }
     }
-    return parsed.data?.repository?.pullRequest?.reviewThreads?.totalCount ?? 0
+    const threads = parsed.data?.repository?.pullRequest?.reviewThreads?.nodes ?? []
+    return threads.filter((t) => !t.isResolved).length
   } catch {
     fail('Could not parse unresolved review thread response')
   }
@@ -318,7 +454,7 @@ function fail(message: string): never {
 }
 
 function isMode(value: string): value is Mode {
-  return value === 'start' || value === 'status' || value === 'close'
+  return value === 'start' || value === 'status' || value === 'close' || value === 'review' || value === 'resolve'
 }
 
 function looksLikeScriptPath(value: string): boolean {
@@ -480,4 +616,9 @@ function formatErrorMessage(error: unknown): string {
     return error.message
   }
   return String(error)
+}
+
+function stripBugbotLinks(body: string): string {
+  // Remove bugbot "Fix in Cursor" / "Fix in Web" link blocks at end of comments
+  return body.replace(/<p><a href="https:\/\/cursor\.com\/open\?data=[\s\S]*$/, '').trim()
 }

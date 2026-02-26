@@ -64,31 +64,49 @@
       "tab.activeBackground": "#3c395f",
       "tab.unfocusedActiveBackground": "#302e4c"
     }
-  },  "surround.custom": {
+  },
+  "surround.custom": {
     "braces": {
       "label": "Braces",
       "description": "{ ... }",
       "snippet": "{ $TM_SELECTED_TEXT }$0", // <-- snippet goes here.
-      "languageIds": ["html", "javascript", "typescript", "markdown"]
+      "languageIds": [
+        "html",
+        "javascript",
+        "typescript",
+        "markdown"
+      ]
     },
     "parens": {
       "label": "Parenthesis",
       "description": "( ... )",
       "snippet": "( $TM_SELECTED_TEXT )$0", // <-- snippet goes here.
-      "languageIds": ["html", "javascript", "typescript", "markdown"]
+      "languageIds": [
+        "html",
+        "javascript",
+        "typescript",
+        "markdown"
+      ]
     },
     "brackets": {
       "label": "Brackets",
       "description": "[ ... ]",
       "snippet": "[ $TM_SELECTED_TEXT ]$0", // <-- snippet goes here.
-      "languageIds": ["html", "javascript", "typescript", "markdown"]
+      "languageIds": [
+        "html",
+        "javascript",
+        "typescript",
+        "markdown"
+      ]
     },
   },
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "editor.lightbulb.enabled": "off",
   "accessibility.signalOptions.volume": 0,
-  "vscode_custom_css.imports": ["file:///Users/fjorn/.local/bin/cursor-trail.js"],
+  "vscode_custom_css.imports": [
+    "file:///Users/fjorn/.local/bin/cursor-trail.js"
+  ],
   "application.shellEnvironmentResolutionTimeout": 30,
   "editor.bracketPairColorization.enabled": true,
   "editor.cursorStyle": "block",
@@ -123,7 +141,6 @@
   "gitlens.codeLens.recentChange.enabled": false,
   "gitlens.showWhatsNewAfterUpgrades": false,
   "interactiveWindow.executeWithShiftEnter": true,
-
   "ltex.configurationTarget": {
     "dictionary": "userExternalFile",
     "disabledRules": "userExternalFile",
@@ -256,7 +273,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "//": "Last update at 2/24/2026, 10:24:39 PM",
+    "//": "Last update at 2/24/2026, 11:22:03 AM",
     ".agent": ".agent, .claude, .cline, .codebuddy, .codex, .commandcode, .continue, .crush, .cursor, .factory, .gemini, .goose, .junie, .kilocode, .kiro, .kode, .mcpjam, .mux, .neovate, .opencode, .openhands, .pi, .pochi, .qoder, .qwen, .roo, .trae, .windsurf, .zencoder",
     ".clang-tidy": ".clang-format, .clangd, compile_commands.json",
     ".env": "*.env, .env.*, .envrc, env.d.ts",
