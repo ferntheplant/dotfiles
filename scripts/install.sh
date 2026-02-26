@@ -20,5 +20,3 @@ for subdir in "$fixed_location"/*; do
 	fi
 done
 
-ln -s /Users/fjorn/.agents /Users/fjorn/.claude
-
