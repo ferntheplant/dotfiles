@@ -1,17 +1,18 @@
 ---
 name: wco
-description: Use the ploutos wco workflow command (alias for setup-ticket.ts) to check PR readiness, list unresolved review threads, and resolve review threads. Prefer status/review/resolve; document and use start/close only when explicitly requested.
+description: Use the `wco` shell command (alias for setup-ticket.ts) to check ploutos repo PR readiness, list unresolved review threads, and resolve review threads
 ---
 
 # WCO (Ploutos PR Workflow)
 
-Use this skill when the user asks about PR readiness or review-thread handling in the `ploutos` repo and wants to use `wco`.
+Use this skill when the user asks about PR readiness or review-thread handling in the `ploutos` repo and wants to use `wco`. Prefer status/review/resolve; document and use start/close only when explicitly requested.
 
 ## Command Execution
 
 - Run through interactive shell so alias/auth/env load: `zsh -ic 'wco <command> ...'`
 - Prefer `-i` (interactive) rather than `-l` (login) to keep startup fast.
 - If sandbox blocks network/home-shell access, rerun with escalated permissions.
+- You have permission to run `zsh -ic 'wco <command> ...'` for commands status, review, and resolve
 
 ## Primary Agent Workflow (Most Common)
 
