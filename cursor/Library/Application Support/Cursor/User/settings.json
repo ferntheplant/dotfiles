@@ -273,7 +273,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "//": "Last update at 2/24/2026, 11:22:03 AM",
+    "//": "Last update at 3/3/2026, 12:04:58 PM",
     ".agent": ".agent, .claude, .cline, .codebuddy, .codex, .commandcode, .continue, .crush, .cursor, .factory, .gemini, .goose, .junie, .kilocode, .kiro, .kode, .mcpjam, .mux, .neovate, .opencode, .openhands, .pi, .pochi, .qoder, .qwen, .roo, .trae, .windsurf, .zencoder",
     ".clang-tidy": ".clang-format, .clangd, compile_commands.json",
     ".env": "*.env, .env.*, .envrc, env.d.ts",
@@ -387,5 +387,9 @@
     "lil-homie": "macOS"
   },
   "json.schemaDownload.enable": true,
-  "workbench.statusBar.visible": true
+  "workbench.statusBar.visible": true,
+  "basedpyright.analysis.inlayHints.functionReturnTypes": false,
+  "basedpyright.analysis.inlayHints.genericTypes": false,
+  "basedpyright.analysis.inlayHints.variableTypes": false,
+  "editor.inlayHints.enabled": "off"
 }
