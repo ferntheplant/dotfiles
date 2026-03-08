@@ -26,6 +26,7 @@ theme() {
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/zellij/config.kdl\" --$theme_arg
 	" || {
 		# Lock couldn't be acquired (another instance is running), skip silently
+    echo "Theme update failed"
 		return 0
 	}
 

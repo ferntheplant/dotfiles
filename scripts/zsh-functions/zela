@@ -1,0 +1,31 @@
+zela () {
+  session_list=("${(@f)$(
+    zellij list-sessions 2>/dev/null \
+      | sed $'s/\x1b\\[[0-9;]*[A-Za-z]//g' \
+      | awk '{print $1}'
+  )}")
+
+  selected=$(
+    {
+      printf '%s\n' "${session_list[@]}"
+      echo
+    } | fzf \
+        --prompt='zellij session> ' \
+        --header=$'Select one, or type a new name' \
+        --print-query
+  ) || exit 0
+
+  query=$(printf '%s\n' "$selected" | sed -n '1p')
+  match=$(printf '%s\n' "$selected" | sed -n '2p')
+  name="${match:-$query}"
+
+  name="${name#"${name%%[![:space:]]*}"}"
+  name="${name%"${name##*[![:space:]]}"}"
+  [[ -z "$name" ]] && exit 0
+
+  if (( ${session_list[(Ie)$name]} )); then
+    zellij attach "$name"
+  else
+    zellij attach -c "$name"
+  fi
+}

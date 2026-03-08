@@ -7,39 +7,47 @@ export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 
 path+=("/opt/homebrew/bin")
 path+=("$HOME/.local/bin")
-path+=("$HOME/.spicetify")
 path+=("$HOME/.bun/bin")
 export PATH
 
 alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*' --time-style='relative' --no-permissions --modified"
 alias l1="l --level=1 --time-style='+%y-%m-%d %H:%M'"
 alias g="git"
-alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+alias bathelp="bat --plain --language=help"
+alias -g -- --help='--help 2>&1 | bathelp'
 alias zel="zellij"
-alias wco="~/.local/bin/setup-ticket.ts"
+alias pm="~/.local/bin/pm.ts"
 
 # Function to capture command start time
 preexec() {
-	date "+%m/%d %H:%M:%S" >~/.cache/starship_command_time
-	STARSHIP_COMMAND_START_SECONDS=$(date +%s)
-	export STARSHIP_COMMAND_START_SECONDS
+  date "+%m/%d %H:%M:%S" >~/.cache/starship_command_time
+  STARSHIP_COMMAND_START_SECONDS=$(date +%s)
+  export STARSHIP_COMMAND_START_SECONDS
 }
 
 # Function to check if command was long-running
 precmd() {
-	if [[ -n $STARSHIP_COMMAND_START_SECONDS ]]; then
-		local end_seconds
-		end_seconds=$(date +%s)
-		local duration
-		duration=$((end_seconds - STARSHIP_COMMAND_START_SECONDS))
+  if [[ -n $STARSHIP_COMMAND_START_SECONDS ]]; then
+    local end_seconds
+    end_seconds=$(date +%s)
+    local duration
+    duration=$((end_seconds - STARSHIP_COMMAND_START_SECONDS))
 
-		# Only keep the timestamp for commands running longer than 3 seconds
-		if [[ duration -lt 3 ]]; then
-			rm -f ~/.cache/starship_command_time
-		fi
+    # Only keep the timestamp for commands running longer than 3 seconds
+    if [[ duration -lt 3 ]]; then
+      rm -f ~/.cache/starship_command_time
+    fi
 
-		unset STARSHIP_COMMAND_START_SECONDS
-	fi
+    unset STARSHIP_COMMAND_START_SECONDS
+  fi
+}
+
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  command yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd < "$tmp"
+  [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+  rm -f -- "$tmp"
 }
 
 source "$HOME/dotfiles/scripts/zsh-functions/loader"

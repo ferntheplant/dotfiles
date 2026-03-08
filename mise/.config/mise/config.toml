@@ -9,3 +9,5 @@ java = "latest"
 [settings]
 activate_aggressive = true
 experimental = true
+
+trusted_config_paths = ["~/withco/ploutos-worktrees/"]

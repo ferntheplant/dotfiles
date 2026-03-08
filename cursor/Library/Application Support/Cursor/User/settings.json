@@ -124,11 +124,6 @@
   "workbench.editorAssociations": {
     "*.svg": "default"
   },
-  "find-it-faster.general.useTerminalInEditor": false,
-  "find-it-faster.general.hideTerminalAfterSuccess": true,
-  "find-it-faster.general.showMaximizedTerminal": true,
-  "find-it-faster.general.hideTerminalAfterFail": true,
-  "find-it-faster.findWithinFiles.fuzzRipgrepQuery": true,
   "editor.snippetSuggestions": "bottom",
   "editor.tabSize": 2,
   "editor.wordWrap": "off",
@@ -141,25 +136,6 @@
   "gitlens.codeLens.recentChange.enabled": false,
   "gitlens.showWhatsNewAfterUpgrades": false,
   "interactiveWindow.executeWithShiftEnter": true,
-  "ltex.configurationTarget": {
-    "dictionary": "userExternalFile",
-    "disabledRules": "userExternalFile",
-    "hiddenFalsePositives": "workspaceFolderExternalFile"
-  },
-  "ltex.dictionary": {
-    "en-US": [
-      ":~/dotfiles/ltex/.config/ltex/dictionary.en-US.txt"
-    ]
-  },
-  "ltex.disabledRules": {
-    "en-US": [
-      ":~/dotfiles/ltex/.config/ltex/disabledRules.en-US.txt"
-    ]
-  },
-  "ltex.enabled": [
-    "latex",
-    "markdown",
-  ],
   "markdownlint.config": {
     "MD029": {
       "style": "one_or_ordered"
@@ -193,7 +169,6 @@
   "window.autoDetectColorScheme": true,
   "window.systemColorTheme": "auto",
   "window.zoomLevel": 1,
-  "workbench.colorTheme": "Catppuccin Latte",
   "workbench.editor.enablePreview": false,
   "workbench.editor.labelFormat": "short",
   "workbench.editor.showTabs": "multiple",
@@ -273,7 +248,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "//": "Last update at 3/3/2026, 12:04:58 PM",
+    "//": "Last update at 3/4/2026, 9:46:01 PM",
     ".agent": ".agent, .claude, .cline, .codebuddy, .codex, .commandcode, .continue, .crush, .cursor, .factory, .gemini, .goose, .junie, .kilocode, .kiro, .kode, .mcpjam, .mux, .neovate, .opencode, .openhands, .pi, .pochi, .qoder, .qwen, .roo, .trae, .windsurf, .zencoder",
     ".clang-tidy": ".clang-format, .clangd, compile_commands.json",
     ".env": "*.env, .env.*, .envrc, env.d.ts",
