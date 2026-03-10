@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# sidequest - Fork the current agent session into a new cmux workspace
+# Usage: sidequest [workspace-name]
+
+set -euo pipefail
+
+WORKSPACE_NAME="${*}"
+
+detect_harness() {
+    # Claude Code sets CLAUDECODE=1
+    if [ -n "${CLAUDECODE:-}" ]; then
+        echo "claude"
+        return
+    fi
+
+    # Walk the process tree looking for known harness binaries
+    local pid=$$
+    while [ -n "$pid" ] && [ "$pid" != "0" ] && [ "$pid" != "1" ]; do
+        local comm
+        comm=$(ps -p "$pid" -o comm= 2>/dev/null | tr -d ' ')
+        case "$comm" in
+            claude) echo "claude"; return ;;
+            codex)  echo "codex";  return ;;
+            omp)    echo "omp";    return ;;
+        esac
+        pid=$(ps -p "$pid" -o ppid= 2>/dev/null | tr -d ' ')
+    done
+
+    echo "unknown"
+}
+
+HARNESS=$(detect_harness)
+
+case "$HARNESS" in
+    claude)
+        PROJECT=$(pwd | sed 's|/|-|g')
+        SESSION_FILE=$(ls -t ~/.claude/projects/${PROJECT}/*.jsonl 2>/dev/null | head -1)
+        if [ -z "$SESSION_FILE" ]; then
+            echo "ERROR: No Claude session found for $(pwd)" >&2
+            exit 1
+        fi
+        SESSION_ID=$(basename "$SESSION_FILE" .jsonl)
+        PERMISSION_MODE=$(grep -o '"permissionMode":"[^"]*"' "$SESSION_FILE" | tail -1 | cut -d'"' -f4)
+        CMD="claude --resume ${SESSION_ID} --fork-session${PERMISSION_MODE:+ --permission-mode ${PERMISSION_MODE}}"
+        ;;
+
+    codex)
+        # Read approval_policy and sandbox_policy from last turn_context entry
+        CODEX_SESSION=$(ls -t ~/.codex/sessions/**/*.jsonl 2>/dev/null | head -1)
+        APPROVAL=$(python3 -c "
+import json, sys
+policy = None
+with open('$CODEX_SESSION') as f:
+    for line in f:
+        try:
+            d = json.loads(line)
+            if d.get('type') == 'turn_context':
+                policy = d['payload'].get('approval_policy')
+        except: pass
+print(policy or '')
+" 2>/dev/null)
+        SANDBOX=$(python3 -c "
+import json, sys
+policy = None
+with open('$CODEX_SESSION') as f:
+    for line in f:
+        try:
+            d = json.loads(line)
+            if d.get('type') == 'turn_context':
+                policy = d['payload'].get('sandbox_policy', {}).get('type')
+        except: pass
+print(policy or '')
+" 2>/dev/null)
+        CMD="codex fork --last${APPROVAL:+ --ask-for-approval ${APPROVAL}}${SANDBOX:+ --sandbox ${SANDBOX}}"
+        ;;
+
+    omp)
+        # omp uses ~/.omp/agent/sessions/<home-relative-dir-with-dashes>/
+        REL_DIR="${PWD#$HOME}"
+        OMP_DIR=$(echo "$REL_DIR" | sed 's|/|-|g')
+        SESSION_FILE=$(ls -t ~/.omp/agent/sessions/${OMP_DIR}/*.jsonl 2>/dev/null | head -1)
+        if [ -z "$SESSION_FILE" ]; then
+            echo "ERROR: No omp session found for $(pwd)" >&2
+            exit 1
+        fi
+        # omp doesn't have a fork command — resumes the same session
+        CMD="omp --resume=${SESSION_FILE}"
+        ;;
+
+    *)
+        echo "ERROR: Could not detect agent harness (expected claude, codex, or omp)" >&2
+        exit 1
+        ;;
+esac
+
+RESULT=$(cmux new-workspace --command "$CMD")
+
+if [ -n "$WORKSPACE_NAME" ]; then
+    WS_UUID=$(echo "$RESULT" | awk '{print $2}')
+    cmux rename-workspace --workspace "$WS_UUID" "$WORKSPACE_NAME" >/dev/null
+fi

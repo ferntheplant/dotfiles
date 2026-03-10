@@ -9,7 +9,7 @@ import { spawn } from 'node:child_process'
 import { LinearClient, type WorkflowState } from '@linear/sdk'
 import { $, argv, question, cd } from 'zx'
 
-type Mode = 'start' | 'switch' | 'list' | 'status' | 'close' | 'review' | 'resolve'
+type Mode = 'start' | 'switch' | 'list' | 'ls' | 'status' | 'st' | 'close' | 'review' | 'resolve'
 type PullRequest = {
   number: number
   url: string
@@ -120,7 +120,7 @@ const helpRequested = requestedMode === '--help' || requestedMode === '-h' || ar
 const dryRun = argv['dry-run'] === true || argv.dryRun === true
 
 if (helpRequested || !isMode(requestedMode)) {
-  console.log('Usage: pm <start|switch|list|status|close|review|resolve> [args]')
+  console.log('Usage: pm <start|switch|list|ls|status|st|close|review|resolve> [args]')
   console.log('  start [url]     - create branch, worktree, local backend, and zellij session (use --dry-run to preview)')
   console.log('  switch [ticket] - attach to an existing zellij session for a ticket')
   console.log('  list            - list all tracked worktrees and branches')
@@ -137,9 +137,9 @@ if (mode === 'start') {
   await runStart(positionalArgs[1])
 } else if (mode === 'switch') {
   await runSwitch(positionalArgs[1])
-} else if (mode === 'list') {
+} else if (mode === 'list' || mode === 'ls') {
   await runList()
-} else if (mode === 'status') {
+} else if (mode === 'status' || mode === 'st') {
   const ticketId = await resolveTicket(positionalArgs[1])
   await runStatus(ticketId)
 } else if (mode === 'review') {
@@ -644,7 +644,7 @@ async function runStatus(ticketId: string) {
   }
 
   console.log(`Checking required CI for PR #${pr.number}...`)
-  const checksResult = await $`gh pr checks ${pr.number} --required --json name,bucket,state,workflow,link`.nothrow()
+  const checksResult = await $`gh pr checks ${pr.number} --json name,bucket,state,workflow,link`.nothrow()
   const checks = parseChecks(checksResult.stdout)
 
   if (checksResult.exitCode !== 0 && checks.length === 0) {
@@ -819,19 +819,24 @@ async function runClose(ticketId: string) {
   const pr = await getCurrentBranchPr()
   const linearUrl = (await loadRegistry()).worktrees[ticketId].linearUrl
   const linearTicketId = extractTicketId(linearUrl) || extractTicketId(pr.headRefName) || extractTicketId(pr.title)
+  let prMerged = pr.state === 'MERGED'
 
-  if (pr.state !== 'OPEN') {
-    fail(`PR #${pr.number} is not open (state: ${pr.state})`)
+  if (pr.state !== 'OPEN' && pr.state !== 'MERGED') {
+    fail(`PR #${pr.number} is ${pr.state.toLowerCase()}, not open. Cannot close ticket.`)
   }
 
-  if (pr.isDraft) {
+  if (pr.state === 'OPEN' && pr.isDraft) {
     fail(`PR #${pr.number} is draft. Mark it ready for review before running "close".`)
   }
 
-  console.log(`Merging PR #${pr.number} with squash + branch delete...`)
-  await $`gh pr merge ${pr.number} -sd`
+  if (!prMerged) {
+    console.log(`Merging PR #${pr.number} with squash...`)
+    await $`gh pr merge ${pr.number} --squash`
+  } else {
+    console.log(`PR #${pr.number} already merged. Skipping merge step...`)
+  }
 
-  // Switch to main directory to cleanup worktree
+  // Switch to main directory to cleanup
   cd(PLOUTOS_MAIN_DIR)
 
   console.log('Syncing main branch...')
@@ -841,6 +846,8 @@ async function runClose(ticketId: string) {
   console.log(`Removing worktree ${worktreePath}...`)
   await $`git worktree remove ${worktreePath}`
 
+  console.log(`Deleting local branch ${ticketId}...`)
+  await $`git branch -D ${ticketId}`
   console.log('Syncing branch references...')
   await $`git fetch origin --prune`
   const remoteBranch = await $`git ls-remote --heads origin ${ticketId}`.quiet()
@@ -857,12 +864,17 @@ async function runClose(ticketId: string) {
   delete reg.worktrees[ticketId]
   await saveRegistry(reg)
 
-  // Kill zellij session if running
-  await $`zellij kill-session ${ticketId}`.nothrow()
+  // Delete zellij session
+  await $`zellij delete-session --force ${ticketId}`.nothrow()
 
-  console.log('✓ PR merged with squash')
+
+  if (prMerged) {
+    console.log(`✓ PR #${pr.number} was already merged`)
+  } else {
+    console.log('✓ PR merged with squash')
+  }
   console.log('✓ Worktree removed and registry updated')
-  console.log(`✓ Zellij session ${ticketId} killed`)
+  console.log(`✓ Zellij session ${ticketId} deleted`)
 }
 
 // ----------------------------------------------------------------------------
@@ -943,7 +955,7 @@ function fail(message: string): never {
 }
 
 function isMode(value: string): value is Mode {
-  return value === 'start' || value === 'switch' || value === 'list' || value === 'status' || value === 'close' || value === 'review' || value === 'resolve'
+  return value === 'start' || value === 'switch' || value === 'list' || value === 'ls' || value === 'status' || value === 'st' || value === 'close' || value === 'review' || value === 'resolve'
 }
 
 function looksLikeScriptPath(value: string): boolean {

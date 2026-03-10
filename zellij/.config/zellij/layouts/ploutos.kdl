@@ -1,3 +1,9 @@
 layout {
-  pane
+  tab name="dev" {
+    pane name="shell"
+    pane split_direction="horizontal" {
+      pane name="frontend"
+      pane name="backend"
+    }
+  }
 }
