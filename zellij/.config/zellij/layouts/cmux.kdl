@@ -1,0 +1,9 @@
+simplified_ui true
+default_mode "locked"
+mouse_mode true
+pane_frames false
+copy_on_select false
+
+layout {
+  pane borderless=true
+}
