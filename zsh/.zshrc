@@ -4,10 +4,12 @@ compinit
 export EDITOR="/usr/bin/hx"
 export HELIX_RUNTIME="/var/lib/helix/runtime"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+export CMUX_SOCKET_MODE=allowAll
+export CMUX_SOCKET_ENABLE=true
 
-path+=("/opt/homebrew/bin")
-path+=("$HOME/.local/bin")
-path+=("$HOME/.bun/bin")
+[[ ":$PATH:" != *":/opt/homebrew/bin:"* ]] && path+=("/opt/homebrew/bin")
+[[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && path+=("$HOME/.local/bin")
+[[ ":$PATH:" != *":$HOME/.bun/bin:"* ]] && path+=("$HOME/.bun/bin")
 export PATH
 
 alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*' --time-style='relative' --no-permissions --modified"

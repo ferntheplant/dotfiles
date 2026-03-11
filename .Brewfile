@@ -1,9 +1,10 @@
-tap "databricks/tap"
 tap "datawire/blackbird"
 tap "felixkratz/formulae"
 tap "gromgit/fuse"
 tap "hashicorp/tap"
 tap "jesseduffield/lazydocker"
+tap "manaflow-ai/cmux"
+tap "neurosnap/tap"
 tap "nikitabobko/tap"
 tap "screenplaydev/tap"
 # Improved shell history for zsh, bash, fish and nushell
@@ -86,6 +87,8 @@ brew "tree"
 brew "unzip"
 # Generator for LS_COLORS with support for multiple color themes
 brew "vivid"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
 # Pluggable terminal workspace, with terminal multiplexer as the base feature
 brew "zellij"
 # Shell extension to navigate your filesystem faster
@@ -96,14 +99,14 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 # Tool for writing better scripts
 brew "zx"
-# Command-line interface for the Databricks platform
-brew "databricks/tap/databricks"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
 # Terraform
 brew "hashicorp/tap/terraform"
 # A simple terminal UI for docker, written in Go
 brew "jesseduffield/lazydocker/lazydocker"
+# Session persistence for terminal processes
+brew "neurosnap/tap/zmx"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
@@ -118,6 +121,8 @@ cask "beeper"
 cask "chromedriver"
 # Terminal-based AI coding assistant
 cask "claude-code"
+# Ghostty-based terminal with vertical tabs and notifications for AI coding agents
+cask "cmux"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 # Write, edit, and chat about your code with AI
