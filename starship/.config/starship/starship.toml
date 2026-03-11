@@ -2,31 +2,14 @@
 
 add_newline = true
 #palette = "catppuccin-macchiato"
-palette = "rose-pine-dawn"
+palette = "rose-pine-moon"
 continuation_prompt = '▶▶ '
 
-# format = """
-# $username\
-# $directory\
-# $git_branch\
-# $git_status\
-# $fill\
-# $c\
-# $elixir\
-# $elm\
-# $golang\
-# $haskell\
-# $java\
-# $julia\
-# $nodejs\
-# $nim\
-# $rust\
-# $scala\
-# $conda\
-# $python\
-# $time\n  \
-# [󱞪](fg:iris) \
-# """
+[env_var.ZMX_SESSION]
+symbol = " "
+format = '\[[$symbol$env_value]($style)\]'
+description = "zmx session name"
+style = "bold blue"
 
 [battery]
 disabled = true

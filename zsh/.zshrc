@@ -16,6 +16,7 @@ alias g="git"
 alias bathelp="bat --plain --language=help"
 alias -g -- --help='--help 2>&1 | bathelp'
 alias zel="zellij"
+alias zm="zmx"
 alias pm="~/.local/bin/pm.ts"
 
 # Function to capture command start time
@@ -87,11 +88,9 @@ fi
 
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/fjorn/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/fjorn/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/fjorn/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/fjorn/google-cloud-sdk/completion.zsh.inc'; fi
+if command -v zmx &> /dev/null; then
+  eval "$(zmx completions zsh)"
+fi
 
 # pnpm
 export PNPM_HOME="/Users/fjorn/Library/pnpm"
