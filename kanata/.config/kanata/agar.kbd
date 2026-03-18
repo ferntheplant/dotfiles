@@ -22,9 +22,14 @@
   nav (layer-while-held nav)
   sym (layer-while-held sym)
   fn (layer-while-held fn)
+  fn2 (layer-while-held fn2)
+  lnum (layer-while-held lnum)
+  rnum (layer-while-held rnum)
 
   spcnav (tap-hold $tap-time $hold-time spc (layer-toggle nav))
   spcsym (tap-hold $tap-time $hold-time spc (layer-toggle sym))
+  spclnum (tap-hold $tap-time $hold-time spc (layer-toggle lnum))
+  spcrnum (tap-hold $tap-time $hold-time spc (layer-toggle rnum))
 
   ;; consider one-shots
   symone (one-shot-release-pcancel 2000 (layer-while-held sym))
@@ -67,7 +72,7 @@
   esc  q     w     e     r     t     y     u     i     o     p     bspc  XX
   tab    @a    @s    @d    @f    g     h     @j    @k    @l    @;        ret
   @capw    z     x     c     v     b     n     m     ,     .     /       @symone
-            @meh    lmet        @spcnav @spcsym     @meh    XX
+            @nav    lmet        @spclnum @spcrnum    @meh    rmet ;; could use spcnav + spcnav here
 )
 
 
@@ -96,4 +101,29 @@
   XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
   XX       XX    prev  pp    next  XX    XX    voldwn volu  XX    XX      XX
             XX      _           _       _           _       XX
+)
+
+
+;; left thumb nums
+(deflayer lnum
+  grv  1     2     3     4     5     6     7     8     9     0     -     =
+  XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
+  XX       XX    XX    XX    XX    XX    [     ]     \     '     XX      XX
+            XX      XX          _       @fn2        XX      XX
+)
+
+;; right thumb nums
+(deflayer rnum
+  grv  1     2     3     4     5     6     7     8     9     0     -     =
+  XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
+  XX       XX    XX    XX    XX    XX    [     ]     \     '     XX      XX
+            XX      XX          @fn2    _           XX      XX
+)
+
+;; keep home row mods in the same place to use with fkeys
+(deflayer fn2
+  XX   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
+  XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
+  XX       XX    prev  pp    next  XX    XX    voldwn volu  XX    XX      XX
+            XX      XX          _       _           XX      XX
 )
