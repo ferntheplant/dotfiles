@@ -1,7 +1,7 @@
 autoload -U compinit
 compinit
 
-export EDITOR="/usr/bin/hx"
+export EDITOR="/opt/homebrew/bin/hx"
 export HELIX_RUNTIME="/var/lib/helix/runtime"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export CMUX_SOCKET_MODE=allowAll
@@ -101,3 +101,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# claudetop iTerm2 integration (tab title, badge, background color)
+[ -n "${CLAUDETOP_ITERM:-}" ] && source "/Users/fjorn/.claude/claudetop-iterm-hook.sh"

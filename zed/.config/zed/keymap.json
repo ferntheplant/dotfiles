@@ -32,5 +32,11 @@
     "bindings": {
       "cmd-w": null
     }
-  }
+  },
+  {
+    "context": "VimControl && !menu && vim_mode != insert",
+    "bindings": {
+      ")": "vim::SentenceForward"
+    }
+  },
 ]
