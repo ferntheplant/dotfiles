@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "schemaVersion": 1,
+  "app": {
+    "appearance": "system",
+    "focusPaneOnFirstClick": true,
+    "minimalMode": true,
+    "warnBeforeQuit": false,
+    "sendAnonymousTelemetry": false,
+    "renameSelectsExistingName": true,
+    "preferredEditor": "hx",
+    "reorderOnNotification": false,
+    "newWorkspacePlacement": "afterCurrent",
+    "commandPaletteSearchesAllSurfaces": false
+  },
+  "sidebar": {
+    "branchLayout": "vertical",
+    "openPortLinksInCmuxBrowser": true,
+    "openPullRequestLinksInCmuxBrowser": false,
+    "showBranchDirectory": true,
+    "showCustomMetadata": true,
+    "showLog": true,
+    "showNotificationMessage": true,
+    "showPorts": false,
+    "showProgress": true,
+    "showPullRequests": false,
+    "showSSH": true
+  },
+  "sidebarAppearance": {
+    "matchTerminalBackground": false
+  },
+  "automation": {
+    "claudeCodeIntegration": false,
+    "socketControlMode": "allowAll"
+  }
+}
