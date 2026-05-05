@@ -3,8 +3,6 @@ bun = "latest"
 node = "latest"
 python = "3.12"
 uv = "latest"
-deno = "latest"
-java = "latest"
 "pipx:mitmproxy" = "latest"
 
 [settings]

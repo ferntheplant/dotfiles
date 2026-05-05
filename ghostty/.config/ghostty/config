@@ -21,4 +21,7 @@ macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 
 custom-shader = shaders/cursor_smear.glsl
-# custom-shader = shaders/cursor_blaze_no_trail.glsl
+
+unfocused-split-opacity = 0.15
+unfocused-split-fill = #FF0000
+split-divider-color = #00FF00
