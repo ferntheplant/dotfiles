@@ -7,6 +7,8 @@ tap "manaflow-ai/cmux"
 tap "neurosnap/tap"
 tap "nikitabobko/tap"
 tap "screenplaydev/tap"
+# Code searching, linting, rewriting
+brew "ast-grep"
 # Improved shell history for zsh, bash, fish and nushell
 brew "atuin"
 # Bourne-Again SHell, a UNIX command interpreter
@@ -15,6 +17,8 @@ brew "bash"
 brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
+# Powerful, enterprise-ready, open source web server with automatic HTTPS
+brew "caddy"
 # Multi-shell multi-command argument completer
 brew "carapace"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
@@ -23,6 +27,8 @@ brew "cloudflared"
 brew "colima", restart_service: :changed
 # Good-lookin' diffs with diff-highlight and more
 brew "diff-so-fancy"
+# Diff that understands syntax
+brew "difftastic"
 # Bash, Zsh and Fish completion for Docker
 brew "docker-completion"
 # Pack, ship and run any application as a lightweight container
@@ -75,6 +81,10 @@ brew "mprocs"
 brew "ripgrep"
 # AI coding agent, built for the terminal
 brew "opencode"
+# CLI proxy to minimize LLM token consumption
+brew "rtk"
+# Fast and accurate code counter with complexity and COCOMO estimates
+brew "scc"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # Cross-shell prompt for astronauts
@@ -89,6 +99,8 @@ brew "unzip"
 brew "vivid"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
+brew "yq"
 # Pluggable terminal workspace, with terminal multiplexer as the base feature
 brew "zellij"
 # Shell extension to navigate your filesystem faster
@@ -129,6 +141,8 @@ cask "codex"
 cask "cursor"
 # Voice and text chat software
 cask "discord"
+# Collaborative team software
+cask "figma"
 # Privacy-focused Firefox-based browser
 cask "floorp"
 cask "font-monaspace"
@@ -139,7 +153,7 @@ cask "hiddenbar"
 # Utility that shows the latest app updates
 cask "latest"
 # App to manage software development and track bugs
-cask "linear-linear"
+cask "linear"
 # Customise mouse behavior
 cask "linearmouse"
 # File system integration
