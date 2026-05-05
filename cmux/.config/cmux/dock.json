@@ -1,0 +1,10 @@
+{
+  "controls": [
+    {
+      "id": "tycho-host",
+      "title": "tycho host",
+      "command": "/Users/fjorn/.local/bin/spacetime start --listen-addr=localhost:3498",
+      "height": 320
+    }
+  ]
+}

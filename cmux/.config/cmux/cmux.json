@@ -17,7 +17,7 @@
     "branchLayout": "vertical",
     "openPortLinksInCmuxBrowser": true,
     "openPullRequestLinksInCmuxBrowser": false,
-    "showBranchDirectory": true,
+    "showBranchDirectory": false,
     "showCustomMetadata": true,
     "showLog": true,
     "showNotificationMessage": true,
@@ -27,7 +27,7 @@
     "showSSH": true
   },
   "sidebarAppearance": {
-    "matchTerminalBackground": false
+    "matchTerminalBackground": true
   },
   "automation": {
     "claudeCodeIntegration": false,

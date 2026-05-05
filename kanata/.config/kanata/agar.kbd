@@ -19,21 +19,12 @@
 
 
 (defalias
-  nav (layer-while-held nav)
-  sym (layer-while-held sym)
   fn (layer-while-held fn)
-  fn2 (layer-while-held fn2)
   lnum (layer-while-held lnum)
   rnum (layer-while-held rnum)
 
-  spcnav (tap-hold $tap-time $hold-time spc (layer-toggle nav))
-  spcsym (tap-hold $tap-time $hold-time spc (layer-toggle sym))
   spclnum (tap-hold $tap-time $hold-time spc (layer-toggle lnum))
   spcrnum (tap-hold $tap-time $hold-time spc (layer-toggle rnum))
-
-  ;; consider one-shots
-  symone (one-shot-release-pcancel 2000 (layer-while-held sym))
-  symmy (tap-hold $tap-time $hold-time @symone (layer-toggle sym))
 
   ;; This example is similar to the default caps-word behaviour but it moves the
   ;; 0-9 keys to the capitalized key list from the extra non-terminating key list.
@@ -71,57 +62,31 @@
 (deflayer base
   esc  q     w     e     r     t     y     u     i     o     p     bspc  XX
   tab    @a    @s    @d    @f    g     h     @j    @k    @l    @;        ret
-  @capw    z     x     c     v     b     n     m     ,     .     /       @symone
-            @nav    lmet        @spclnum @spcrnum    @meh    rmet ;; could use spcnav + spcnav here
+  @capw    z     x     c     v     b     n     m     ,     .     /       XX
+            lalt    lmet        @spclnum @spcrnum    @meh    rmet
 )
-
 
 ;; needs 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
 ;; simulate numpad and fill up remaining space
-(deflayer sym
-  XX   grv   7     8     9     [     XX    XX    XX    XX    XX    XX    XX
-  \      -     4     5     6     ]     XX    rsft  ralt  rmet  rctl      XX
-  XX       =     1     2     3     '     XX    XX    XX    XX    XX      XX
-            XX      @fn         0       _           XX      XX
-)
-
-
-;; basically just arrow keys
-(deflayer nav
-  XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX     lctl  lmet  lalt  lsft  XX    lft   down  up    rght  XX        XX
-  XX       XX    XX    XX    XX    XX    home  pgdn  pgup  end   XX      XX
-            XX      XX          _       XX          @fn     XX
-)
-
-
-;; keep home row mods in the same place to use with fkeys
-(deflayer fn
-  XX   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
-  XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
-  XX       XX    prev  pp    next  XX    XX    voldwn volu  XX    XX      XX
-            XX      _           _       _           _       XX
-)
-
 
 ;; left thumb nums
 (deflayer lnum
   grv  1     2     3     4     5     6     7     8     9     0     -     =
   XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
-  XX       XX    XX    XX    XX    XX    [     ]     \     '     XX      XX
-            XX      XX          _       @fn2        XX      XX
+  XX       XX    XX    XX    XX    XX    XX    [     ]     \     '       XX
+            XX      XX          _       @fn         XX      XX
 )
 
 ;; right thumb nums
 (deflayer rnum
   grv  1     2     3     4     5     6     7     8     9     0     -     =
   XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
-  XX       XX    XX    XX    XX    XX    [     ]     \     '     XX      XX
-            XX      XX          @fn2    _           XX      XX
+  XX       XX    XX    XX    XX    XX    XX    [     ]     \     '       XX
+            XX      XX          @fn     _           XX      XX
 )
 
 ;; keep home row mods in the same place to use with fkeys
-(deflayer fn2
+(deflayer fn
   XX   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
   XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
   XX       XX    prev  pp    next  XX    XX    voldwn volu  XX    XX      XX
