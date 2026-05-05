@@ -70,7 +70,7 @@
 	path = "~/dotfiles/git/catppuccin.gitconfig"
 [delta]
     features = rose-pine-dawn
-	side-by-side = true
+    # side-by-side = true
 	line-numbers = true
 [status]
 	branch = true

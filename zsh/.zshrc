@@ -20,6 +20,7 @@ alias -g -- --help='--help 2>&1 | bathelp'
 alias zel="zellij"
 alias zm="zmx"
 alias pm="~/.local/bin/pm.ts"
+alias cl="context-lens --quiet --mitm"
 
 # Function to capture command start time
 preexec() {

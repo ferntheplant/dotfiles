@@ -6,10 +6,10 @@
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
   "[svg]": {
-    "editor.defaultFormatter": "vscode.html-language-features"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[html]": {
-    "editor.defaultFormatter": "vscode.html-language-features"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[javascript]": {
     "editor.codeActionsOnSave": {
@@ -17,11 +17,11 @@
     },
   },
   "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": false
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome",
+    "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": false
   },
   "[markdown]": {
@@ -39,6 +39,7 @@
       "source.organizeImports.biome": "explicit",
       "quickfix.biome": "explicit"
     },
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
@@ -184,7 +185,7 @@
   "editor.unicodeHighlight.nonBasicASCII": false,
   "extensions.ignoreRecommendations": true,
   "explorer.confirmDelete": false,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "window.commandCenter": false,
   "editor.renderWhitespace": "boundary",
   "editor.cursorSmoothCaretAnimation": "on",
@@ -252,7 +253,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "//": "Last update at 5/3/2026, 8:18:15 PM",
+    "//": "Last update at 5/4/2026, 9:59:19 AM",
     ".agent": ".agent, .claude, .cline, .codebuddy, .codex, .commandcode, .continue, .crush, .cursor, .factory, .gemini, .goose, .junie, .kilocode, .kiro, .kode, .mcpjam, .mux, .neovate, .opencode, .openhands, .pi, .pochi, .qoder, .qwen, .roo, .trae, .windsurf, .zencoder",
     ".clang-tidy": ".clang-format, .clangd, compile_commands.json",
     ".env": "*.env, .env.*, .envrc, env.d.ts",
