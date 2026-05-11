@@ -4,6 +4,7 @@ node = "latest"
 python = "3.12"
 uv = "latest"
 "pipx:mitmproxy" = "latest"
+zig = "latest"
 
 [settings]
 activate_aggressive = true

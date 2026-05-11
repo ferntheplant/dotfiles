@@ -7,6 +7,7 @@ export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export CMUX_SOCKET_MODE=allowAll
 export CMUX_SOCKET_ENABLE=true
 
+[[ ":$PATH:" != *":/opt/nanobrew/prefix/bin:"* ]] && path+=("/opt/nanobrew/prefix/bin")
 [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]] && path+=("/opt/homebrew/bin")
 [[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && path+=("$HOME/.local/bin")
 [[ ":$PATH:" != *":$HOME/.bun/bin:"* ]] && path+=("$HOME/.bun/bin")
