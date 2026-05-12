@@ -18,10 +18,7 @@ alias l1="l --level=1 --time-style='+%y-%m-%d %H:%M'"
 alias g="git"
 alias bathelp="bat --plain --language=help"
 alias -g -- --help='--help 2>&1 | bathelp'
-alias zel="zellij"
 alias zm="zmx"
-alias pm="~/.local/bin/pm.ts"
-alias cl="context-lens --quiet --mitm"
 
 # Function to capture command start time
 preexec() {
@@ -96,13 +93,52 @@ if command -v zmx &> /dev/null; then
   eval "$(zmx completions zsh)"
 fi
 
-# pnpm
-export PNPM_HOME="/Users/fjorn/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+zms() {
+  local display
+  display=$(zmx list 2>/dev/null | awk '
+    {
+      name=pid=clients=dir=""
+      for (i = 1; i <= NF; i++) {
+        split($i, kv, "=")
+        if (kv[1] == "name") name=kv[2]
+        if (kv[1] == "pid") pid=kv[2]
+        if (kv[1] == "clients") clients=kv[2]
+        if (kv[1] == "start_dir") dir=kv[2]
+      }
+      printf "%-20s  pid:%-8s  clients:%-2s  %s\n", name, pid, clients, dir
+    }
+  ')
 
-# claudetop iTerm2 integration (tab title, badge, background color)
-[ -n "${CLAUDETOP_ITERM:-}" ] && source "/Users/fjorn/.claude/claudetop-iterm-hook.sh"
+  local output query key selected session_name rc
+
+  output=$(
+    { [[ -n "$display" ]] && echo "$display"; } | fzf \
+      --print-query \
+      --expect=ctrl-n \
+      --height=80% \
+      --reverse \
+      --prompt="zmx> " \
+      --header="Enter: select | Ctrl-N: create new" \
+      --preview='zmx history {1} --vt' \
+      --preview-window=right:60%:follow \
+      --bind='ctrl-j:down,ctrl-k:up'
+  )
+
+  rc=$?
+
+  query=$(echo "$output" | sed -n '1p')
+  key=$(echo "$output" | sed -n '2p')
+  selected=$(echo "$output" | sed -n '3p')
+
+  if [[ "$key" == "ctrl-n" && -n "$query" ]]; then
+    session_name="$query"
+  elif [[ $rc -eq 0 && -n "$selected" ]]; then
+    session_name=${selected%% *}
+  elif [[ -n "$query" ]]; then
+    session_name="$query"
+  else
+    return 130
+  fi
+
+  zmx attach "$session_name"
+}
