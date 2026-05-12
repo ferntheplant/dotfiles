@@ -1,8 +1,7 @@
 autoload -U compinit
 compinit
 
-export EDITOR="/opt/homebrew/bin/hx"
-export HELIX_RUNTIME="/var/lib/helix/runtime"
+export EDITOR="/opt/nanobrew/prefix/bin/hx"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export CMUX_SOCKET_MODE=allowAll
 export CMUX_SOCKET_ENABLE=true
@@ -84,10 +83,10 @@ if [[ -z "$SSH_CONNECTION" ]]; then
   source <(carapace _carapace)
   eval "$(atuin init zsh --disable-up-arrow)"
   source "$HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh"
-  source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  source "/opt/nanobrew/prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
-source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+source "/opt/nanobrew/prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 if command -v zmx &> /dev/null; then
   eval "$(zmx completions zsh)"
