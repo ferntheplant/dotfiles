@@ -14,7 +14,7 @@
 
 (defvar
   tap-time 160
-  hold-time 170
+  hold-time 220
 )
 
 
@@ -66,8 +66,7 @@
             lalt    lmet        @spclnum @spcrnum    @meh    rmet
 )
 
-;; needs 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
-;; simulate numpad and fill up remaining space
+;; need 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
 
 ;; left thumb nums
 (deflayer lnum

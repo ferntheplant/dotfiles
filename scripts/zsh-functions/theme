@@ -21,7 +21,7 @@ theme() {
     ~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/starship/starship.toml\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/bat/config.conf\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
-		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg --underscore
+		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.gitconfig\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/zellij/config.kdl\" --$theme_arg
 	" || {

@@ -3,8 +3,6 @@
   concurrent-tap-hold   yes
   macos-dev-names-exclude (
     "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
-    "Advantage2 Keyboard"
-    "AVA"
     "Corne-ish Zen"
     "Agar Mini BLE (USB)"
   )
@@ -12,8 +10,7 @@
 
 (defvar
   tap-time 160
-  hold-time 170
-  dance-time 100
+  hold-time 220
 )
 
 
@@ -23,6 +20,7 @@
   ;; This example is similar to the default caps-word behaviour but it moves the
   ;; 0-9 keys to the capitalized key list from the extra non-terminating key list.
   capw (caps-word 2000)
+
 
   ;; left hand home-row mods
   a (tap-hold $tap-time $hold-time a lctl)
@@ -34,16 +32,6 @@
   k (tap-hold 210 220 k ralt)
   l (tap-hold $tap-time $hold-time l rmet)
   ; (tap-hold $tap-time $hold-time ; rctl)
-
-  ;; double tap skips home-row mods
-  ;; a (tap-dance $dance-time (@amod a))
-  ;; s (tap-dance $dance-time (@smod s))
-  ;; d (tap-dance $dance-time (@dmod d))
-  ;; f (tap-dance $dance-time (@fmod f))
-  ;; j (tap-dance $dance-time (@jmod j))
-  ;; k (tap-dance $dance-time (@kmod k))
-  ;; l (tap-dance $dance-time (@lmod l))
-  ;; ; (tap-dance $dance-time (@;mod ;))
 
   esctl (tap-hold $tap-time $hold-time esc lctl)
 
