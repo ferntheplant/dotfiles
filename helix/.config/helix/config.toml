@@ -1,4 +1,4 @@
-theme = "rose_pine_moon"
+theme = "rose_pine_dawn"
 
 [editor]
 cursorline = true
@@ -38,3 +38,7 @@ tab = "→"
 newline = "⏎"
 tabpad = "·"  # Tabs will look like "→···" (depending on tab width)
 
+[keys.normal]
+
+C-a = "goto_line_start"
+C-e = "goto_line_end"

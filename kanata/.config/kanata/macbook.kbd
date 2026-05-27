@@ -33,9 +33,14 @@
   l (tap-hold $tap-time $hold-time l rmet)
   ; (tap-hold $tap-time $hold-time ; rctl)
 
+  down (tap-hold $tap-time $hold-time down rsft)
+  up (tap-hold $tap-time $hold-time up ralt)
+  right (tap-hold $tap-time $hold-time rght rmet)
+
   esctl (tap-hold $tap-time $hold-time esc lctl)
 
   meh  (multi ctl alt sft)
+  spcnum (tap-hold $tap-time $hold-time spc (layer-toggle num))
 )
 
 (defchordsv2
@@ -58,7 +63,16 @@
   _      _     _     _     _     _     _     _     _     _     _     _     _     _
   @esctl @a    @s    @d    @f    _     _     @j    @k    @l    @;    _     _
   _      _     _     _     _     _     _     _     _     _     _     _
-  @fn    _     @meh  _                 _                 _     @meh  _    _ _    _
+  @fn    _     @meh  _                 @spcnum           _     @meh  _    _ _    _
+)
+
+(deflayer num
+  _      _     _     _     _     _     _     _     _     _     _     _     _
+  _      _     _     _     _     _     _     _     _     _     _     _     _     _
+  grv    1     2     3     4     5     6     7     8     9     0     -     =     XX
+  XX     lctl  lmet  lalt  lsft  XX    left  @down @up   @right rctl  XX    XX
+  _      _     _     _     _     _     _     [     ]     \     '     XX
+  _      _     _     _                 _                 _     _     _    _ _    _
 )
 
 (deflayer fn

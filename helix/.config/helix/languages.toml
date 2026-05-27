@@ -1,0 +1,21 @@
+[language-server]
+oxlint-language-server = {command = "oxlint", args = ["--lsp"]}
+oxfmt-language-server = {command = "oxfmt", args = ["--lsp"]}
+
+[[language]]
+name = "javascript"
+language-servers = [ "typescript-language-server", "oxlint-language-server", "oxfmt-language-server" ]
+
+[[language]]
+name = "jsx"
+language-servers = [ "typescript-language-server", "oxlint-language-server", "oxfmt-language-server" ]
+
+[[language]]
+name = "typescript"
+language-servers = [ "typescript-language-server", "oxlint-language-server", "oxfmt-language-server" ]
+
+[[language]]
+name = "tsx"
+language-servers = [ "typescript-language-server", "oxlint-language-server", "oxfmt-language-server" ]
+
+# toml, yaml, markdown, json, html, css
