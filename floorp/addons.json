@@ -12,6 +12,14 @@
     "name": "DuckDuckGo Search & Tracker Protection"
   },
   {
+    "id": "myallychou@gmail.com",
+    "name": "Unhook: Remove YouTube Recommended Videos Comments"
+  },
+  {
+    "id": "Tab-Session-Manager@sienori",
+    "name": "Tab Session Manager"
+  },
+  {
     "id": "treestyletab@piro.sakura.ne.jp",
     "name": "Tree Style Tab"
   },
@@ -24,8 +32,8 @@
     "name": "Imagus"
   },
   {
-    "id": "{9ed7d361-ccd9-4cad-9846-977da2651fb5}",
-    "name": "automaticDark - Time-Based Theme Changer"
+    "id": "@testpilot-containers",
+    "name": "Firefox Multi-Account Containers"
   },
   {
     "id": "{d634138d-c276-4fc8-924b-40a0ea21d284}",
@@ -48,12 +56,24 @@
     "name": "Video Speed Controller"
   },
   {
+    "id": "{22b0eca1-8c02-4c0d-a5d7-6604ddd9836e}",
+    "name": "Dark space - The best dynamic theme"
+  },
+  {
     "id": "{d7742d87-e61d-4b78-b8a1-b469842139fa}",
     "name": "Vimium"
   },
   {
     "id": "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}",
     "name": "Refined GitHub"
+  },
+  {
+    "id": "extension@vercel.com",
+    "name": "Vercel"
+  },
+  {
+    "id": "addon@karakeep.app",
+    "name": "Karakeep"
   },
   {
     "id": "tst-more-tree-commands@piro.sakura.ne.jp",
@@ -66,6 +86,10 @@
   {
     "id": "{731bf636-c808-4c86-b02f-af462eccc963}",
     "name": "Move unloaded tabs for Tree Style Tab"
+  },
+  {
+    "id": "@tst-search",
+    "name": "TST Tab Search"
   },
   {
     "id": "{bbb880ce-43c9-47ae-b746-c3e0096c5b76}",

@@ -8,32 +8,34 @@
 	<string>center</string>
 	<key>Disk_state</key>
 	<false/>
-	<key>GPU_barChart_position</key>
-	<integer>3</integer>
-	<key>GPU_label_position</key>
-	<integer>1</integer>
-	<key>GPU_lineChart_position</key>
-	<integer>2</integer>
-	<key>GPU_mini_position</key>
-	<integer>0</integer>
-	<key>GPU_state</key>
-	<false/>
-	<key>GPU_tachometer_position</key>
-	<integer>4</integer>
-	<key>GPU_widget</key>
-	<string>mini</string>
 	<key>NSNavPanelExpandedSizeForSaveMode</key>
-	<string>{800, 448}</string>
+	<string>{848, 325}</string>
 	<key>NSNavPanelExpandedStateForSaveMode</key>
 	<true/>
+	<key>NSOSPLastRootDirectory</key>
+	<data>
+	Ym9va9ACAAAAAAUQQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+	AAAAAAAAAAAAAAAAALABAAAEAAAAAwMAAAAAACAFAAAAAQEAAFVzZXJzAAAABQAAAAEB
+	AABmam9ybgAAAAgAAAABAQAAZG90ZmlsZXMFAAAAAQEAAHN0YXRzAAAAEAAAAAEGAAAQ
+	AAAAIAAAADAAAABAAAAACAAAAAQDAABCQgAAAAAAAAgAAAAEAwAA3xAEAAAAAAAIAAAA
+	BAMAAOA3BgAAAAAACAAAAAQDAAB1EWMDAAAAABAAAAABBgAAaAAAAHgAAACIAAAAmAAA
+	AAgAAAAABAAAQcc+y4OKTkMYAAAAAQIAAAIAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAA
+	AAABBQAACAAAAAQDAAACAAAAAAAAAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8M
+	AAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAFChG3MAAAAIAAAAAAQAAEHH0fL+gAAA
+	JAAAAAEBAABFRENDRkNCQS0zMkVGLTRDM0MtQjY3OS01OEE4MUFERDZFMzcYAAAAAQIA
+	AIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAANgAAAD+////AQAAAAAA
+	AAARAAAABBAAAFAAAAAAAAAABRAAAKgAAAAAAAAAEBAAANAAAAAAAAAAQBAAAMAAAAAA
+	AAAAAiAAAKQBAAAAAAAABSAAABQBAAAAAAAAECAAACQBAAAAAAAAESAAAFgBAAAAAAAA
+	EiAAADgBAAAAAAAAEyAAAEgBAAAAAAAAICAAAIQBAAAAAAAAMCAAAPAAAAAAAAAAAcAA
+	APgAAAAAAAAAEcAAACAAAAAAAAAAEsAAAAgBAAAAAAAAAdAAAPAAAAAAAAAAENAAAAQA
+	AAAAAAAA
+	</data>
 	<key>NSStatusItem Preferred Position CPU_mini</key>
-	<real>352</real>
+	<real>334</real>
 	<key>NSStatusItem Preferred Position Sensors_sensors</key>
-	<real>318</real>
-	<key>NSStatusItem Restore Position GPU_mini</key>
-	<integer>5469</integer>
+	<real>300</real>
 	<key>NSStatusItem Restore Position RAM_mini</key>
-	<integer>622</integer>
+	<integer>441</integer>
 	<key>NSToolbar Configuration eu.exelban.Stats.Settings.Toolbar</key>
 	<dict>
 		<key>TB Display Mode</key>
@@ -45,8 +47,8 @@
 		<key>TB Size Mode</key>
 		<integer>1</integer>
 	</dict>
-	<key>NSWindow Frame NSNavPanelAutosaveName</key>
-	<string>356 300 800 448 0 0 1512 944 </string>
+	<key>NSWindow Frame eu.exelban.Stats.Settings.WindowFrame</key>
+	<string>396 286 728 480 0 0 1512 949 </string>
 	<key>Network_state</key>
 	<false/>
 	<key>RAM_mini_alignment</key>
@@ -55,6 +57,8 @@
 	<false/>
 	<key>Sensors_barChart_position</key>
 	<integer>3</integer>
+	<key>Sensors_fanControl</key>
+	<true/>
 	<key>Sensors_label_position</key>
 	<integer>2</integer>
 	<key>Sensors_mini_position</key>
@@ -68,11 +72,11 @@
 	<key>fan_0_mode</key>
 	<integer>0</integer>
 	<key>fan_0_speed</key>
-	<integer>5779</integer>
+	<integer>6800</integer>
 	<key>fan_1_mode</key>
 	<integer>0</integer>
 	<key>fan_1_speed</key>
-	<integer>6241</integer>
+	<integer>6800</integer>
 	<key>sensor_Average CPU</key>
 	<true/>
 	<key>sensor_Hottest CPU</key>
@@ -84,10 +88,10 @@
 	<key>temperature_units</key>
 	<string>celsius</string>
 	<key>update-interval</key>
-	<string>Never</string>
+	<string>Once per month</string>
 	<key>updater_check_ts</key>
-	<integer>1738732776</integer>
+	<integer>1777473613</integer>
 	<key>version</key>
-	<string>2.11.48</string>
+	<string>2.12.8</string>
 </dict>
 </plist>

@@ -7,28 +7,14 @@ tap "manaflow-ai/cmux"
 tap "neurosnap/tap"
 tap "nikitabobko/tap"
 tap "screenplaydev/tap"
-# Code searching, linting, rewriting
-brew "ast-grep"
-# Improved shell history for zsh, bash, fish and nushell
-brew "atuin"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
-# Clone of cat(1) with syntax highlighting and Git integration
-brew "bat"
-# Resource monitor. C++ version and continuation of bashtop and bpytop
-brew "btop"
 # Powerful, enterprise-ready, open source web server with automatic HTTPS
 brew "caddy"
-# Multi-shell multi-command argument completer
-brew "carapace"
-# Cloudflare Tunnel client (formerly Argo Tunnel)
-brew "cloudflared"
 # Container runtimes on MacOS (and Linux) with minimal setup
 brew "colima", restart_service: :changed
 # Good-lookin' diffs with diff-highlight and more
 brew "diff-so-fancy"
-# Diff that understands syntax
-brew "difftastic"
 # Bash, Zsh and Fish completion for Docker
 brew "docker-completion"
 # Pack, ship and run any application as a lightweight container
@@ -39,32 +25,18 @@ brew "docker-buildx"
 brew "docker-compose"
 # Platform keystore credential helper for Docker
 brew "docker-credential-helper"
-# Embeddable SQL OLAP Database Management System
-brew "duckdb"
-# Modern, maintained replacement for ls
-brew "eza"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# GitHub command-line tool
-brew "gh"
-# Syntax-highlighting pager for git and diff output
-brew "git-delta"
-# Audit git repos for secrets
-brew "gitleaks"
+# Render markdown on the CLI
+brew "glow"
 # GNU grep, egrep and fgrep
 brew "grep"
 # Popular GNU data compression program
 brew "gzip"
 # Post-modern modal text editor
 brew "helix"
-# User-friendly cURL replacement (command-line HTTP client)
-brew "httpie"
-# Lightweight and flexible command-line JSON processor
-brew "jq"
-# Handy way to save and run project-specific commands
-brew "just"
 # Cross-platform software keyboard remapper for Linux, macOS and Windows
 brew "kanata"
 # Pager program similar to more
@@ -79,34 +51,18 @@ brew "mas"
 brew "mprocs"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
-# AI coding agent, built for the terminal
-brew "opencode"
-# CLI proxy to minimize LLM token consumption
-brew "rtk"
 # Fast and accurate code counter with complexity and COCOMO estimates
 brew "scc"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
-# Cross-shell prompt for astronauts
-brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # Extraction utility for .zip compressed archives
 brew "unzip"
-# Generator for LS_COLORS with support for multiple color themes
-brew "vivid"
-# Blazing fast terminal file manager written in Rust, based on async I/O
-brew "yazi"
-# Process YAML, JSON, XML, CSV and properties documents from the CLI
-brew "yq"
 # Pluggable terminal workspace, with terminal multiplexer as the base feature
 brew "zellij"
-# Shell extension to navigate your filesystem faster
-brew "zoxide"
-# Fish-like fast/unobtrusive autosuggestions for zsh
-brew "zsh-autosuggestions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
 # Tool for writing better scripts
@@ -115,18 +71,12 @@ brew "zx"
 brew "felixkratz/formulae/borders"
 # Terraform
 brew "hashicorp/tap/terraform"
-# A simple terminal UI for docker, written in Go
-brew "jesseduffield/lazydocker/lazydocker"
-# Session persistence for terminal processes
-brew "neurosnap/tap/zmx"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
 cask "1password-cli"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace"
-# Cross platform SQL editor and database management app
-cask "beekeeper-studio"
 # Universal chat app powered by Matrix
 cask "beeper"
 # Automated testing of webapps for Google Chrome
@@ -139,8 +89,6 @@ cask "cmux"
 cask "codex"
 # Write, edit, and chat about your code with AI
 cask "cursor"
-# Voice and text chat software
-cask "discord"
 # Collaborative team software
 cask "figma"
 # Privacy-focused Firefox-based browser
@@ -158,8 +106,6 @@ cask "linear"
 cask "linearmouse"
 # File system integration
 cask "macfuse"
-# Shows the next meeting in the menu bar
-cask "meetingbar"
 # Tool to control external monitor brightness & volume
 cask "monitorcontrol"
 # Reverse proxy, secure introspectable tunnels to localhost
@@ -178,6 +124,8 @@ cask "slack"
 cask "spotify"
 # System monitor for the menu bar
 cask "stats"
+# Native terminal coding agents command center
+cask "supacode"
 # Real time file synchronisation software
 cask "syncthing-app"
 # Multiplayer code editor
@@ -187,4 +135,15 @@ cask "zoom"
 mas "Equinox", id: 1591510203
 mas "Pandan", id: 1569600264
 mas "QuickShade", id: 931571202
-mas "Xcode", id: 497799835
+cargo "cargo-update"
+cargo "dprint"
+cargo "macchina"
+cargo "markdown-oxide"
+cargo "sccache"
+cargo "sd"
+cargo "starship"
+cargo "taplo-cli"
+cargo "yazi-cli"
+cargo "yazi-fm"
+cargo "zellij"
+cargo "zoxide"
