@@ -24,7 +24,7 @@
   rnum (layer-while-held rnum)
 
   spclnum (tap-hold $tap-time $hold-time spc (layer-toggle lnum))
-  spcrnum (tap-hold $tap-time $hold-time spc (layer-toggle rnum))
+  bspcrnum (tap-hold $tap-time $hold-time bspc (layer-toggle rnum))
 
   ;; This example is similar to the default caps-word behaviour but it moves the
   ;; 0-9 keys to the capitalized key list from the extra non-terminating key list.
@@ -41,6 +41,9 @@
   l (tap-hold $tap-time $hold-time l rmet)
   ; (tap-hold $tap-time $hold-time ; rctl)
 
+  down (tap-hold $tap-time $hold-time down rsft)
+  up (tap-hold 210 220 up ralt)
+  right (tap-hold $tap-time $hold-time rght rmet)
   meh  (multi ctl alt sft)
 )
 
@@ -63,7 +66,7 @@
   esc  q     w     e     r     t     y     u     i     o     p     bspc  XX
   tab    @a    @s    @d    @f    g     h     @j    @k    @l    @;        ret
   @capw    z     x     c     v     b     n     m     ,     .     /       XX
-            lalt    lmet        @spclnum @spcrnum    @meh    rmet
+            lalt    lmet        @spclnum @bspcrnum    @meh    rmet
 )
 
 ;; need 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
@@ -71,16 +74,16 @@
 ;; left thumb nums
 (deflayer lnum
   grv  1     2     3     4     5     6     7     8     9     0     -     =
-  XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
-  XX       XX    XX    XX    XX    XX    XX    [     ]     \     '       XX
+  XX     lctl  lmet  lalt  lsft  XX    left  @down  @up  @right  rctl      XX
+  XX       XX    XX    XX    XX    XX    XX    [     ]     '     \      XX
             XX      XX          _       @fn         XX      XX
 )
 
 ;; right thumb nums
 (deflayer rnum
   grv  1     2     3     4     5     6     7     8     9     0     -     =
-  XX     lctl  lmet  lalt  lsft  XX    XX    rsft  ralt  rmet  rctl      XX
-  XX       XX    XX    XX    XX    XX    XX    [     ]     \     '       XX
+  XX     lctl  lmet  lalt  lsft  XX    left  @down  @up  @right  rctl      XX
+  XX       XX    XX    XX    XX    XX    XX    [     ]     '     \      XX
             XX      XX          @fn     _           XX      XX
 )
 

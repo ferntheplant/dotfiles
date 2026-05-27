@@ -21,7 +21,7 @@ macos-option-as-alt = true
 
 custom-shader = shaders/cursor_smear.glsl
 
-unfocused-split-opacity = 0.7
+unfocused-split-opacity = 0.8
 unfocused-split-fill = #030303
 split-divider-color = #3C9629
 

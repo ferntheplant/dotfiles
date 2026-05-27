@@ -65,7 +65,7 @@ format = '\[[$symbol$context]($style)\]'
 detect_folders = ['docker', 'dab']
 
 [dotnet]
-format = '\[$symbol(🎯 $tfm )]($style)\]'
+format = '\[[$symbol]($style)\]'
 
 [elixir]
 format = '\[[$symbol]($style)\]'

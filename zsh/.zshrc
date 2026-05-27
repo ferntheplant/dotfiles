@@ -1,7 +1,7 @@
 autoload -U compinit
 compinit
 
-export EDITOR="/opt/nanobrew/prefix/bin/hx"
+export EDITOR="/opt/homebrew/bin/hx"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export CMUX_SOCKET_MODE=allowAll
 export CMUX_SOCKET_ENABLE=true
