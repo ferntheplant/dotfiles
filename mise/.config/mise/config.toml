@@ -6,6 +6,7 @@ uv = "latest"
 "pipx:mitmproxy" = "latest"
 zig = "latest"
 rust = "latest"
+pnpm = "latest"
 
 [settings]
 activate_aggressive = true

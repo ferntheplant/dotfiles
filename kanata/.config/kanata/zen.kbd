@@ -16,15 +16,17 @@
   hold-time 250
 )
 
+;; base layout
 (defalias
-  nav (layer-while-held nav)
-  sym (layer-while-held sym)
   fn (layer-while-held fn)
-  CRAZY (layer-toggle damb-alpha)
+  CRAZY (layer-switch crazy-alpha)
 
-  tabnav (tap-hold $tap-time $hold-time tab (layer-toggle nav))
-  spcnav (tap-hold $tap-time $hold-time spc (layer-toggle nav))
-  bspsym (tap-hold $tap-time $hold-time bspc (layer-toggle sym))
+  symnum (layer-toggle symnum)
+
+  bsym (tap-hold $tap-time $hold-time bspc (layer-toggle symnum))
+  ssym (tap-hold $tap-time $hold-time spc (layer-toggle symnum))
+
+  capw (caps-word 2000)
 
   ;; left hand home-row mods
   a (tap-hold $tap-time $hold-time a lctl)
@@ -33,134 +35,197 @@
   f (tap-hold $tap-time $hold-time f lsft)
   ;; right hand home-row mods
   j (tap-hold $tap-time $hold-time j rsft)
-  k (tap-hold $tap-time $hold-time k ralt)
+  k (tap-hold 210 220 k ralt)
   l (tap-hold $tap-time $hold-time l rmet)
   ; (tap-hold $tap-time $hold-time ; rctl)
+
+  down (tap-hold $tap-time $hold-time down rsft)
+  up (tap-hold 210 220 up ralt)
+  right (tap-hold $tap-time $hold-time rght rmet)
+  meh  (multi ctl alt sft)
 )
 
 (defsrc
-  q     w     e      r     t       y     u     i     o     p
-  a     s     d      f     g       h     j     k     l     ;
-  z     x     c      v     b       n     m     ,     .     /
-              lmet   tab   spc     ret   esc   ralt
+  q      w      e       r      t         y      u      i      o      p
+  a      s      d       f      g         h      j      k      l      ;
+  z      x      c       v      b         n      m      ,      .      /
+                lmet    tab    spc       ret    esc    ralt
 )
 
 (deflayer base
-  _     _     _      _     _       _     _     _     _     _
-  @a    @s    @d     @f    _       _     @j    @k    @l    @;
-  _     _     _      _     _       _     _     _     _     _
-              '      @spcnav tab     esc   @bspsym ret
+  _      _      _       _      _         _      _      _      _      _
+  @a     @s     @d      @f     _         _      @j     @k     @l     @;
+  _      _      _       _      _         _      _      _      _      _
+                esc     @ssym  tab       @meh   @bsym  ret
 )
 
-;; needs 0-9, -, =, [, ], \, ', ` (i.e. what's missing in base)
-;; simulate numpad and fill up remaining space
-(deflayer sym
-  grv   7     8      9     [       XX    XX    XX    XX    XX
-  -     4     5      6     ]       XX    rsft  ralt  rmet  rctl
-  =     1     2      3     '       XX    XX    XX    XX    XX
-              \      @fn   0       XX    _     XX
-)
-
-
-;; basically just arrow keys
-(deflayer nav
-  XX    XX    XX     XX    XX      XX    XX    XX    XX    XX
-  lctl  lmet  lalt   lsft  XX      lft   down  up    rght  XX
-  XX    XX    XX     XX    XX      home  pgdn  pgup  end   XX
-              XX     _     XX      XX    @fn   XX
+(deflayer symnum
+  1      2      3       4      5         6      7      8      9      0
+  lctl   lmet   lalt    lsft   XX        left   @down  @up    @right rctl
+  XX     grv    -       =      XX        @CRAZY [      ]      '      \
+                \       @fn    0         XX     _      XX
 )
 
 ;; keep home row mods in the same place to use with fkeys
 (deflayer fn
-  f1    f2    f3     f4    f5      f6    f7    f8    f9    f10
-  lctl  lmet  lalt   lsft  f11     f12   rsft  ralt  rmet  rctl
-  XX    prev  pp     next  XX      XX    voldwn volu  XX    XX
-              XX     _     XX      XX    _     XX
+  f1     f2     f3      f4     f5        f6     f7     f8     f9     f10
+  lctl   lmet   lalt    lsft   f11       f12    rsft   ralt   rmet   rctl
+  XX     prev   pp      next   XX        XX     voldwn volu   XX     XX
+                XX      _      XX        XX     _      XX
 )
 
 ;; ------------------------------------------------------------
-;; Damb keyboard layout
+;; crazy keyboard layout
 ;; ------------------------------------------------------------
 
-;; we're only using columns for index, middle, and ring finger + 2 keys for pinky
+;; we're only using columns for index, middle, and ring finger
+;; + 2 keys each for pinky and thumb
 ;; overall 28 key layout
+;; only allowing "strong" chords giving extra 6 per hand (index-middle and middle-ring)
+;; but chords are global so is 12 total not 12 per layer
+;; base 28 + 12 chords
+;; 27 left layer + 27 right layer
+;; 26 both layer
+;; total: 120 keys
+;;
 
 (defvar
-  combo-time 30
-  standard-layers (base nav sym fn)
+  combo-time 50
+  standard-layers (base symnum fn)
 )
 
 (defalias
-  damb-num (layer-while-held damb-num)
-  dtab-nav (tap-hold $tap-time $hold-time tab (layer-toggle damb-nav))
-  damb-fun (layer-while-held damb-fun)
-  EXIT (layer-toggle base)
+  ;; shifted sym and num
+  tilde S-grv
+  plus  S-=
+  bang S-1
+  at S-2
+  pound S-3
+  amp S-7
+  star S-8
+  doub S-'
+  lcur S-[
+  rcur S-]
+  pipe S-\
+  col S-;
+  lang S-,
+  rang S-.
+  qmar S-/
+
+  cspsym (tap-hold $tap-time $hold-time spc (layer-toggle crazy-sym))
+  cescsym (tap-hold $tap-time $hold-time esc (layer-toggle crazy-sym))
+  cretnum (tap-hold $tap-time $hold-time ret (layer-toggle crazy-num))
+  cbspnum (tap-hold $tap-time $hold-time bspc (layer-toggle crazy-num))
+  cfn (layer-toggle crazy-fun)
+  EXIT (layer-switch base)
+
+  ;; left hand NUM home-row mods
+  under (tap-hold $tap-time $hold-time S-- lctl)
+  cash (tap-hold $tap-time $hold-time S-4 lmet)
+  perc (tap-hold $tap-time $hold-time S-5 lalt)
+  caret (tap-hold $tap-time $hold-time S-6 lsft)
+  ;; right hand NUM home-row mods
+  four (tap-hold $tap-time $hold-time 4 rsft)
+  five (tap-hold 210 220 5 ralt)
+  six (tap-hold $tap-time $hold-time 6 rmet)
+  dash (tap-hold $tap-time $hold-time - rctl)
+
+  ;; left hand BASE home-row mods
+  ca (tap-hold $tap-time $hold-time a lctl)
+  cr (tap-hold $tap-time $hold-time r lmet)
+  cs (tap-hold $tap-time $hold-time s lalt)
+  ct (tap-hold $tap-time $hold-time t lsft)
+  ;; right hand BASE home-row mods
+  cn (tap-hold $tap-time $hold-time n rsft)
+  ce (tap-hold 210 220 e ralt)
+  ci (tap-hold $tap-time $hold-time i rmet)
+  co (tap-hold $tap-time $hold-time o rctl)
+
+  ;; left hand SYM home-row mods
+  cgrv (tap-hold $tap-time $hold-time grv lctl)
+  cquo (tap-hold $tap-time $hold-time ' lmet)
+  cbsl (tap-hold $tap-time $hold-time \ lalt)
+  csemi (tap-hold $tap-time $hold-time ; lsft)
+  ;; right hand SYM home-row mods
+  clef (tap-hold $tap-time $hold-time left rsft)
+  cdwn (tap-hold 210 220 down ralt)
+  crgt (tap-hold $tap-time $hold-time right rmet)
+  cend (tap-hold $tap-time $hold-time end rctl)
 )
 
-;; combos are anchored to the home key for that hand and add in the closest key to the target on an available finger
-;; this means for all alphas we only need to move at most 1 finger
+;; NOTE: the key input list is based on DEFSRC not the current layer
 (defchordsv2
-  (f w) q $combo-time first-release $standard-layers
-  (f e) t $combo-time first-release $standard-layers
-  (f d) g $combo-time first-release $standard-layers
-  (f c) b $combo-time first-release $standard-layers
-  (j o) p $combo-time first-release $standard-layers
-  (j i) y $combo-time first-release $standard-layers
-  (j k) h $combo-time first-release $standard-layers
-  (j ,) n $combo-time first-release $standard-layers
+  ;; left hand
+  (w e) q $combo-time first-release $standard-layers
+  (e r) b $combo-time first-release $standard-layers
+  (s d) [ $combo-time first-release $standard-layers
+  (d f) tab $combo-time first-release $standard-layers
+  (x c) @lcur $combo-time first-release $standard-layers
+  (c v) v $combo-time first-release $standard-layers
+  ;; right hand
+  (u i) j $combo-time first-release $standard-layers
+  (i o) k $combo-time first-release $standard-layers
+  (j k) tab $combo-time first-release $standard-layers
+  (k l) ] $combo-time first-release $standard-layers
+  (m ,) ; $combo-time first-release $standard-layers
+  (, .) @rcur $combo-time first-release $standard-layers
+  ;; meh
+  (d v) @meh 100 first-release $standard-layers
+  (m k) @meh 100 first-release $standard-layers
 )
 
-;; COMBOS: q, t, g, b, p, y, h, n
-;; extra possibility for tap-hold on num layer
-(deflayer damb-alpha
-  XX    w     e      r     XX      XX    u     i     o     @EXIT
-  @a    @s    @d     @f    XX      XX    @j    @k    @l    @;
-  z     x     c      v     XX      XX    m     ,     .     /
-              esc    @dtab-nav spc     bspc  @damb-num ret
+;; q, b, v, j, k, and tab via chords
+(deflayer crazy-alpha
+  XX     w      f       p      XX        XX     l      u      y      @EXIT
+  @ca    @cr    @cs     @ct    g         m      @cn    @ce    @ci    @co
+  z      x      c       d      XX        XX     h      ,      .      /
+                XX      spc    @cescsym  @cretnum bspc   XX
 )
 
-;; extra thumb key
-(deflayer damb-num
-  XX    9     8      7     XX      XX    XX    XX    XX    XX
-  -     6     5      4     XX      XX    rsft  ralt  rmet  rctl
-  =     3     2      1     XX      XX    XX    XX    XX    XX
-              XX     @damb-fun 0       XX    _     XX
+;; grv and @tilde on sym
+(deflayer crazy-num
+  XX     @amp   @star   lpar   XX        XX     7      8      9      XX
+  @under @cash  @perc   @caret rpar      0      @four  @five  @six   @dash
+  @plus  @bang  @at     @pound XX        XX     1      2      3      =
+                XX      XX     @cfn      _      XX     XX
 )
 
-;; extra pinky and both thumbs
-(deflayer damb-nav
-  XX    XX    XX     XX    XX      XX    [     ]     \     XX
-  lctl  lmet  lalt   lsft  XX      XX    lft   down  up    rght
-  XX    XX    XX     XX    XX      XX    ;     '     grv   XX
-              XX     _     XX      XX    @damb-fun XX
+;; [, ], @lcur, and @rcur via chords
+(deflayer crazy-sym
+  XX     XX     XX      XX     XX        XX     pgdn   up     pgup   XX
+  @cgrv  @cquo  @cbsl   @csemi XX        home   @clef  @cdwn  @crgt  @cend
+  @tilde @doub  @pipe   @col   XX        XX     XX     @lang  @rang  @qmar
+                XX      XX     _         @cfn   XX     XX
 )
 
-;; ok with using dead inner columns just for service keys on fun layer
-;; one extra key per pinky
-(deflayer damb-fun
-  XX    f1    f2     f3    pp      XX    f4    f5    f6    XX
-  lctl  lmet  lalt   lsft  voldwn  volu  rsft  ralt  rmet  rctl
-  XX    f7    f8     f9    prev    next  f10   f11   f12   XX
-              XX     _     XX      XX    _     XX
+;; double pp for symmetry
+(deflayer crazy-fun
+  XX     f1     f2      f3     XX        XX     f4     f5     f6     XX
+  lctl   lmet   lalt    lsft   voldwn    volu   rsft   ralt   rmet   rctl
+  prev   f7     f8      f9     pp        pp     f10    f11    f12    next
+                XX      XX     _         _      XX     XX
 )
+
+;; total 8 extra keys
+;; 1 thumb on num
+;; 1 thumb on sym
+;; 5 on sym
+;; 1 on double pp
 
 ;; needed keys:
 ;; mods: ctl, met, alt, sft (4) => but all can be tap-hold mods so becomes (0)
 ;; alpha: a b c d e f g h i j k l m n o p q r s t u v w x y z (26)
-;; num: 1 2 3 4 5 6 7 8 9 0 (10)
-;; sym: - = [ ] \ ; ' , . / ` (11)
+;; num: 1 2 3 4 5 6 7 8 9 0     (10)
+;; symnum: ! @ # $ % ^ & * ( )  (10)
+;; sym: - = [ ] \ ; ' , . / `   (11)
+;; shsym: _ + { } | : " < > ? ~ (11)
 ;; cursor: spc tab esc ret bspc (5)
-;; nav: lft dwn up rght (4)
+;; nav: lft dwn up rght         (4)
+;; cursor: home end pgup pgdwn  (4)
 ;; ------------------------
 ;; service: prev pp next voldwn volu (5)
 ;; fun: f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 (12)
-;; TOTAL: 26 + 21 + 5 + 4 + 5 + 12 = 73 keys
-
-;; 22 main keys and 6 thumbs per layer => 28 keys base layer and fun layer
-;; side layers only get 11 main keys and 2 thumbs => 13 keys per side layer
-;; => at least 3 layers worth of keys (homerow mods already included via tap-hold)
-;; not counting possibly dedicated keys for layer switching
-;; all keys must also be accessible with homerow mods from other the other hand
+;; TOTAL: 26 + 20 + 22 + 5 + 4 + 4 + 5 + 12 = 98 keys
 
 ;; other considerations:
 ;; if absolutely necessary fun and service can be dropped (in that order)
