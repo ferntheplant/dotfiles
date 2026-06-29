@@ -10,12 +10,6 @@ get_config_for_device() {
     "Apple Internal Keyboard"|"Magic Keyboard")
       echo "macbook"
       ;;
-    "Advantage2 Keyboard")
-      echo "advantage"
-      ;;
-    "AVA")
-      echo "ava"
-      ;;
     "Corne-ish Zen")
       echo "zen"
       ;;
@@ -45,8 +39,6 @@ get_available_devices() {
   local devices=(
     "Apple Internal Keyboard"
     "Magic Keyboard"
-    "Advantage2 Keyboard"
-    "AVA"
     "Corne-ish Zen"
     "Agar Mini BLE (USB)"
   )

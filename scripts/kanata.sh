@@ -5,10 +5,6 @@ set -euo pipefail
 # Add more config files here as needed
 CONFIG_FILES=(
   "macbook.kbd"
-  "advantage.kbd"
-  "ava.kbd"
-  "zen.kbd"
-  "agar.kbd"
 )
 
 # Base paths

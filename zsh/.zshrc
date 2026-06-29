@@ -1,7 +1,7 @@
 autoload -U compinit
 compinit
 
-export EDITOR="/opt/homebrew/bin/hx"
+export EDITOR="/opt/nanobrew/prefix/bin/hx"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export CMUX_SOCKET_MODE=allowAll
 export CMUX_SOCKET_ENABLE=true
@@ -18,6 +18,9 @@ alias g="git"
 alias bathelp="bat --plain --language=help"
 alias -g -- --help='--help 2>&1 | bathelp'
 alias zm="zmx"
+alias ghch="gh pr checks --watch"
+alias ghgr="gh pr comment -b '@greptile review'"
+alias ghpr="gh pr create --fill"
 
 # Function to capture command start time
 preexec() {
@@ -164,3 +167,5 @@ zms() {
     return
   done
 }
+
+source /Users/fjorn/.daytona.completion_script.zsh

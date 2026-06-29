@@ -32,5 +32,77 @@
   "automation": {
     "claudeCodeIntegration": false,
     "socketControlMode": "allowAll"
-  }
+  },
+  "commands": [
+    {
+      "name": "tycho-worktree",
+      "description": "Tycho worktree dev environment: agent, shell, client, and server",
+      "keywords": ["tycho", "worktree", "dev", "client", "server"],
+      "workspace": {
+        "name": "Tycho Worktree",
+        "cwd": ".",
+        "layout": {
+          "direction": "vertical",
+          "split": 0.5,
+          "children": [
+            {
+              "pane": {
+                "surfaces": [
+                  {
+                    "type": "terminal",
+                    "name": "agent",
+                    "focus": true
+                  }
+                ]
+              }
+            },
+            {
+              "direction": "horizontal",
+              "split": 0.5,
+              "children": [
+                {
+                  "pane": {
+                    "surfaces": [
+                      {
+                        "type": "terminal",
+                        "name": "shell"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "direction": "vertical",
+                  "split": 0.5,
+                  "children": [
+                    {
+                      "pane": {
+                        "surfaces": [
+                          {
+                            "type": "terminal",
+                            "name": "client",
+                            "command": "pnpm run client"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "pane": {
+                        "surfaces": [
+                          {
+                            "type": "terminal",
+                            "name": "server",
+                            "command": "pnpm run server"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
 }
