@@ -7,6 +7,15 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "icon_theme": {
+    "mode": "light",
+    "light": "Warm Charmed Icons",
+    "dark": "Warm Charmed Icons"
+  },
+  "minimap": {
+    "show": "auto"
+  },
+  "colorize_brackets": true,
   "ssh_connections": [
     {
       "host": "lil-homie",
@@ -20,21 +29,13 @@
       ]
     }
   ],
-  "agent_servers": {
-    "opencode": {
-      "type": "extension",
-      "favorite_models": [],
-      "default_config_options": {},
-      "favorite_config_option_values": {}
-    }
-  },
   "which_key": { "enabled": true, "delay_ms": 100 },
 	"disable_ai": true,
  "edit_predictions": {
 		"provider": "zed",
   "disabled_globs": [".env*"]
 	},
-	"format_on_save": "on",
+	"format_on_save": "off",
 	"tabs": {
 		"show_diagnostics": "errors",
 		"close_position": "right",
@@ -46,19 +47,20 @@
 		"show_onboarding_banner": false,
 		"show_project_items": true,
 		"show_branch_name": true,
-		"show_branch_icon": false
 	},
 	"debugger": {
 		"button": false
 	},
 	"search": {
-		"button": false
+		"center_on_match": true,
+  "button": false
 	},
 	"diagnostics": {
 		"button": false
 	},
 	"status_bar": {
-		"cursor_position_button": true,
+		"experimental.show": true,
+  "cursor_position_button": true,
 		"active_language_button": true
 	},
 	"helix_mode": true,
@@ -85,12 +87,11 @@
 		"show": true
 	},
 	"cursor_shape": "block",
-	"use_system_window_tabs": false,
-	"buffer_font_fallbacks": ["MesloLGS NF"],
+	"use_system_window_tabs": true,
+	"buffer_font_fallbacks": [
+    "monospace"
+  ],
 	"buffer_font_family": "Monaspace Neon",
-	"file_types": {
-		"plaintext": [".eslintignore"]
-	},
 	"linked_edits": true,
 	"show_whitespaces": "boundary",
 	"ensure_final_newline_on_save": true,
@@ -102,8 +103,8 @@
 	"ui_font_size": 16,
 	"buffer_font_size": 12,
 	"theme": {
-		"mode": "system",
-		"light": "Rosé Pine Dawn",
+		"mode": "light",
+		"light": "One Light",
 		"dark": "Catppuccin Macchiato"
 	},
 	"cursor_blink": false,
@@ -117,37 +118,81 @@
 	"agent": {
 		"dock": "left"
 	},
-	"lsp": {
-		"biome": {
-			"settings": {
-				"require_config_file": true
-			}
-		}
-	},
 	"languages": {
 		"JavaScript": {
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      }
+      "colorize_brackets": true,
+      "linked_edits": true,
+      "show_whitespaces": "boundary",
+      "ensure_final_newline_on_save": true,
+      "format_on_save": "off",
+      "wrap_guides": [
+        80
+      ],
+      "soft_wrap": "none",
+      "hard_tabs": false,
+      "tab_size": 2,
     },
     "TypeScript": {
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      }
+      "colorize_brackets": true,
+      "linked_edits": true,
+      "show_whitespaces": "boundary",
+      "ensure_final_newline_on_save": true,
+      "format_on_save": "off",
+      "wrap_guides": [
+        80
+      ],
+      "soft_wrap": "none",
+      "hard_tabs": false,
+      "tab_size": 2,
     },
     "TSX": {
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": {
-         "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      }
+      "colorize_brackets": true,
+      "linked_edits": true,
+      "show_whitespaces": "boundary",
+      "ensure_final_newline_on_save": true,
+      "format_on_save": "off",
+      "wrap_guides": [
+        80
+      ],
+      "soft_wrap": "none",
+      "hard_tabs": false,
+      "tab_size": 2,
     },
-		"JSON": { "formatter": { "language_server": { "name": "biome" } } },
-		"JSONC": { "formatter": { "language_server": { "name": "biome" } } },
-		"CSS": { "formatter": { "language_server": { "name": "biome" } } }
+		"JSON": { "colorize_brackets": true,
+            "linked_edits": true,
+            "show_whitespaces": "boundary",
+            "ensure_final_newline_on_save": true,
+            "format_on_save": "off",
+            "wrap_guides": [
+                80
+            ],
+            "soft_wrap": "none",
+            "hard_tabs": false,
+            "tab_size": 2,
+    },
+		"JSONC": { "colorize_brackets": true,
+             "linked_edits": true,
+             "show_whitespaces": "boundary",
+             "ensure_final_newline_on_save": true,
+             "format_on_save": "off",
+             "wrap_guides": [
+                 80
+             ],
+             "soft_wrap": "none",
+             "hard_tabs": false,
+             "tab_size": 2,
+    },
+		"CSS": { "colorize_brackets": true,
+           "linked_edits": true,
+           "show_whitespaces": "boundary",
+           "ensure_final_newline_on_save": true,
+           "format_on_save": "off",
+           "wrap_guides": [
+              80
+           ],
+           "soft_wrap": "none",
+           "hard_tabs": false,
+           "tab_size": 2,
+    }
 	}
 }
