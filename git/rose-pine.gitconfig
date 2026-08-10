@@ -1,0 +1,61 @@
+[delta "rose-pine-dawn"]
+	blame-palette = "#faf4ed #f4ede8 #f2e9e1 #dfdad9 #cecacd"
+	commit-decoration-style = box ul
+	light = true
+	file-decoration-style = "#575279"
+	file-style = "#575279"
+	hunk-header-decoration-style = box ul
+	hunk-header-file-style = bold
+	hunk-header-line-number-style = bold "#797593"
+	hunk-header-style = file line-number syntax
+	line-numbers-left-style = "#dfdad9"
+	line-numbers-minus-style = bold "#b4637a"
+	line-numbers-plus-style = bold "#56949f"
+	line-numbers-right-style = "#dfdad9"
+	line-numbers-zero-style = "#dfdad9"
+	# 25% red 75% base
+	minus-emph-style = bold syntax "#e8d0d0"
+	# 10% red 90% base
+	minus-style = syntax "#f3e5e1"
+	# 25% green 75% base
+	plus-emph-style = bold syntax "#d1dcd9"
+	# 10% green 90% base
+	plus-style = syntax "#e9eae5"
+	map-styles = \
+		bold purple => syntax "#dfd5dc", \
+		bold blue => syntax "#c5d1d2", \
+		bold cyan => syntax "#d1dcd9", \
+		bold yellow => syntax "#f6debe"
+	# Should match the name of the bat theme
+	syntax-theme = rose-pine-dawn
+
+[delta "rose-pine-moon"]
+	blame-palette = "#232136 #1f1d2e #1a1826 #393552 #44415a"
+	commit-decoration-style = box ul
+	dark = true
+	file-decoration-style = "#e0def4"
+	file-style = "#e0def4"
+	hunk-header-decoration-style = box ul
+	hunk-header-file-style = bold
+	hunk-header-line-number-style = bold "#908caa"
+	hunk-header-style = file line-number syntax
+	line-numbers-left-style = "#44415a"
+	line-numbers-minus-style = bold "#eb6f92"
+	line-numbers-plus-style = bold "#9ccfd8"
+	line-numbers-right-style = "#44415a"
+	line-numbers-zero-style = "#44415a"
+	# 25% red 75% base
+	minus-emph-style = bold syntax "#55344d"
+	# 10% red 90% base
+	minus-style = syntax "#37283f"
+	# 25% green 75% base
+	plus-emph-style = bold syntax "#414c5e"
+	# 10% green 90% base
+	plus-style = syntax "#2f3246"
+	map-styles = \
+		bold purple => syntax "#63567c", \
+		bold blue => syntax "#2d4d66", \
+		bold cyan => syntax "#536676", \
+		bold yellow => syntax "#776150"
+	# Should match the name of the bat theme
+	syntax-theme = rose-pine-moon

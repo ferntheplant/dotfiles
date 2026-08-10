@@ -67,9 +67,9 @@
 [merge]
 	conflictstyle = zdiff3
 [include]
-	path = "~/dotfiles/git/catppuccin.gitconfig"
+	path = "~/dotfiles/git/rose-pine.gitconfig"
 [delta]
-    features = rose-pine-dawn
+    features = rose-pine-moon
     # side-by-side = true
 	line-numbers = true
 [status]

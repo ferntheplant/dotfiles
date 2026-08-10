@@ -168,15 +168,6 @@ setup_zsh_themes() {
         git clone https://github.com/Aloxaf/fzf-tab ~/.zsh/fzf-tab
     fi
 
-    # Clone and setup catppuccin theme
-    if [[ ! -d ~/zsh-catppuccin-highlighting-theme ]]; then
-        git clone https://github.com/catppuccin/zsh-syntax-highlighting.git ~/zsh-catppuccin-highlighting-theme
-        cd ~/zsh-catppuccin-highlighting-theme
-        cp -v themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh ~/.zsh/catppuccin-macchiato-zsh-syntax-highlighting.zsh
-        cp -v themes/catppuccin_latte-zsh-syntax-highlighting.zsh ~/.zsh/catppuccin-latte-zsh-syntax-highlighting.zsh
-        cd - > /dev/null
-    fi
-
     print_success "Zsh themes setup complete"
 }
 
