@@ -11,9 +11,11 @@
   ],
   "permission": {
     "external_directory": {
-      "/var/folders/**/T/**": "allow",
+      "*": "ask",
       "/tmp/**": "allow",
-      "*": "ask"
+      "/private/tmp/**": "allow",
+      "/var/folders/**/T/**": "allow",
+      "/private/var/folders/**/T/**": "allow"
     }
   },
   "provider": {
@@ -21,5 +23,19 @@
     "openai": {},
     // Detected opencode-go authentication; opencode-quota added this global provider declaration.
     "opencode-go": {}
+  },
+  "references": {
+    "effect": {
+      "repository": "Effect-TS/effect",
+      "description": "Use when writing or debugging Effect code"
+    },
+    "vite-plus": {
+      "repository": "voidzero-dev/vite-plus",
+      "description": "Use when debugging vite-plus configuration and execution"
+    },
+    "opencode": {
+      "repository": "anomalyco/opencode",
+      "description": "Use when implementing customizations to the local opencode installation"
+    }
   }
 }
