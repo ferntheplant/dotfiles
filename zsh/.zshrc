@@ -168,11 +168,5 @@ zms() {
   done
 }
 
-source /Users/fjorn/.daytona.completion_script.zsh
-
-# >>> railway initialize >>>
-source "$HOME/.railway/env"
-# <<< railway initialize <<<
-
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"

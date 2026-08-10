@@ -1,5 +1,4 @@
 alias leave-brew="brew bundle dump --file=./.Brewfile --force --describe --no-vscode"
-alias leave-cursor="cursor --list-extensions > cursor-extensions.txt"
 
 leave-machine() {
     echo "🚀 Leaving machine - capturing all package lists..."
@@ -13,8 +12,6 @@ leave-machine() {
     # Capture all package lists
     leave-brew
     echo "🔍 Brewfile captured"
-    leave-cursor
-    echo "🔍 Cursor extensions captured"
 
     # Git operations if -c flag is passed
     if [[ "$*" == *"-c"* ]]; then

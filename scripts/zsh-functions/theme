@@ -12,7 +12,6 @@ theme() {
 	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
 	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg --underscore
 	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.gitconfig\" --$theme_arg
-	# 	~/dotfiles/scripts/update-catppuccin.sh \"\$HOME/.config/zellij/config.kdl\" --$theme_arg
 	# Use lockf to atomically acquire lock and run all file updates
 	# -k: keep lock until command finishes
 	# -n: non-blocking (skip if lock can't be acquired)
@@ -23,7 +22,6 @@ theme() {
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.gitconfig\" --$theme_arg
-		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/zellij/config.kdl\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/leaf/config.toml\" --$theme_arg
 	" || {
 		# Lock couldn't be acquired (another instance is running), skip silently

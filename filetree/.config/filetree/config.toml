@@ -1,0 +1,13 @@
+# filetree preview configuration
+# The command for each entry is split on whitespace and executed directly
+# (no shell). `<filepath>` is replaced with the selected file's path.
+
+[preview]
+default = ["bat", "--color=always", "--style=numbers", "<filepath>"]
+
+[preview.extensions]
+# `ansi` forces colors even when stdout is piped (as the preview worker
+# does); bare `--inline` would render plain.
+md = ["leaf", "--inline", "ansi", "<filepath>"]
+markdown = ["leaf", "--inline", "ansi", "<filepath>"]
+txt = ["leaf", "--inline", "ansi", "<filepath>"]

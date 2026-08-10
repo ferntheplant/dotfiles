@@ -221,27 +221,6 @@ install_buildx() {
   print_success "buildx installed"
 }
 
-setup_cursor() {
-    print_status "Setting up Cursor..."
-
-    # Install extensions one by one to handle failures gracefully
-    while IFS= read -r extension; do
-        # Skip empty lines
-        if [ -z "$extension" ]; then
-            continue
-        fi
-
-        print_status "Installing extension: $extension"
-        if cursor --install-extension "$extension" 2>/dev/null; then
-            print_success "✓ Installed: $extension"
-        else
-            print_warning "✗ Failed to install: $extension"
-        fi
-    done < cursor-extensions.txt
-
-    print_success "Cursor setup complete"
-}
-
 # Function to make zsh default shell
 make_zsh_default() {
     print_status "Making Zsh default shell..."
@@ -334,7 +313,6 @@ main() {
 
     # Setup base tools
     setup_mise
-    setup_cursor
 
     # Setup tools
     setup_zsh_themes

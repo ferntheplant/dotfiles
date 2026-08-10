@@ -14,12 +14,14 @@
 (defvar
   tap-time 150
   hold-time 250
+  combo-time 50
+  standard-layers (base symnum fn)
 )
 
 ;; base layout
 (defalias
   fn (layer-while-held fn)
-  CRAZY (layer-switch crazy-alpha)
+  ;; CRAZY (layer-switch crazy-alpha)
 
   symnum (layer-toggle symnum)
 
@@ -45,6 +47,12 @@
   meh  (multi ctl alt sft)
 )
 
+(defchordsv2
+  ;; meh
+  (d v) @meh 100 first-release $standard-layers
+  (m k) @meh 100 first-release $standard-layers
+)
+
 (defsrc
   q      w      e       r      t         y      u      i      o      p
   a      s      d       f      g         h      j      k      l      ;
@@ -56,14 +64,14 @@
   _      _      _       _      _         _      _      _      _      _
   @a     @s     @d      @f     _         _      @j     @k     @l     @;
   _      _      _       _      _         _      _      _      _      _
-                esc     @ssym  tab       @meh   @bsym  ret
+                esc     @ssym  tab       @capw  @bsym  ret
 )
 
 (deflayer symnum
   1      2      3       4      5         6      7      8      9      0
   lctl   lmet   lalt    lsft   XX        left   @down  @up    @right rctl
-  XX     grv    -       =      XX        @CRAZY [      ]      '      \
-                \       @fn    0         XX     _      XX
+  XX     grv    -       =      XX        XX     [      ]      '      \
+                XX      @fn    XX        XX     @fn    XX
 )
 
 ;; keep home row mods in the same place to use with fkeys
@@ -89,122 +97,122 @@
 ;; total: 120 keys
 ;;
 
-(defvar
-  combo-time 50
-  standard-layers (base symnum fn)
-)
+;; (defvar
+;;   combo-time 50
+;;   standard-layers (base symnum fn)
+;; )
 
-(defalias
-  ;; shifted sym and num
-  tilde S-grv
-  plus  S-=
-  bang S-1
-  at S-2
-  pound S-3
-  amp S-7
-  star S-8
-  doub S-'
-  lcur S-[
-  rcur S-]
-  pipe S-\
-  col S-;
-  lang S-,
-  rang S-.
-  qmar S-/
+;; (defalias
+;;   ;; shifted sym and num
+;;   tilde S-grv
+;;   plus  S-=
+;;   bang S-1
+;;   at S-2
+;;   pound S-3
+;;   amp S-7
+;;   star S-8
+;;   doub S-'
+;;   lcur S-[
+;;   rcur S-]
+;;   pipe S-\
+;;   col S-;
+;;   lang S-,
+;;   rang S-.
+;;   qmar S-/
 
-  cspsym (tap-hold $tap-time $hold-time spc (layer-toggle crazy-sym))
-  cescsym (tap-hold $tap-time $hold-time esc (layer-toggle crazy-sym))
-  cretnum (tap-hold $tap-time $hold-time ret (layer-toggle crazy-num))
-  cbspnum (tap-hold $tap-time $hold-time bspc (layer-toggle crazy-num))
-  cfn (layer-toggle crazy-fun)
-  EXIT (layer-switch base)
+;;   cspsym (tap-hold $tap-time $hold-time spc (layer-toggle crazy-sym))
+;;   cescsym (tap-hold $tap-time $hold-time esc (layer-toggle crazy-sym))
+;;   cretnum (tap-hold $tap-time $hold-time ret (layer-toggle crazy-num))
+;;   cbspnum (tap-hold $tap-time $hold-time bspc (layer-toggle crazy-num))
+;;   cfn (layer-toggle crazy-fun)
+;;   EXIT (layer-switch base)
 
-  ;; left hand NUM home-row mods
-  under (tap-hold $tap-time $hold-time S-- lctl)
-  cash (tap-hold $tap-time $hold-time S-4 lmet)
-  perc (tap-hold $tap-time $hold-time S-5 lalt)
-  caret (tap-hold $tap-time $hold-time S-6 lsft)
-  ;; right hand NUM home-row mods
-  four (tap-hold $tap-time $hold-time 4 rsft)
-  five (tap-hold 210 220 5 ralt)
-  six (tap-hold $tap-time $hold-time 6 rmet)
-  dash (tap-hold $tap-time $hold-time - rctl)
+;;   ;; left hand NUM home-row mods
+;;   under (tap-hold $tap-time $hold-time S-- lctl)
+;;   cash (tap-hold $tap-time $hold-time S-4 lmet)
+;;   perc (tap-hold $tap-time $hold-time S-5 lalt)
+;;   caret (tap-hold $tap-time $hold-time S-6 lsft)
+;;   ;; right hand NUM home-row mods
+;;   four (tap-hold $tap-time $hold-time 4 rsft)
+;;   five (tap-hold 210 220 5 ralt)
+;;   six (tap-hold $tap-time $hold-time 6 rmet)
+;;   dash (tap-hold $tap-time $hold-time - rctl)
 
-  ;; left hand BASE home-row mods
-  ca (tap-hold $tap-time $hold-time a lctl)
-  cr (tap-hold $tap-time $hold-time r lmet)
-  cs (tap-hold $tap-time $hold-time s lalt)
-  ct (tap-hold $tap-time $hold-time t lsft)
-  ;; right hand BASE home-row mods
-  cn (tap-hold $tap-time $hold-time n rsft)
-  ce (tap-hold 210 220 e ralt)
-  ci (tap-hold $tap-time $hold-time i rmet)
-  co (tap-hold $tap-time $hold-time o rctl)
+;;   ;; left hand BASE home-row mods
+;;   ca (tap-hold $tap-time $hold-time a lctl)
+;;   cr (tap-hold $tap-time $hold-time r lmet)
+;;   cs (tap-hold $tap-time $hold-time s lalt)
+;;   ct (tap-hold $tap-time $hold-time t lsft)
+;;   ;; right hand BASE home-row mods
+;;   cn (tap-hold $tap-time $hold-time n rsft)
+;;   ce (tap-hold 210 220 e ralt)
+;;   ci (tap-hold $tap-time $hold-time i rmet)
+;;   co (tap-hold $tap-time $hold-time o rctl)
 
-  ;; left hand SYM home-row mods
-  cgrv (tap-hold $tap-time $hold-time grv lctl)
-  cquo (tap-hold $tap-time $hold-time ' lmet)
-  cbsl (tap-hold $tap-time $hold-time \ lalt)
-  csemi (tap-hold $tap-time $hold-time ; lsft)
-  ;; right hand SYM home-row mods
-  clef (tap-hold $tap-time $hold-time left rsft)
-  cdwn (tap-hold 210 220 down ralt)
-  crgt (tap-hold $tap-time $hold-time right rmet)
-  cend (tap-hold $tap-time $hold-time end rctl)
-)
+;;   ;; left hand SYM home-row mods
+;;   cgrv (tap-hold $tap-time $hold-time grv lctl)
+;;   cquo (tap-hold $tap-time $hold-time ' lmet)
+;;   cbsl (tap-hold $tap-time $hold-time \ lalt)
+;;   csemi (tap-hold $tap-time $hold-time ; lsft)
+;;   ;; right hand SYM home-row mods
+;;   clef (tap-hold $tap-time $hold-time left rsft)
+;;   cdwn (tap-hold 210 220 down ralt)
+;;   crgt (tap-hold $tap-time $hold-time right rmet)
+;;   cend (tap-hold $tap-time $hold-time end rctl)
+;; )
 
-;; NOTE: the key input list is based on DEFSRC not the current layer
-(defchordsv2
-  ;; left hand
-  (w e) q $combo-time first-release $standard-layers
-  (e r) b $combo-time first-release $standard-layers
-  (s d) [ $combo-time first-release $standard-layers
-  (d f) tab $combo-time first-release $standard-layers
-  (x c) @lcur $combo-time first-release $standard-layers
-  (c v) v $combo-time first-release $standard-layers
-  ;; right hand
-  (u i) j $combo-time first-release $standard-layers
-  (i o) k $combo-time first-release $standard-layers
-  (j k) tab $combo-time first-release $standard-layers
-  (k l) ] $combo-time first-release $standard-layers
-  (m ,) ; $combo-time first-release $standard-layers
-  (, .) @rcur $combo-time first-release $standard-layers
-  ;; meh
-  (d v) @meh 100 first-release $standard-layers
-  (m k) @meh 100 first-release $standard-layers
-)
+;; ;; NOTE: the key input list is based on DEFSRC not the current layer
+;; (defchordsv2
+;;   ;; left hand
+;;   (w e) q $combo-time first-release $standard-layers
+;;   (e r) b $combo-time first-release $standard-layers
+;;   (s d) [ $combo-time first-release $standard-layers
+;;   (d f) tab $combo-time first-release $standard-layers
+;;   (x c) @lcur $combo-time first-release $standard-layers
+;;   (c v) v $combo-time first-release $standard-layers
+;;   ;; right hand
+;;   (u i) j $combo-time first-release $standard-layers
+;;   (i o) k $combo-time first-release $standard-layers
+;;   (j k) tab $combo-time first-release $standard-layers
+;;   (k l) ] $combo-time first-release $standard-layers
+;;   (m ,) ; $combo-time first-release $standard-layers
+;;   (, .) @rcur $combo-time first-release $standard-layers
+;;   ;; meh
+;;   (d v) @meh 100 first-release $standard-layers
+;;   (m k) @meh 100 first-release $standard-layers
+;; )
 
-;; q, b, v, j, k, and tab via chords
-(deflayer crazy-alpha
-  XX     w      f       p      XX        XX     l      u      y      @EXIT
-  @ca    @cr    @cs     @ct    g         m      @cn    @ce    @ci    @co
-  z      x      c       d      XX        XX     h      ,      .      /
-                XX      spc    @cescsym  @cretnum bspc   XX
-)
+;; ;; q, b, v, j, k, and tab via chords
+;; (deflayer crazy-alpha
+;;   XX     w      f       p      XX        XX     l      u      y      @EXIT
+;;   @ca    @cr    @cs     @ct    g         m      @cn    @ce    @ci    @co
+;;   z      x      c       d      XX        XX     h      ,      .      /
+;;                 XX      spc    @cescsym  @cretnum bspc   XX
+;; )
 
-;; grv and @tilde on sym
-(deflayer crazy-num
-  XX     @amp   @star   lpar   XX        XX     7      8      9      XX
-  @under @cash  @perc   @caret rpar      0      @four  @five  @six   @dash
-  @plus  @bang  @at     @pound XX        XX     1      2      3      =
-                XX      XX     @cfn      _      XX     XX
-)
+;; ;; grv and @tilde on sym
+;; (deflayer crazy-num
+;;   XX     @amp   @star   lpar   XX        XX     7      8      9      XX
+;;   @under @cash  @perc   @caret rpar      0      @four  @five  @six   @dash
+;;   @plus  @bang  @at     @pound XX        XX     1      2      3      =
+;;                 XX      XX     @cfn      _      XX     XX
+;; )
 
-;; [, ], @lcur, and @rcur via chords
-(deflayer crazy-sym
-  XX     XX     XX      XX     XX        XX     pgdn   up     pgup   XX
-  @cgrv  @cquo  @cbsl   @csemi XX        home   @clef  @cdwn  @crgt  @cend
-  @tilde @doub  @pipe   @col   XX        XX     XX     @lang  @rang  @qmar
-                XX      XX     _         @cfn   XX     XX
-)
+;; ;; [, ], @lcur, and @rcur via chords
+;; (deflayer crazy-sym
+;;   XX     XX     XX      XX     XX        XX     pgdn   up     pgup   XX
+;;   @cgrv  @cquo  @cbsl   @csemi XX        home   @clef  @cdwn  @crgt  @cend
+;;   @tilde @doub  @pipe   @col   XX        XX     XX     @lang  @rang  @qmar
+;;                 XX      XX     _         @cfn   XX     XX
+;; )
 
-;; double pp for symmetry
-(deflayer crazy-fun
-  XX     f1     f2      f3     XX        XX     f4     f5     f6     XX
-  lctl   lmet   lalt    lsft   voldwn    volu   rsft   ralt   rmet   rctl
-  prev   f7     f8      f9     pp        pp     f10    f11    f12    next
-                XX      XX     _         _      XX     XX
-)
+;; ;; double pp for symmetry
+;; (deflayer crazy-fun
+;;   XX     f1     f2      f3     XX        XX     f4     f5     f6     XX
+;;   lctl   lmet   lalt    lsft   voldwn    volu   rsft   ralt   rmet   rctl
+;;   prev   f7     f8      f9     pp        pp     f10    f11    f12    next
+;;                 XX      XX     _         _      XX     XX
+;; )
 
 ;; total 8 extra keys
 ;; 1 thumb on num

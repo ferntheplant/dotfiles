@@ -1,7 +1,8 @@
 watch = true
 editor = "hx"
 
-theme = "rose-pine-dawn"
+theme = "rose-pine-moon"
+extras = ["txt", "json", "yaml", "jsonc", "toml"]
 
 # Colors and semantic roles are cross-referenced against the official Rose Pine
 # implementations for the closest analogous tools:
