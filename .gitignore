@@ -3,3 +3,10 @@ gh/.config/gh/hosts.yml
 **/*.mdb
 node_modules
 .env
+
+# opencode: everything is runtime/secret except quota-toast.jsonc
+opencode/.config/opencode/opencode-quota/*
+!opencode/.config/opencode/opencode-quota/quota-toast.jsonc
+opencode/.config/opencode/opencode-langfuse.json
+opencode/.config/opencode/package.json
+opencode/.config/opencode/package-lock.json
