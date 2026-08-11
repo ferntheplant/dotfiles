@@ -15,7 +15,8 @@
       "/tmp/**": "allow",
       "/private/tmp/**": "allow",
       "/var/folders/**/T/**": "allow",
-      "/private/var/folders/**/T/**": "allow"
+      "/private/var/folders/**/T/**": "allow",
+      "~/.local/share/opencode/repos/**": "allow"
     }
   },
   "provider": {
