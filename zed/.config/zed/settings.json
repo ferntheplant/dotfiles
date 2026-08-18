@@ -1,0 +1,148 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "edit_predictions": {
+    "allow_data_collection": "no",
+    "provider": "zed"
+  },
+  "colorize_brackets": true,
+  "tasks": {
+    "enabled": true
+  },
+  "inlay_hints": {
+    "enabled": false
+  },
+  "always_treat_brackets_as_autoclosed": false,
+  "vim": {
+    "cursor_shape": {
+      "insert": "bar"
+    }
+  },
+  "toolbar": {
+    "quick_actions": false,
+    "breadcrumbs": false
+  },
+  "minimap": {
+    "show": "never"
+  },
+  "gutter": {
+    "breakpoints": false,
+    "runnables": false
+  },
+  "drag_and_drop_selection": {
+    "enabled": false
+  },
+  "which_key": {
+    "enabled": true
+  },
+  "preview_tabs": {
+    "enable_preview_file_from_code_navigation": false,
+    "enable_preview_from_project_panel": false,
+    "enabled": false
+  },
+  "tabs": {
+    "show_close_button": "hover",
+    "file_icons": true,
+    "git_status": true
+  },
+  "tab_bar": {
+    "show_pinned_tabs_in_separate_row": false,
+    "show_nav_history_buttons": false,
+    "show": true
+  },
+  "title_bar": {
+    "show_user_picture": false,
+    "show_user_menu": false,
+    "show_sign_in": false,
+    "show_onboarding_banner": false,
+    "show_project_items": true,
+    "show_worktree_name": false,
+    "show_branch_name": true
+  },
+  "diagnostics": {
+    "button": true
+  },
+  "debugger": {
+    "button": false
+  },
+  "search": {
+    "button": false
+  },
+  "status_bar": {
+    "show_active_file": false,
+    "cursor_position_button": true
+  },
+  "terminal": {
+    "button": false,
+    "option_as_meta": true,
+    "font_family": "MesloLGS NF",
+    "env": {
+      "EDITOR": "zed --wait",
+      "VISUAL": "zed --wait"
+    }
+  },
+  "proxy": "",
+  "cursor_blink": false,
+  "agent_buffer_font_family": ".ZedSans",
+  "markdown_preview_code_font_family": "Monaspace Neon",
+  "markdown_preview_font_family": ".ZedSans",
+  "agent_buffer_font_size": 15.0,
+  "buffer_font_family": "Monaspace Neon",
+  "icon_theme": {
+    "mode": "system",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+    "anthropic_retention": false
+  },
+  "default_open_behavior": "existing_window",
+  "cli_default_open_behavior": "new_window",
+  "when_closing_with_no_tabs": "keep_window_open",
+  "accessible_mode": true,
+  "project_panel": {
+    "button": true,
+    "drag_and_drop": false,
+    "diagnostic_badges": true,
+    "git_status_indicator": true,
+    "dock": "right"
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "agent": {
+    "dock": "left",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "left"
+  },
+  "ui_font_size": 16.0,
+  "buffer_font_size": 13.0,
+  "theme": {
+    "mode": "system",
+    "light": "Rosé Pine Dawn",
+    "dark": "Rosé Pine Moon",
+  },
+  "helix_mode": true,
+  "wrap_guides": [80, 120],
+  "lsp": {
+    "markdownlint": {
+      "settings": {
+        "MD013": false
+      }
+    }
+  }
+}
