@@ -100,7 +100,7 @@
   "terminal": {
     "button": false,
     "option_as_meta": true,
-    "font_family": "MesloLGS NF",
+    "font_family": "MesloLGS Nerd Font Mono",
     "env": {
       "EDITOR": "zed --wait",
       "VISUAL": "zed --wait"
