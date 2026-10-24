@@ -1,0 +1,50 @@
+{
+  "name": "Ayu Glass",
+  "source": {
+    "url": "https://github.com/jansol/zed-ayu-glass",
+    "commit": "fe3fc57e93e96539b110f33ebdbc46f0fee57728",
+    "files": "themes/ayu-glass.json"
+  },
+  "notes": [
+    "A Zed theme, not a VS Code one: there's no VS Code Ayu Glass. lib/zed.mjs translates it.",
+    "The glass is window translucency (background.appearance: blurred). The editor/terminal backgrounds are used at full opacity, so the terminal tools get the tint without the see-through.",
+    "Zed's Ayu has no magenta (terminal.ansi.magenta is a second cyan) and no orange distinct from yellow. magenta uses Ayu's purple (constants) and orange its keyword orange, as Ayu's VS Code terminal does.",
+    "Zed's bright ANSI colors here are dimmed toward the background (bright red #83353b on dark, bright black is blue on light), unreadable as terminal brights. They're set to the normal hues, and bright black to fgSecondary so zsh autosuggestions stay legible."
+  ],
+  "variants": {
+    "dark": {
+      "name": "Ayu Glass Dark",
+      "file": "upstream/ayu-glass.json"
+    },
+    "mirage": {
+      "name": "Ayu Glass Mirage",
+      "file": "upstream/ayu-glass.json"
+    },
+    "light": {
+      "name": "Ayu Glass Light",
+      "file": "upstream/ayu-glass.json"
+    }
+  },
+  "pairs": {
+    "default": {
+      "dark": "dark",
+      "light": "light"
+    },
+    "mirage": {
+      "dark": "mirage",
+      "light": "light"
+    }
+  },
+  "overrides": {
+    "orange": "role:keyword",
+    "magenta": "role:constant",
+    "ansi.magenta": "role:magenta",
+    "ansi.brightBlack": "role:fgSecondary",
+    "ansi.brightRed": "role:red",
+    "ansi.brightGreen": "role:green",
+    "ansi.brightYellow": "role:yellow",
+    "ansi.brightBlue": "role:blue",
+    "ansi.brightMagenta": "role:magenta",
+    "ansi.brightCyan": "role:cyan"
+  }
+}

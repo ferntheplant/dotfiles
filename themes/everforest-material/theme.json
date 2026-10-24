@@ -1,0 +1,81 @@
+{
+  "name": "Everforest Material",
+  "source": {
+    "url": "https://github.com/albertsko/zed-everforest",
+    "commit": "ffdd7e7a68ea39eaf9d52af5dfd5f09edf74af72",
+    "files": "themes/everforest-material.json"
+  },
+  "notes": [
+    "A Zed theme (lib/zed.mjs translates it). The canonical Everforest is sainnhe/everforest; this is albertsko's Zed port, picked for its \"material\" variant.",
+    "material differs from the port's regular variant only in Zed chrome (panels, tabs and bars on bg0 instead of bg1/bg2). Syntax and terminal colors are the same, so the terminal tools mostly look like plain Everforest.",
+    "orange: the port's warning color is yellow; Everforest's orange is what it uses for operators.",
+    "bgActive: material puts every raised surface on bg0 (the editor background), leaving only the green hover tint. Helix popups and the statusline need a raised surface, so this uses bg2, which the port also uses for indent guides in every variant.",
+    "Light variants: the port swaps terminal black and white (black is a pale surface, white is the foreground), so text programs print in black disappeared. Swapped back: black = fg, white/brightWhite = bg2."
+  ],
+  "variants": {
+    "dark-hard": {
+      "name": "Everforest Material Dark Hard",
+      "file": "upstream/everforest-material.json",
+      "theme": "Everforest Dark Hard (material)"
+    },
+    "dark-medium": {
+      "name": "Everforest Material Dark Medium",
+      "file": "upstream/everforest-material.json",
+      "theme": "Everforest Dark Medium (material)"
+    },
+    "dark-soft": {
+      "name": "Everforest Material Dark Soft",
+      "file": "upstream/everforest-material.json",
+      "theme": "Everforest Dark Soft (material)"
+    },
+    "light-hard": {
+      "name": "Everforest Material Light Hard",
+      "file": "upstream/everforest-material.json",
+      "theme": "Everforest Light Hard (material)",
+      "overrides": {
+        "ansi.black": "role:fg",
+        "ansi.white": "role:bgActive",
+        "ansi.brightWhite": "role:bgActive"
+      }
+    },
+    "light-medium": {
+      "name": "Everforest Material Light Medium",
+      "file": "upstream/everforest-material.json",
+      "theme": "Everforest Light Medium (material)",
+      "overrides": {
+        "ansi.black": "role:fg",
+        "ansi.white": "role:bgActive",
+        "ansi.brightWhite": "role:bgActive"
+      }
+    },
+    "light-soft": {
+      "name": "Everforest Material Light Soft",
+      "file": "upstream/everforest-material.json",
+      "theme": "Everforest Light Soft (material)",
+      "overrides": {
+        "ansi.black": "role:fg",
+        "ansi.white": "role:bgActive",
+        "ansi.brightWhite": "role:bgActive"
+      }
+    }
+  },
+  "pairs": {
+    "medium": {
+      "dark": "dark-medium",
+      "light": "light-medium"
+    },
+    "hard": {
+      "dark": "dark-hard",
+      "light": "light-hard"
+    },
+    "soft": {
+      "dark": "dark-soft",
+      "light": "light-soft"
+    }
+  },
+  "defaultPair": "medium",
+  "overrides": {
+    "orange": "role:operator",
+    "bgActive": "role:indentGuide"
+  }
+}

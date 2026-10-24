@@ -1,0 +1,48 @@
+theme() {
+	# Draft generic version of scripts/zsh-functions/theme, for once a theme from themes/ is
+	# installed (see themes/README.md). To adopt, replace that file with this one.
+	#
+	#   theme light|dark
+	#
+	# THEME_SLUG picks the theme folder (default vitesse) and THEME_PAIR the light/dark pair
+	# from its theme.json (default: its defaultPair). Configs must already name one of the
+	# pair's two variants; this flips them to the requested mode.
+	local slug="${THEME_SLUG:-vitesse}"
+	local pairs_file="$HOME/dotfiles/themes/$slug/dist/pairs.sh"
+	[[ -f "$pairs_file" ]] || { echo "theme: no $pairs_file"; return 1; }
+	source "$pairs_file"
+
+	local pair="${THEME_PAIR:-$THEME_DEFAULT_PAIR}"
+	local dark_var="THEME_PAIR_${pair}_dark" light_var="THEME_PAIR_${pair}_light"
+	local dark="${(P)dark_var}" light="${(P)light_var}"
+	[[ -n "$dark" && -n "$light" ]] || { echo "theme: $slug has no pair \"$pair\""; return 1; }
+
+	local mode from to
+	if [[ "$1" == "light" ]]; then
+		mode=light from="$dark" to="$light"
+	else
+		mode=dark from="$light" to="$dark"
+	fi
+
+	local lock_file="$HOME/.cache/theme-update.lock"
+	mkdir -p "$HOME/.cache"
+	touch "$lock_file"
+
+	local update="$HOME/dotfiles/themes/scripts/update-theme.sh"
+	lockf -kn "$lock_file" sh -c "
+		'$update' \"\$HOME/.config/starship/starship.toml\" '$from' '$to'
+		'$update' \"\$HOME/.config/bat/config\" '$from' '$to'
+		'$update' \"\$HOME/.config/helix/config.toml\" '$from' '$to'
+		'$update' \"\$HOME/.config/btop/btop.conf\" '$from' '$to'
+		'$update' \"\$HOME/.gitconfig\" '$from' '$to'
+		'$update' \"\$HOME/.config/leaf/config.toml\" '$from' '$to'
+	" || {
+		echo "Theme update failed"
+		return 0
+	}
+
+	local to_us="${to//-/_}"
+	export LS_COLORS="$(vivid generate "$to")"
+	source "$HOME/.zsh/$to_us-fzf.zsh"
+	source "$HOME/.zsh/$to_us-zsh-syntax-highlighting.zsh"
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Vitesse",
+  "source": {
+    "url": "https://github.com/antfu/vscode-theme-vitesse",
+    "commit": "2862595c3d5d05fabfd5aeb50bcbb79ea2f8d85f",
+    "files": "themes/vitesse-{dark,dark-soft,light,light-soft}.json"
+  },
+  "notes": [
+    "Only Anthony Fu's repo is canonical. hamlim/vitesse-ghostty-theme, colinlienard/zed-vitesse-theme-refined and rafaeldellaquila/zsh-vitesse-theme were used as examples only.",
+    "Defaults to the soft pair because that's what Zed is set to (Vitesse Refined Soft).",
+    "upstream scripts/colors.ts defines a `decorator` color (#bd8f8f) that the generated theme never uses; decorators resolve to the function color, as they appear in VS Code.",
+    "Vitesse's palette in scripts/colors.ts has no separate class/interface token rules; those come from semanticTokenColors, which the palette reads.",
+    "Vitesse Black is left out; add upstream/vitesse-black.json and a variant to include it."
+  ],
+  "variants": {
+    "dark": {
+      "name": "Vitesse Dark",
+      "file": "upstream/vitesse-dark.json"
+    },
+    "dark-soft": {
+      "name": "Vitesse Dark Soft",
+      "file": "upstream/vitesse-dark-soft.json"
+    },
+    "light": {
+      "name": "Vitesse Light",
+      "file": "upstream/vitesse-light.json"
+    },
+    "light-soft": {
+      "name": "Vitesse Light Soft",
+      "file": "upstream/vitesse-light-soft.json"
+    }
+  },
+  "pairs": {
+    "soft": {
+      "dark": "dark-soft",
+      "light": "light-soft"
+    },
+    "default": {
+      "dark": "dark",
+      "light": "light"
+    }
+  },
+  "defaultPair": "soft",
+  "overrides": {}
+}

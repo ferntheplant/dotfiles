@@ -42,7 +42,7 @@ more specific repository instructions override these defaults.
 - Describe pull requests as they exist now, not as a history of discarded approaches. Avoid walls of text.
 
 ## 7. Learn in the right place
-- Put durable project guidance in `AGENTS.md`.
+- Put durable project guidance in the repository's own instruction file: `CLAUDE.md`, or `AGENTS.md` where the project keeps one.
 - Do not create agent-private memories instead of updating shared instructions.
 - Use skills for specialized repeatable workflows, not baseline behavior.
 

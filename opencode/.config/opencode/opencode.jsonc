@@ -20,8 +20,6 @@
     }
   },
   "provider": {
-    // Detected openai authentication; opencode-quota added this global provider declaration.
-    "openai": {},
     // Detected opencode-go authentication; opencode-quota added this global provider declaration.
     "opencode-go": {}
   },

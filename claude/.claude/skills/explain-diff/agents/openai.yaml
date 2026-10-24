@@ -1,0 +1,6 @@
+interface:
+  display_name: "Explain Diff"
+  short_description: "Explain a PR or code diff in a Whiteboard review"
+
+policy:
+  allow_implicit_invocation: false
