@@ -2,6 +2,8 @@ autoload -U compinit
 compinit
 
 export EDITOR="/opt/nanobrew/prefix/bin/hx"
+# The nanobrew hx binary still looks for its themes and grammars under Homebrew's Cellar
+export HELIX_RUNTIME="/opt/nanobrew/prefix/opt/helix/libexec/runtime"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 
 [[ ":$PATH:" != *":/opt/nanobrew/prefix/bin:"* ]] && path+=("/opt/nanobrew/prefix/bin")
