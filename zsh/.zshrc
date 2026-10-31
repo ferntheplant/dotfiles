@@ -3,8 +3,6 @@ compinit
 
 export EDITOR="/opt/nanobrew/prefix/bin/hx"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
-export CMUX_SOCKET_MODE=allowAll
-export CMUX_SOCKET_ENABLE=true
 
 [[ ":$PATH:" != *":/opt/nanobrew/prefix/bin:"* ]] && path+=("/opt/nanobrew/prefix/bin")
 [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]] && path+=("/opt/homebrew/bin")
@@ -44,14 +42,6 @@ precmd() {
 
     unset STARSHIP_COMMAND_START_SECONDS
   fi
-}
-
-function y() {
-  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-  command yazi "$@" --cwd-file="$tmp"
-  IFS= read -r -d '' cwd < "$tmp"
-  [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
-  rm -f -- "$tmp"
 }
 
 source "$HOME/dotfiles/scripts/zsh-functions/loader"
