@@ -2,6 +2,29 @@
 
 # Shared helper functions for kanata Raycast scripts
 
+# Resolve the kanata binary by absolute path. Raycast runs scripts with a
+# minimal PATH (/usr/bin:/bin:/usr/sbin:/sbin) that does not include
+# ~/.local/bin or other shell-rc PATH additions, so `command -v kanata`
+# can fail here even though it works fine from an interactive shell.
+resolve_kanata_bin() {
+  local candidates=(
+    "$HOME/.local/bin/kanata"
+    "/opt/homebrew/bin/kanata"
+    "/usr/local/bin/kanata"
+  )
+  local candidate
+  for candidate in "${candidates[@]}"; do
+    if [[ -x "$candidate" ]]; then
+      echo "$candidate"
+      return 0
+    fi
+  done
+
+  command -v kanata 2>/dev/null
+}
+
+KANATA_BIN="$(resolve_kanata_bin)"
+
 # Map device name to config file
 # Returns config name (without .kbd extension) for a given device name
 get_config_for_device() {
@@ -16,6 +39,9 @@ get_config_for_device() {
     "Agar Mini BLE (USB)")
       echo "agar"
       ;;
+    "Advantage2 Keyboard")
+      echo "advantage"
+      ;;
     *)
       echo ""
       ;;
@@ -26,8 +52,14 @@ get_config_for_device() {
 # Outputs device names to stdout, one per line
 get_available_devices() {
   local kanata_output
-  if ! kanata_output=$(kanata --list 2>/dev/null); then
-    echo "❌ Could not run 'kanata --list'" >&2
+
+  if [[ -z "$KANATA_BIN" ]]; then
+    echo "❌ Could not find kanata binary" >&2
+    return 1
+  fi
+
+  if ! kanata_output=$("$KANATA_BIN" --list 2>/dev/null); then
+    echo "❌ Could not run '$KANATA_BIN --list'" >&2
     return 1
   fi
 
@@ -41,6 +73,7 @@ get_available_devices() {
     "Magic Keyboard"
     "Corne-ish Zen"
     "Agar Mini BLE (USB)"
+    "Advantage2 Keyboard"
   )
 
   for device in "${devices[@]}"; do

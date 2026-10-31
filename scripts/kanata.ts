@@ -6,6 +6,8 @@ import { $, fs } from 'zx'
 // Add more config files here as needed
 const CONFIG_FILES = [
   "macbook.kbd",
+  "advantage.kbd",
+  "agar.kbd",
 ]
 
 // Base paths
@@ -110,10 +112,6 @@ if (!await fs.pathExists(USER_CONFIG_DIR)) {
   die(`Kanata config directory not found at: ${USER_CONFIG_DIR}
 Make sure your dotfiles install ran first.`)
 }
-
-// --- Install Kanata ---
-say('Installing kanata via Homebrew...')
-await $`brew install kanata`.quiet().catch(() => $`brew upgrade kanata`)
 
 const KANATA_BIN = await $`command -v kanata`.quiet()
 say(`Using kanata at: ${KANATA_BIN.stdout.trim()}`)

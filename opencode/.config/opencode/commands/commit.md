@@ -1,7 +1,7 @@
 ---
 description: Stage changes, generate a conventional commit, and commit
 agent: committer
-subtask: true
+subagent: true
 ---
 
 Create a git commit from the current working tree.
