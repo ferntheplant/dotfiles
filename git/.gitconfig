@@ -39,7 +39,6 @@
 [diff]
 	colorMoved = plain
 	mnemonicPrefix = true
-	renames = true
 	algorithm = histogram
 	context = 3
 	renames = copies
@@ -69,7 +68,7 @@
 [include]
 	path = "~/dotfiles/git/rose-pine.gitconfig"
 [delta]
-    features = rose-pine-moon
+    features = rose-pine-dawn
     # side-by-side = true
 	line-numbers = true
 [status]

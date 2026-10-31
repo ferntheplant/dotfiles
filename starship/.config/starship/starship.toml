@@ -1,7 +1,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = true
-palette = "rose-pine-moon"
+palette = "rose-pine-dawn"
 continuation_prompt = '▶▶ '
 
 [env_var.ZMX_SESSION]
