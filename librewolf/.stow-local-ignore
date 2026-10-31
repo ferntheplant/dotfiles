@@ -1,0 +1,5 @@
+# Stow links only .librewolf/ into ~. The other files are browser exports and userChrome.css,
+# which go into the profile by hand (see the README setup steps).
+^/[^.].*
+^/\.DS_Store$
+^/\.stow-local-ignore$

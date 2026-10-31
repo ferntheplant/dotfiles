@@ -12,9 +12,9 @@ fixed_location="$HOME/dotfiles"
 profile="$(cat "$fixed_location/.work/profile" 2>/dev/null || echo desktop)"
 
 # Directories that are not stow packages
-IGNORE_LIST=("floorp" "handy" "node_modules" "raycast" "stats" "stylus" "themes")
+IGNORE_LIST=("handy" "node_modules" "raycast" "stats" "themes")
 # Packages for apps that the server profile does not install
-DESKTOP_ONLY=("aerospace" "kanata" "linearmouse" "zed")
+DESKTOP_ONLY=("aerospace" "kanata" "librewolf" "linearmouse" "zed")
 
 cd "$fixed_location"
 

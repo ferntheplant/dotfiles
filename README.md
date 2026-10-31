@@ -8,7 +8,7 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | Profile | Packages | Stow packages |
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
-| `server` (lil-homie) | `.Nanobrewfile` only | all except aerospace, kanata, linearmouse, and zed |
+| `server` (lil-homie) | `.Nanobrewfile` only | all except aerospace, kanata, librewolf, linearmouse, and zed |
 
 ```bash
 nb bundle install .Nanobrewfile
@@ -77,10 +77,16 @@ cd ~/dotfiles && git pull --ff-only && scripts/install.sh # sync after a push
    mise install
    ```
 
-7. Set up Floorp:
-   - install `floorp/userChrome.css`
-   - install the add-ons in `floorp/addons.json`
-   - import the Stylus, Violentmonkey, Vimium, and Dark Reader settings from `floorp/`
+7. Set up LibreWolf. `install.sh` already linked `~/.librewolf/librewolf.overrides.cfg`, which keeps
+   cookies and site data when LibreWolf closes and loads `userChrome.css`.
+   - link `librewolf/userChrome.css` to `chrome/userChrome.css` in the profile (`about:profiles`)
+   - install the add-ons in `librewolf/addons.json`
+   - import the Vimium and Dark Reader settings from `librewolf/`
+   - import `librewolf/sidebery-data.json` in Sidebery: Settings > Help > Import addon data
+   - in `about:addons` > Manage Extension Shortcuts, set Sidebery's sidebar shortcut to Ctrl+B
+   - link the 1Password native messaging files from
+     `~/Library/Application Support/Mozilla/NativeMessagingHosts` into
+     `~/Library/Application Support/librewolf/NativeMessagingHosts`
 8. Launch the apps that add themselves to the login items: Hidden Bar, Pandan, macshot, Handy, and
    Syncthing. Add AeroSpace to the login items by hand.
 9. Load the newest Raycast export from `raycast/` and the Stats config from `stats/Stats.plist`.
@@ -94,7 +100,10 @@ lists and exports the Handy settings.
 
 ```bash
 cd ~/dotfiles
-# Floorp: export Stylus, Violentmonkey, Vimium, and Dark Reader settings; run get-addons-list.js
+# LibreWolf: export Vimium and Dark Reader settings
+bun librewolf/get-addons-list.js ~/Library/Application\ Support/librewolf/Profiles/<profile>
+# Sidebery: Settings > Help > Export addon data, without snapshots; then drop the favicon data
+jq 'del(.favicons, .favDomains, .favHashes)' ~/Downloads/sidebery-data-*.json > librewolf/sidebery-data.json
 # Stats: export settings to stats/Stats.plist
 # Raycast: "Export Settings and Data" to ~/dotfiles/raycast
 scripts/rex-settings.sh export
@@ -261,11 +270,11 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | aerospace | nanobrew | `.config/aerospace/aerospace.toml` | yes |
 | agentsview | nanobrew | null | |
 | beeper | nanobrew | null | |
-| floorp | nanobrew | `dotfiles/floorp` | |
 | ghostty | nanobrew | `.config/ghostty` | |
 | handy | nanobrew | `dotfiles/handy/settings.json` via `scripts/handy-settings.sh` | |
 | hiddenbar | nanobrew | `scripts/macos-defaults.sh` | yes |
 | latest | nanobrew | null | yes |
+| librewolf | nanobrew | `.librewolf/librewolf.overrides.cfg`, `dotfiles/librewolf` | |
 | linearmouse | nanobrew | `.config/linearmouse` | yes |
 | macshot | nanobrew | null | yes |
 | monitorcontrol | nanobrew | null | yes |

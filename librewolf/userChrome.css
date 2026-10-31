@@ -1,0 +1,7 @@
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+/* Hide the horizontal tab strip: Sidebery shows the tabs in the sidebar.
+   On macOS the window buttons live in this toolbar, so they hide too. */
+#TabsToolbar {
+  visibility: collapse !important;
+}
