@@ -9,6 +9,10 @@ set -euo pipefail
 defaults write -globalDomain NSStatusItemSpacing -int 4
 defaults write -globalDomain NSStatusItemSelectionPadding -int 2
 
+# Mission Control: "Displays have separate Spaces" on. Paneru does not start without it.
+# macOS reads this at login.
+defaults write com.apple.spaces spans-displays -bool false
+
 # Hidden Bar (com.dwarvesv.minimalbar)
 hiddenbar=com.dwarvesv.minimalbar
 defaults write "$hiddenbar" alwaysHiddenSectionEnabled -bool false
@@ -18,4 +22,4 @@ defaults write "$hiddenbar" isAutoStart -bool true
 defaults write "$hiddenbar" numberOfSecondForAutoHide -int 5
 defaults write "$hiddenbar" useFullStatusBarOnExpandEnabled -bool true
 
-echo "✅ Wrote macOS defaults. Log out and back in to apply the menu bar spacing."
+echo "✅ Wrote macOS defaults. Log out and back in to apply the menu bar spacing and Spaces setting."

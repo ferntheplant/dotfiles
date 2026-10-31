@@ -14,7 +14,7 @@ profile="$(cat "$fixed_location/.work/profile" 2>/dev/null || echo desktop)"
 # Directories that are not stow packages
 IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 # Packages for apps that the server profile does not install
-DESKTOP_ONLY=("aerospace" "kanata" "librewolf" "linearmouse" "zed")
+DESKTOP_ONLY=("kanata" "librewolf" "linearmouse" "paneru" "zed")
 
 cd "$fixed_location"
 

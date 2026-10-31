@@ -8,7 +8,7 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | Profile | Packages | Stow packages |
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
-| `server` (lil-homie) | `.Nanobrewfile` only | all except aerospace, kanata, librewolf, linearmouse, and zed |
+| `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, linearmouse, paneru, and zed |
 
 ```bash
 nb bundle install .Nanobrewfile
@@ -88,15 +88,19 @@ cd ~/dotfiles && git pull --ff-only && scripts/install.sh # sync after a push
      `~/Library/Application Support/Mozilla/NativeMessagingHosts` into
      `~/Library/Application Support/librewolf/NativeMessagingHosts`
 8. Launch the apps that add themselves to the login items: Hidden Bar, Pandan, macshot, Handy,
-   Syncthing, Tinycast, and Vorssaint. Add AeroSpace to the login items by hand.
+   Syncthing, Tinycast, and Vorssaint. Run `paneru install` to add the Paneru launch agent, then
+   `paneru start`, and give Paneru Accessibility access when macOS asks. Paneru stops with an
+   error until "Displays have separate Spaces" is on; `scripts/macos-defaults.sh` turns it on, and
+   it applies after step 11.
 9. Set up Tinycast: Settings > Backup > Import, and pick `tinycast/settings.tinycast`. It restores
    the settings, hotkeys (Cmd+Space), quicklinks, and the custom commands that run
    `tinycast/commands`, with Show confirmation on. `tinycast/quicklinks.json` is a readable copy of
    the quicklinks; do not import it too, or the quicklinks appear twice.
 10. Set up Vorssaint: Settings > Backup > Import settings…, and pick `vorssaint/settings.plist`.
     Vorssaint restarts with the CPU temperature readout, Fan Control, and Keep Awake. Tinycast and
-    AeroSpace do the launcher, clipboard, and window jobs.
-11. Log out and back in, so that the menu bar spacing from `scripts/macos-defaults.sh` applies.
+    Paneru do the launcher, clipboard, and window jobs.
+11. Log out and back in, so that the menu bar spacing and the Spaces setting from
+    `scripts/macos-defaults.sh` apply.
 
 ## Leave a machine
 
@@ -198,8 +202,6 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 - `mise`: a tool in `.config/mise/config.toml`; every machine gets it, the server too
 - `manual`: the installer script from the vendor (see the setup steps)
 
-`borders` is in `.Nanobrewfile.desktop`, but Homebrew installed it, not nanobrew.
-
 | Tool | Source | Config |
 | --- | --- | --- |
 | atuin | nanobrew core | `.config/atuin/config.toml` |
@@ -235,7 +237,6 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | zx | nanobrew core | null |
 | 1password-cli | nanobrew core | null |
 | claude-code | nanobrew core | `.claude` |
-| borders | Homebrew (see note) | null |
 | colima | nanobrew desktop | null |
 | docker | nanobrew desktop | null |
 | docker-buildx | nanobrew desktop | null |
@@ -244,6 +245,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | docker-credential-helper | nanobrew desktop | null |
 | kanata | nanobrew desktop | `.config/kanata` |
 | mas | nanobrew desktop | null |
+| paneru | nanobrew desktop | `.config/paneru/paneru.toml` |
 | chromedriver | nanobrew desktop | null |
 | font-monaspace | nanobrew desktop | null |
 | agent-browser | mise | null |
@@ -275,7 +277,6 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | App | Source | Config | macOS only |
 | --- | --- | --- | --- |
 | 1password | nanobrew | null | |
-| aerospace | nanobrew | `.config/aerospace/aerospace.toml` | yes |
 | agentsview | nanobrew | null | |
 | beeper | nanobrew | null | |
 | ghostty | nanobrew | `.config/ghostty` | |
