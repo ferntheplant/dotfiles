@@ -1,0 +1,2 @@
+# Rex keeps its app settings in macOS preferences; scripts/rex-settings.sh syncs this file.
+^/settings\.json$
