@@ -190,7 +190,6 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | bat | nanobrew core | `.config/bat` |
 | btop | nanobrew core | `.config/btop` |
 | carapace | nanobrew core | `.zshrc` |
-| diff-so-fancy | nanobrew core | `.gitconfig` |
 | eza | nanobrew core | `.zshrc` |
 | fd | nanobrew core | null |
 | ffmpeg | nanobrew core | null |
@@ -232,7 +231,6 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | font-monaspace | nanobrew desktop | null |
 | agent-browser | mise | null |
 | bun | mise | `.config/mise/config.toml` |
-| difftastic | mise | null |
 | duckdb | mise | `.duckdbrc` |
 | gitleaks | mise | null |
 | go | mise | `.config/mise/config.toml` |

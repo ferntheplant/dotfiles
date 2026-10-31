@@ -9,7 +9,6 @@ pnpm = "latest"
 go = "latest"
 # CLI tools (every machine, the server too)
 agent-browser = "latest"
-difftastic = "latest"
 duckdb = "latest"
 gitleaks = "latest"
 helix = "latest"
