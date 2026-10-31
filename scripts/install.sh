@@ -19,3 +19,6 @@ for subdir in "$fixed_location"/*; do
 		fi
 	fi
 done
+
+# Skills live in the hidden .agents/, which the loop above skips
+"$fixed_location/scripts/link-skills.sh"

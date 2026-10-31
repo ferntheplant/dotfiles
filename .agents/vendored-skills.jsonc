@@ -1,0 +1,83 @@
+// Skills copied from other repos and edited in place. Each entry records the upstream commit the
+// local copy was last merged from (`base`), so `/rebaseline skills` can tell a local edit from an
+// upstream change and three-way merge one into the other. A skill in `.agents/skills/` with no
+// entry here is this repo's own.
+//
+// Every local edit gets a comment on its entry saying what changed and why: the next merge reads
+// those comments to decide which side of a conflict to keep. An edit with no comment reads as
+// drift, and the merge is free to take upstream's version over it.
+//
+// Every skill here comes from baseline, which vendors most of them from other repos and merges
+// their upstream changes first. Run `/rebaseline skills` in baseline, then here. Here, the skills
+// are global: `scripts/link-skills.sh` links each one into `~/.claude/skills/`, where Claude Code
+// and OpenCode both find it. The local edits make a skill work outside a repo made from baseline.
+{
+  "sources": {
+    "baseline": {
+      "repo": "https://github.com/ferntheplant/baseline",
+      "ref": "main",
+      // Baseline has no license of its own. Its vendored skills keep their upstream licenses:
+      // mattpocock-skills.txt (codebase-design, grilling, pr, prototype, research, wizard,
+      // writing-for-agents), explain-diff-html.txt (explain-diff), agent-browser.txt (agent-browser).
+      // rebaseline is baseline's own.
+      "license": ".agents/licenses/",
+    },
+  },
+  // Keyed by the skill's directory under `.agents/skills/`.
+  "skills": {
+    "agent-browser": {
+      "source": "baseline",
+      "path": ".agents/skills/agent-browser",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      // Local: runs the repo's `mise.toml` install inside a repo that has one, and the global
+      // install (`.Nanobrewfile`) elsewhere, since the skill is global here.
+    },
+    "codebase-design": {
+      "source": "baseline",
+      "path": ".agents/skills/codebase-design",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+    },
+    "explain-diff": {
+      "source": "baseline",
+      "path": ".agents/skills/explain-diff",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+    },
+    "grilling": {
+      "source": "baseline",
+      "path": ".agents/skills/grilling",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+    },
+    "pr": {
+      "source": "baseline",
+      "path": ".agents/skills/pr",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+    },
+    "prototype": {
+      "source": "baseline",
+      "path": ".agents/skills/prototype",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      // Local: a UI prototype runs with the project's own runner, `vp run <name>` only in a Vite+
+      // repo, since the skill is global here.
+    },
+    "rebaseline": {
+      "source": "baseline",
+      "path": ".agents/skills/rebaseline",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+    },
+    "research": {
+      "source": "baseline",
+      "path": ".agents/skills/research",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+    },
+    "wizard": {
+      "source": "baseline",
+      "path": ".agents/skills/wizard",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+    },
+    "writing-for-agents": {
+      "source": "baseline",
+      "path": ".agents/skills/writing-for-agents",
+      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+    },
+  },
+}
