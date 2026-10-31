@@ -1,7 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-# Link the dotfiles into $HOME with stow. Run it again after a pull: it is safe to repeat.
+# Link the dotfiles into $HOME with stow, and on the desktop profile write the macOS defaults
+# and the Handy settings. Run it again after a pull: it is safe to repeat.
 #
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
@@ -11,7 +12,7 @@ fixed_location="$HOME/dotfiles"
 profile="$(cat "$fixed_location/.work/profile" 2>/dev/null || echo desktop)"
 
 # Directories that are not stow packages
-IGNORE_LIST=("floorp" "node_modules" "raycast" "stats" "stylus" "themes")
+IGNORE_LIST=("floorp" "handy" "node_modules" "raycast" "stats" "stylus" "themes")
 # Packages for apps that the server profile does not install
 DESKTOP_ONLY=("aerospace" "kanata" "linearmouse" "zed")
 
@@ -52,3 +53,9 @@ fi
 # Skills live in the hidden .agents/, which the loop above skips
 "$fixed_location/scripts/link-skills.sh"
 "$fixed_location/scripts/claude-settings.sh"
+
+# Desktop apps: macOS and Hidden Bar defaults, Handy settings
+if [[ "$profile" != "server" ]]; then
+	"$fixed_location/scripts/macos-defaults.sh"
+	"$fixed_location/scripts/handy-settings.sh" import
+fi

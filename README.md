@@ -14,6 +14,7 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 nb bundle install .Nanobrewfile
 nb bundle install .Nanobrewfile.desktop # desktop only
 scripts/install.sh                      # stow, skills, Claude settings; safe to run again
+                                        # desktop only: macOS defaults, Handy settings
 ```
 
 `leave-brew` puts a new formula in `.Nanobrewfile` and a new cask in `.Nanobrewfile.desktop`.
@@ -22,54 +23,85 @@ Move a line by hand when that guess is wrong. It does not run on the server prof
 ### Server (lil-homie)
 
 The server keeps its own apps and services (OrbStack, Tailscale, and others) in the
-lil-homie repo. Rex is not in nanobrew: install it from `Rex.dmg`.
+lil-homie repo. Rex is not in nanobrew: install it from `Rex.dmg`. Run `mise install`, and then
+run `agent-browser install` once, so that agents have a browser.
 
 ```bash
 echo server > ~/dotfiles/.work/profile
 cd ~/dotfiles && git pull --ff-only && scripts/install.sh # sync after a push
 ```
 
-## Install packages
+## Set up a new desktop Mac
 
-Prerequisites: Make sure the machine has a terminal and bash installed then:
+1. Set the macOS settings that `scripts/macos-defaults.sh` does not set:
+   - key repeat timing
+   - Finder: show hidden files, no tags, list view
+   - disable all notifications
+   - auto-hide the Dock, always show the menu bar
+   - 24-hour clock in the menu bar
+   - disable the Spotlight shortcut (Raycast uses it)
+2. Clone the repo. `git` comes with the Xcode command line tools.
 
-1. Install [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md)
+   ```bash
+   xcode-select --install
+   git clone https://github.com/ferntheplant/dotfiles ~/dotfiles
+   ```
+
+3. Install [mise](https://mise.jdx.dev/installing-mise.html) with its installer. The runtimes come
+   from `.config/mise/config.toml` after step 6.
+
+   ```bash
+   curl https://mise.run | sh
+   ```
+
+4. Install [nanobrew](https://github.com/justrach/nanobrew) and the packages. Nanobrew does not
+   install App Store apps, so `mas` installs the `mas` lines. Sign in to the App Store first.
+
+   ```bash
+   curl -fsSL https://nanobrew.trilok.ai/install | bash
+   cd ~/dotfiles
+   nb bundle install .Nanobrewfile
+   nb bundle install .Nanobrewfile.desktop
+   sed -n 's/^mas .*id: //p' .Nanobrewfile.desktop | xargs mas install
+   ```
+
+5. Install the apps and fonts that no package file installs:
+   - [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md) (Ghostty and Rex use it)
+   - Rex from `Rex.dmg`
+   - the other `download` apps in the [Apps](#apps) table
+6. Run the installer scripts. `install.sh` is safe to run again.
+
+   ```bash
+   scripts/install.sh            # stow, skills, Claude settings, macOS defaults, Handy settings
+   scripts/rex-settings.sh import
+   mise install
+   ```
+
+7. Set up Floorp:
+   - install `floorp/userChrome.css`
+   - install the add-ons in `floorp/addons.json`
+   - import the Stylus, Violentmonkey, Vimium, and Dark Reader settings from `floorp/`
+8. Launch the apps that add themselves to the login items: Hidden Bar, Pandan, macshot, Handy, and
+   Syncthing. Add AeroSpace to the login items by hand.
+9. Load the newest Raycast export from `raycast/` and the Stats config from `stats/Stats.plist`.
+   Both apps then add themselves to the login items.
+10. Log out and back in, so that the menu bar spacing from `scripts/macos-defaults.sh` applies.
+
+## Leave a machine
+
+Export the settings that no script saves, then commit. `leave-machine` rewrites the package
+lists and exports the Handy settings.
 
 ```bash
-# Leaving machine
 cd ~/dotfiles
-# Floorp export settings: stylus, violentmonkey, vimium, dark reader, get-addons-list.js
-# Stats export settings
+# Floorp: export Stylus, Violentmonkey, Vimium, and Dark Reader settings; run get-addons-list.js
+# Stats: export settings to stats/Stats.plist
 # Raycast: "Export Settings and Data" to ~/dotfiles/raycast
+scripts/rex-settings.sh export
 leave-machine -c
-
-# -------------------------------------
-
-# Fresh machine
-# set global macos settings (see below)
-# load Raycast config dump into Raycast (will add itself to login items)
-# load Stats config (will add itself to login items)
-# login to cursor
-# cmd+shift+p Install from VSIX for cursor custom extensions
-# launch hiddenbar, pandan, shottr, and shortcat (will add themselves to login items)
-# Add aerospace to login items
-# Floorp install userChrome.css
-# Floorp install add-ons from list
-# Floorp import: stylus, violentmonkey, vimium, dark reader
 ```
 
-TODO: find way to automate dumping and loading all the settings in the comments above
-
 TODO: [Raycast plaintext config](https://gist.github.com/jeremy-code/50117d5b4f29e04fcbbb1f55e301b893)
-
-TODO: somehow put other macOS level settings in here
-
-- key repeat timing
-- finder settings (show hidden files, no tags, list view, etc.)
-- disable all notifications
-- auto-hide dock, always show menu bar
-- 24h clock + menu bar clock
-- disable spotlight shortcut (for raycast)
 
 TODO: find way to keep `.Nanobrewfile` and `.Nanobrewfile.desktop` clean (nb leaves drops packages that are also dependencies, such as jq)
 
@@ -142,67 +174,119 @@ EOF
 
 ### CLI
 
-atuin|`.config/atuin/config.toml`
-bat|`.config/bat`
-cloudflared|null
-carapace|`.zshrc`
-diff-so-fancy|`.gitconfig`
-docker|null
-docker-buildx|null
-docker-completion|null
-docker-compose|null
-docker-credential-helper|null
-duckdb|`.duckdbrc`
-eza|`.zshrc`
-fd|null
-fzf|`.zshrc`
-gh|`.gitconfig`
-git-delta|`.gitconfig`
-gitleaks|null
-grep|null
-helix|`.config/helix/config.tml`
-httpie|null
-jq|null
-just|null
-kanata|`.config/kanata`
-less|null
-mas|null (MAC)
-ripgrep|null
-opencode|null
-shellcheck|null
-starship|`.config/starship`
-stow|`dotfiles/scripts/instal.sh`
-unzip|null
-vivid|`theme`
-zelliij|`.config/zellij`
-zoxide|null
-zsh-autosuggestions|`.zshrc`
-zsh-syntax-highlighting|`theme`
-zx|null
-borders|null (MAC)
-1password-cli|null
-aerospace|`.config/aerospace/aerospace.toml` (MAC)
-claude-code|null
-codex|null
-font-monaspace|null
+This list shows the command-line tools on the desktop Mac. The source column tells you how to install each tool:
+
+- `nanobrew core`: a line in `.Nanobrewfile`; every machine gets it
+- `nanobrew desktop`: a line in `.Nanobrewfile.desktop`; only the desktop profile gets it
+- `mise`: a tool in `.config/mise/config.toml`; every machine gets it, the server too
+- `manual`: the installer script from the vendor (see the setup steps)
+
+`borders` is in `.Nanobrewfile.desktop`, but Homebrew installed it, not nanobrew.
+
+| Tool | Source | Config |
+| --- | --- | --- |
+| atuin | nanobrew core | `.config/atuin/config.toml` |
+| bash | nanobrew core | null |
+| bat | nanobrew core | `.config/bat` |
+| btop | nanobrew core | `.config/btop` |
+| carapace | nanobrew core | `.zshrc` |
+| diff-so-fancy | nanobrew core | `.gitconfig` |
+| eza | nanobrew core | `.zshrc` |
+| fd | nanobrew core | null |
+| ffmpeg | nanobrew core | null |
+| fzf | nanobrew core | `.zshrc` |
+| gh | nanobrew core | `.config/gh/config.yml` |
+| git-delta | nanobrew core | `.gitconfig` |
+| grep | nanobrew core | null |
+| gzip | nanobrew core | null |
+| httpie | nanobrew core | null |
+| jq | nanobrew core | null |
+| leaf-markdown-viewer | nanobrew core | `.config/leaf/config.toml` |
+| less | nanobrew core | null |
+| libpq | nanobrew core | null |
+| mole | nanobrew core | null |
+| ripgrep | nanobrew core | null |
+| rtk | nanobrew core | null |
+| starship | nanobrew core | `.config/starship` |
+| stow | nanobrew core | `dotfiles/scripts/install.sh` |
+| tree | nanobrew core | null |
+| unzip | nanobrew core | null |
+| vivid | nanobrew core | null |
+| zmx | nanobrew core | `.zshrc` |
+| zoxide | nanobrew core | `.zshrc` |
+| zsh-autosuggestions | nanobrew core | `.zshrc` |
+| zsh-syntax-highlighting | nanobrew core | `.zsh` (theme files) |
+| zx | nanobrew core | null |
+| 1password-cli | nanobrew core | null |
+| claude-code | nanobrew core | `.claude` |
+| borders | Homebrew (see note) | null |
+| colima | nanobrew desktop | null |
+| docker | nanobrew desktop | null |
+| docker-buildx | nanobrew desktop | null |
+| docker-completion | nanobrew desktop | null |
+| docker-compose | nanobrew desktop | null |
+| docker-credential-helper | nanobrew desktop | null |
+| kanata | nanobrew desktop | `.config/kanata` |
+| mas | nanobrew desktop | null |
+| chromedriver | nanobrew desktop | null |
+| font-monaspace | nanobrew desktop | null |
+| agent-browser | mise | null |
+| bun | mise | `.config/mise/config.toml` |
+| difftastic | mise | null |
+| duckdb | mise | `.duckdbrc` |
+| gitleaks | mise | null |
+| go | mise | `.config/mise/config.toml` |
+| helix | mise | `.config/helix` |
+| just | mise | null |
+| node | mise | `.config/mise/config.toml` |
+| opencode | mise | `.config/opencode` |
+| pnpm | mise | `.config/mise/config.toml` |
+| python | mise | `.config/mise/config.toml` |
+| rust | mise | `.config/mise/config.toml` |
+| shellcheck | mise | null |
+| uv | mise | `.config/mise/config.toml` |
+| yq | mise | null |
+| zig | mise | `.config/mise/config.toml` |
+| mise | manual | `.config/mise/config.toml` |
 
 ### Apps
 
-cursor|`/Library/Application Support/Cursor/User`
-beeper|null
-ghostty|`.config/ghostty`
-hiddenbar|null (MAC)
-latest|null (MAC)
-linear-linear|null
-linearmouse|null (MAC)
-monitorcontrol|null (MAC)
-notion|null (MAC)
-raycast|`.config/raycast` (MAC)
-shottr|null (MAC)
-spotify|null
-stats|`dotfiles/stats/Stats.plist` (MAC)
-syncthing-app|null
-Equinox|null (MAC)
-Pandan|null (MAC)
-QuickShade|null (MAC)
-floorp|`dotfiles/floorp`
+This list shows the apps on the desktop Mac. The source column tells you how to install each app:
+
+- `nanobrew`: a cask in `.Nanobrewfile.desktop`
+- `mas`: a Mac App Store entry in `.Nanobrewfile.desktop`
+- `download`: a manual download from the vendor; no package file installs it
+
+| App | Source | Config | macOS only |
+| --- | --- | --- | --- |
+| 1password | nanobrew | null | |
+| aerospace | nanobrew | `.config/aerospace/aerospace.toml` | yes |
+| agentsview | nanobrew | null | |
+| beeper | nanobrew | null | |
+| floorp | nanobrew | `dotfiles/floorp` | |
+| ghostty | nanobrew | `.config/ghostty` | |
+| handy | nanobrew | `dotfiles/handy/settings.json` via `scripts/handy-settings.sh` | |
+| hiddenbar | nanobrew | `scripts/macos-defaults.sh` | yes |
+| latest | nanobrew | null | yes |
+| linearmouse | nanobrew | `.config/linearmouse` | yes |
+| macshot | nanobrew | null | yes |
+| monitorcontrol | nanobrew | null | yes |
+| raycast | nanobrew | `dotfiles/raycast` | yes |
+| spotify | nanobrew | null | |
+| stats | nanobrew | `dotfiles/stats/Stats.plist` | yes |
+| syncthing-app | nanobrew | null | |
+| zoom | nanobrew | null | |
+| Equinox | mas | null | yes |
+| Pandan | mas | null | yes |
+| Tailscale | mas | null | |
+| Xcode | mas | null | yes |
+| Rex | download (`Rex.dmg`) | `.config/rex`, `dotfiles/rex/settings.json` via `scripts/rex-settings.sh` | |
+| balenaEtcher | download | null | |
+| freewrite | download | null | |
+| Google Chrome | download | null | |
+| Mullvad VPN | download | null | |
+| Signal | download | null | |
+| Steam | download | null | |
+| Suzuri | download | null | |
+| VIA | download | null | |
+| VLC | download | null | |

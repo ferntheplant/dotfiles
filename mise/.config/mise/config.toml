@@ -7,6 +7,16 @@ zig = "latest"
 rust = "latest"
 pnpm = "latest"
 go = "latest"
+# CLI tools (every machine, the server too)
+agent-browser = "latest"
+difftastic = "latest"
+duckdb = "latest"
+gitleaks = "latest"
+helix = "latest"
+just = "latest"
+"aqua:anomalyco/opencode" = "latest"
+shellcheck = "latest"
+yq = "latest"
 
 [settings]
 activate_aggressive = true

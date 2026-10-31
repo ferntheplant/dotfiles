@@ -159,7 +159,7 @@ check-further-callbacks = true
 run = ['layout floating']
 
 [[on-window-detected]]
-if.app-id = 'cc.ffitch.shottr'
+if.app-id = 'com.sw33tlie.macshot.macshot'
 check-further-callbacks = true
 run = ['layout floating']
 

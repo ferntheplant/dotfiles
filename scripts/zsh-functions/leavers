@@ -56,6 +56,7 @@ leave-machine() {
     # Capture all package lists
     leave-brew
     echo "🔍 Nanobrewfile captured"
+    scripts/handy-settings.sh export
 
     # Git operations if -c flag is passed
     if [[ "$*" == *"-c"* ]]; then
