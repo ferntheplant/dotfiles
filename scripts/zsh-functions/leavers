@@ -1,10 +1,24 @@
 # Rewrite .Nanobrewfile from this machine: leaf formulas and casks from nanobrew, and the
-# existing mas lines (nanobrew does not install App Store apps; the mas CLI does)
+# existing mas lines (nanobrew does not install App Store apps; the mas CLI does).
+# nb drops tap prefixes, so a name already in the file keeps its full tap name. Packages
+# in the gitignored .work/Nanobrewfile are machine-only and stay out of the shared file.
 leave-brew() {
+    local work=.work/Nanobrewfile
+    [[ -f $work ]] || work=/dev/null
     {
         echo "# Nanobrew"
-        nb leaves | awk '{print "brew \"" $1 "\""}'
-        nb bundle dump | grep '^cask '
+        {
+            nb leaves | awk '{print "brew " $1}'
+            nb bundle dump | awk -F'"' '/^cask /{print "cask " $2}'
+        } | awk -F'"' '
+            FILENAME != "-" && /^(brew|cask) "/ {
+                kind = substr($1, 1, 4); short = $2; sub(/.*\//, "", short)
+                if (FILENAME == work) skip[kind " " short] = 1; else full[kind " " short] = $2
+                next
+            }
+            FILENAME == "-" && !($0 in skip) {
+                split($0, k, " "); print k[1] " \"" (($0 in full) ? full[$0] : k[2]) "\""
+            }' work="$work" .Nanobrewfile "$work" -
         grep '^mas ' .Nanobrewfile
     } > .Nanobrewfile.tmp && mv .Nanobrewfile.tmp .Nanobrewfile
 }
