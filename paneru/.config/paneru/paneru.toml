@@ -87,6 +87,13 @@ title = ".*"
 bundle_id = "com.apple.Preview"
 floating = true
 
+# Settings windows in any app, by title: "Settings", "Preferences", "Ghostty Settings",
+# "Settings - Server" (Rex), "Preferences: General". Apps that title the window with only
+# the pane name ("General") need their own rule, or meh-f.
+[windows.settings]
+title = "^(.+ )?(Settings|Preferences)( ?[-–—:] .+)?$"
+floating = true
+
 [windows.onepassword]
 title = ".*"
 bundle_id = "com.1password.1password"
