@@ -5,6 +5,12 @@ after-startup-command = [
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 on-focus-changed = "move-mouse window-lazy-center"
 
+# exec commands (such as borders above) find tools from nanobrew first, then Homebrew
+[exec]
+inherit-env-vars = true
+[exec.env-vars]
+PATH = '/opt/nanobrew/prefix/bin:/opt/homebrew/bin:${PATH}'
+
 [mode.main.binding]
 
 # All possible keys:
