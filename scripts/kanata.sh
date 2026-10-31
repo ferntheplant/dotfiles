@@ -145,7 +145,7 @@ else
   fi
 fi
 echo
-echo "💡 Use 'kanata-start' (Raycast script) to start daemons for currently connected devices."
+echo "💡 Use 'kanata-start' (Tinycast command) to start daemons for currently connected devices."
 echo
 echo "Status:   sudo launchctl list | grep kanata"
 echo "Logs:     tail -f /var/log/kanata-*.log"

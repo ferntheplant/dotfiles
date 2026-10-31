@@ -22,10 +22,10 @@ cask "librewolf"
 cask "linearmouse"
 cask "macshot"
 cask "monitorcontrol"
-cask "raycast"
 cask "spotify"
-cask "stats"
 cask "syncthing-app"
+cask "abue-ammar/tinycast/tinycast"
+cask "vorssaint"
 cask "zoom"
 mas "Equinox", id: 1591510203
 mas "Pandan", id: 1569600264

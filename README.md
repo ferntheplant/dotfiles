@@ -39,7 +39,7 @@ cd ~/dotfiles && git pull --ff-only && scripts/install.sh # sync after a push
    - disable all notifications
    - auto-hide the Dock, always show the menu bar
    - 24-hour clock in the menu bar
-   - disable the Spotlight shortcut (Raycast uses it)
+   - disable the Spotlight shortcut (Tinycast uses it)
 2. Clone the repo. `git` comes with the Xcode command line tools.
 
    ```bash
@@ -87,11 +87,16 @@ cd ~/dotfiles && git pull --ff-only && scripts/install.sh # sync after a push
    - link the 1Password native messaging files from
      `~/Library/Application Support/Mozilla/NativeMessagingHosts` into
      `~/Library/Application Support/librewolf/NativeMessagingHosts`
-8. Launch the apps that add themselves to the login items: Hidden Bar, Pandan, macshot, Handy, and
-   Syncthing. Add AeroSpace to the login items by hand.
-9. Load the newest Raycast export from `raycast/` and the Stats config from `stats/Stats.plist`.
-   Both apps then add themselves to the login items.
-10. Log out and back in, so that the menu bar spacing from `scripts/macos-defaults.sh` applies.
+8. Launch the apps that add themselves to the login items: Hidden Bar, Pandan, macshot, Handy,
+   Syncthing, Tinycast, and Vorssaint. Add AeroSpace to the login items by hand.
+9. Set up Tinycast: Settings > Backup > Import, and pick `tinycast/settings.tinycast`. It restores
+   the settings, hotkeys (Cmd+Space), quicklinks, and the custom commands that run
+   `tinycast/commands`, with Show confirmation on. `tinycast/quicklinks.json` is a readable copy of
+   the quicklinks; do not import it too, or the quicklinks appear twice.
+10. Set up Vorssaint: Settings > Backup > Import settings…, and pick `vorssaint/settings.plist`.
+    Vorssaint restarts with the CPU temperature readout, Fan Control, and Keep Awake. Tinycast and
+    AeroSpace do the launcher, clipboard, and window jobs.
+11. Log out and back in, so that the menu bar spacing from `scripts/macos-defaults.sh` applies.
 
 ## Leave a machine
 
@@ -104,13 +109,13 @@ cd ~/dotfiles
 bun librewolf/get-addons-list.js ~/Library/Application\ Support/librewolf/Profiles/<profile>
 # Sidebery: Settings > Help > Export addon data, without snapshots; then drop the favicon data
 jq 'del(.favicons, .favDomains, .favHashes)' ~/Downloads/sidebery-data-*.json > librewolf/sidebery-data.json
-# Stats: export settings to stats/Stats.plist
-# Raycast: "Export Settings and Data" to ~/dotfiles/raycast
+# Tinycast: Settings > Backup > Export, with only Settings & Shortcuts ticked (no clipboard
+#   history, snippets, notes, or launcher learning: this repo is public) -> tinycast/settings.tinycast
+# Tinycast: export the quicklinks as JSON -> tinycast/quicklinks.json
+# Vorssaint: Settings > Backup > Export settings… -> vorssaint/settings.plist
 scripts/rex-settings.sh export
 leave-machine -c
 ```
-
-TODO: [Raycast plaintext config](https://gist.github.com/jeremy-code/50117d5b4f29e04fcbbb1f55e301b893)
 
 TODO: find way to keep `.Nanobrewfile` and `.Nanobrewfile.desktop` clean (nb leaves drops packages that are also dependencies, such as jq)
 
@@ -126,7 +131,10 @@ See this [thread](https://github.com/abiosoft/colima/discussions/273) for instal
 
 Refactor all configs to not be nested in redundant `.config`
 
-## Kanata Raycast Script Template
+## Kanata Launcher Command Template
+
+Tinycast imports script files in the Raycast script command format (Settings > Commands > Import
+Raycast Scripts), so the commands in `tinycast/commands` keep the `@raycast` metadata.
 
 ```bash
 #!/bin/bash
@@ -278,10 +286,10 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | linearmouse | nanobrew | `.config/linearmouse` | yes |
 | macshot | nanobrew | null | yes |
 | monitorcontrol | nanobrew | null | yes |
-| raycast | nanobrew | `dotfiles/raycast` | yes |
 | spotify | nanobrew | null | |
-| stats | nanobrew | `dotfiles/stats/Stats.plist` | yes |
 | syncthing-app | nanobrew | null | |
+| tinycast | nanobrew (`abue-ammar/tinycast` tap) | `dotfiles/tinycast` | yes |
+| vorssaint | nanobrew | `dotfiles/vorssaint/settings.plist` | yes |
 | zoom | nanobrew | null | |
 | Equinox | mas | null | yes |
 | Pandan | mas | null | yes |

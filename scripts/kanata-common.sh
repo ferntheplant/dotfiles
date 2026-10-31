@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# Shared helper functions for kanata Raycast scripts
+# Shared helper functions for the kanata launcher commands in tinycast/commands
 
-# Resolve the kanata binary by absolute path. Raycast runs scripts with a
-# minimal PATH (/usr/bin:/bin:/usr/sbin:/sbin) that does not include
+# Resolve the kanata binary by absolute path. A launcher (Tinycast, without
+# "Load shell environment") runs scripts with a minimal PATH
+# (/usr/bin:/bin:/usr/sbin:/sbin) that does not include
 # ~/.local/bin or other shell-rc PATH additions, so `command -v kanata`
 # can fail here even though it works fine from an interactive shell.
 resolve_kanata_bin() {

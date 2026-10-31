@@ -1,0 +1,29 @@
+{
+  "quicklinks" : [
+    {
+      "createdAt" : "2026-09-14T13:40:09Z",
+      "id" : "87514C52-3323-4A9D-90CD-1D738EB731F8",
+      "isEnabled" : true,
+      "link" : "https:\/\/github.com\/ferntheplant?tab=repositories",
+      "name" : "github",
+      "showsInRootSearch" : true
+    },
+    {
+      "createdAt" : "2026-09-12T05:21:18Z",
+      "id" : "C210BFDC-4CF9-4D67-B44E-17072C31B95B",
+      "isEnabled" : true,
+      "link" : "https:\/\/duckduckgo.com\/?q={argument}",
+      "name" : "Search DuckDuckGo",
+      "showsInRootSearch" : true
+    },
+    {
+      "createdAt" : "2026-09-12T05:21:18Z",
+      "id" : "96E36976-2455-452C-AD6C-6BF77CF0F299",
+      "isEnabled" : true,
+      "link" : "https:\/\/google.com\/search?q={argument}",
+      "name" : "Search Google",
+      "showsInRootSearch" : true
+    }
+  ],
+  "version" : 1
+}

@@ -140,7 +140,7 @@ if (SUCCESS_COUNT === CONFIG_FILES.length) {
   }
 }
 console.log()
-console.log('💡 Use \'kanata-start\' (Raycast script) to start daemons for currently connected devices.')
+console.log('💡 Use \'kanata-start\' (Tinycast command) to start daemons for currently connected devices.')
 console.log()
 console.log('Status:   sudo launchctl list | grep kanata')
 console.log('Logs:     tail -f /var/log/kanata-*.log')
