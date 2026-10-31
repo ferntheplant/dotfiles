@@ -1,0 +1,5 @@
+-- Pane navigation, carried over from the Ghostty config (keybind = alt+h=goto_split:left, ...)
+rex.bind("alt+h", "pane.focus.left")
+rex.bind("alt+j", "pane.focus.down")
+rex.bind("alt+k", "pane.focus.up")
+rex.bind("alt+l", "pane.focus.right")
