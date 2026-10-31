@@ -1,26 +1,47 @@
-# Rewrite .Nanobrewfile from this machine: leaf formulas and casks from nanobrew, and the
-# existing mas lines (nanobrew does not install App Store apps; the mas CLI does).
-# nb drops tap prefixes, so a name already in the file keeps its full tap name. Packages
-# in the gitignored .work/Nanobrewfile are machine-only and stay out of the shared file.
+# Rewrite the package lists from this machine's nanobrew leaf formulas and casks:
+#   .Nanobrewfile          core packages, installed on every machine (the server too)
+#   .Nanobrewfile.desktop  desktop extras and the mas lines (nanobrew does not install App
+#                          Store apps; the mas CLI does)
+# A package stays in the file that lists it. A new formula goes to the core list and a new
+# cask to the desktop list; move it by hand if that guess is wrong. nb drops tap prefixes,
+# so a name already in a file keeps its full tap name. Packages in the gitignored
+# .work/Nanobrewfile are machine-only and stay out of both files.
 leave-brew() {
+    if [[ "$(cat .work/profile 2>/dev/null)" == server ]]; then
+        echo "❌ leave-brew rewrites the shared package lists; do not run it on the server profile"
+        return 1
+    fi
     local work=.work/Nanobrewfile
     [[ -f $work ]] || work=/dev/null
+    # Each output line is: list, kind, short name, Nanobrewfile line (tab-separated)
+    local lines
+    lines=$({
+        nb leaves | awk '{print "brew " $1}'
+        nb bundle dump | awk -F'"' '/^cask /{print "cask " $2}'
+    } | awk -F'"' '
+        FILENAME != "-" && /^(brew|cask) "/ {
+            kind = substr($1, 1, 4); short = $2; sub(/.*\//, "", short)
+            if (FILENAME == work) { skip[kind " " short] = 1; next }
+            full[kind " " short] = $2
+            if (FILENAME == desktop) on_desktop[kind " " short] = 1
+            next
+        }
+        FILENAME == "-" && !($0 in skip) {
+            split($0, k, " ")
+            list = (($0 in on_desktop) || (!($0 in full) && k[1] == "cask")) ? "desktop" : "core"
+            printf "%s\t%s\t%s\t%s \"%s\"\n", list, k[1], k[2], k[1], (($0 in full) ? full[$0] : k[2])
+        }' work="$work" desktop=.Nanobrewfile.desktop .Nanobrewfile .Nanobrewfile.desktop "$work" -) || return 1
     {
-        echo "# Nanobrew"
-        {
-            nb leaves | awk '{print "brew " $1}'
-            nb bundle dump | awk -F'"' '/^cask /{print "cask " $2}'
-        } | awk -F'"' '
-            FILENAME != "-" && /^(brew|cask) "/ {
-                kind = substr($1, 1, 4); short = $2; sub(/.*\//, "", short)
-                if (FILENAME == work) skip[kind " " short] = 1; else full[kind " " short] = $2
-                next
-            }
-            FILENAME == "-" && !($0 in skip) {
-                split($0, k, " "); print k[1] " \"" (($0 in full) ? full[$0] : k[2]) "\""
-            }' work="$work" .Nanobrewfile "$work" -
-        grep '^mas ' .Nanobrewfile
-    } > .Nanobrewfile.tmp && mv .Nanobrewfile.tmp .Nanobrewfile
+        echo "# Nanobrew: core packages for every machine"
+        print -r -- "$lines" | awk -F'\t' '$1 == "core"' | sort -t$'\t' -k2,2 -k3,3 | cut -f4
+    } > .Nanobrewfile.tmp
+    {
+        echo "# Nanobrew: desktop packages, installed after .Nanobrewfile"
+        print -r -- "$lines" | awk -F'\t' '$1 == "desktop"' | sort -t$'\t' -k2,2 -k3,3 | cut -f4
+        grep -h '^mas ' .Nanobrewfile .Nanobrewfile.desktop
+    } > .Nanobrewfile.desktop.tmp
+    mv .Nanobrewfile.tmp .Nanobrewfile
+    mv .Nanobrewfile.desktop.tmp .Nanobrewfile.desktop
 }
 
 leave-machine() {

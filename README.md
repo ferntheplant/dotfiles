@@ -1,5 +1,34 @@
 # Dotfiles Setup
 
+## Profiles
+
+The gitignored `.work/profile` file selects what a machine gets. A machine without the file is
+`desktop`.
+
+| Profile | Packages | Stow packages |
+| --- | --- | --- |
+| `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
+| `server` (lil-homie) | `.Nanobrewfile` only | all except aerospace, kanata, linearmouse, and zed |
+
+```bash
+nb bundle install .Nanobrewfile
+nb bundle install .Nanobrewfile.desktop # desktop only
+scripts/install.sh                      # stow, skills, Claude settings; safe to run again
+```
+
+`leave-brew` puts a new formula in `.Nanobrewfile` and a new cask in `.Nanobrewfile.desktop`.
+Move a line by hand when that guess is wrong. It does not run on the server profile.
+
+### Server (lil-homie)
+
+The server keeps its own apps and services (OrbStack, Tailscale, and others) in the
+lil-homie repo. Rex is not in nanobrew: install it from `Rex.dmg`.
+
+```bash
+echo server > ~/dotfiles/.work/profile
+cd ~/dotfiles && git pull --ff-only && scripts/install.sh # sync after a push
+```
+
 ## Install packages
 
 Prerequisites: Make sure the machine has a terminal and bash installed then:
@@ -42,7 +71,7 @@ TODO: somehow put other macOS level settings in here
 - 24h clock + menu bar clock
 - disable spotlight shortcut (for raycast)
 
-TODO: find way to keep `.Nanobrewfile` clean
+TODO: find way to keep `.Nanobrewfile` and `.Nanobrewfile.desktop` clean (nb leaves drops packages that are also dependencies, such as jq)
 
 ## Colima vs Docker Desktop (vs Orbstack)
 
