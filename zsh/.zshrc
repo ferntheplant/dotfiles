@@ -168,6 +168,11 @@ zms() {
   done
 }
 
-# Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
+# Vite+ bin (https://viteplus.dev); the installer used both locations over time
+for f in "$HOME/.vite-plus/env" "$HOME/.config/vite-plus/env"; do
+  [[ -f "$f" ]] && { . "$f"; break; }
+done
+
+# Machine-only config (work env, aliases) from the gitignored ~/dotfiles/.work/
+for f in "$HOME"/dotfiles/.work/*.zsh(N); do source "$f"; done
 

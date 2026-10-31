@@ -79,3 +79,7 @@
 	markEmptyLines = false
 [log]
 	abbrevCommit = true
+# Work identity for repos under ~/pillar/. The file lives in the gitignored .work/;
+# git skips the include when the file is missing.
+[includeIf "gitdir:~/pillar/"]
+	path = ~/dotfiles/.work/pillar.gitconfig

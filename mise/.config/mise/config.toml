@@ -7,6 +7,7 @@ uv = "latest"
 zig = "latest"
 rust = "latest"
 pnpm = "latest"
+go = "latest"
 
 [settings]
 activate_aggressive = true

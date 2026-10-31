@@ -9,3 +9,6 @@ opencode/.config/opencode/opencode-quota/*
 !opencode/.config/opencode/opencode-quota/quota-toast.jsonc
 opencode/.config/opencode/package.json
 opencode/.config/opencode/package-lock.json
+
+# Machine-only config, such as work shell and git settings
+.work/

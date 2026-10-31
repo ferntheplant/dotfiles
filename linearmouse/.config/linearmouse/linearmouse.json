@@ -1,25 +1,36 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.0",
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.11.4",
   "schemes" : [
     {
+      "if" : {
+        "device" : {
+          "category" : "mouse",
+          "productID" : "0xc547",
+          "productName" : "USB Receiver",
+          "vendorID" : "0x46d"
+        }
+      },
       "scrolling" : {
         "acceleration" : {
           "vertical" : 1
         },
         "reverse" : {
           "vertical" : true
-        }
-      },
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "vendorID" : "0x46d",
-          "productID" : "0xc547",
-          "productName" : "USB Receiver"
         }
       }
     },
     {
+      "if" : {
+        "device" : {
+          "category" : "mouse",
+          "productID" : "0xc53f",
+          "productName" : "USB Receiver",
+          "vendorID" : "0x46d"
+        }
+      },
+      "pointer" : {
+        "hardwareDPI" : 2150
+      },
       "scrolling" : {
         "acceleration" : {
           "vertical" : 1
@@ -27,14 +38,21 @@
         "reverse" : {
           "vertical" : true
         }
-      },
+      }
+    },
+    {
       "if" : {
+        "app" : "com.lujjjh.LinearMouse",
         "device" : {
-          "vendorID" : "0x46d",
           "category" : "mouse",
+          "productID" : "0xc53f",
           "productName" : "USB Receiver",
-          "productID" : "0xc53f"
+          "vendorID" : "0x46d"
         }
+      },
+      "pointer" : {
+        "acceleration" : 0,
+        "speed" : 0.1412
       }
     }
   ]

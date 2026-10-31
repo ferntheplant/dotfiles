@@ -17,8 +17,6 @@ leave-machine -c
 # -------------------------------------
 
 # Fresh machine
-curl -fsSL https://raw.githubusercontent.com/ferntheplant/dotfiles/main/scripts/setup-new-machine | bash
-
 # set global macos settings (see below)
 # load Raycast config dump into Raycast (will add itself to login items)
 # load Stats config (will add itself to login items)
