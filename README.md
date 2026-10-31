@@ -42,7 +42,7 @@ TODO: somehow put other macOS level settings in here
 - 24h clock + menu bar clock
 - disable spotlight shortcut (for raycast)
 
-TODO: find way to keep `.Brewfile` clean
+TODO: find way to keep `.Nanobrewfile` clean
 
 ## Colima vs Docker Desktop (vs Orbstack)
 

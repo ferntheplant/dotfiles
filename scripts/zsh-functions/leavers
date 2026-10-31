@@ -1,4 +1,13 @@
-alias leave-brew="brew bundle dump --file=./.Brewfile --force --describe --no-vscode"
+# Rewrite .Nanobrewfile from this machine: leaf formulas and casks from nanobrew, and the
+# existing mas lines (nanobrew does not install App Store apps; the mas CLI does)
+leave-brew() {
+    {
+        echo "# Nanobrew"
+        nb leaves | awk '{print "brew \"" $1 "\""}'
+        nb bundle dump | grep '^cask '
+        grep '^mas ' .Nanobrewfile
+    } > .Nanobrewfile.tmp && mv .Nanobrewfile.tmp .Nanobrewfile
+}
 
 leave-machine() {
     echo "🚀 Leaving machine - capturing all package lists..."
@@ -11,7 +20,7 @@ leave-machine() {
     
     # Capture all package lists
     leave-brew
-    echo "🔍 Brewfile captured"
+    echo "🔍 Nanobrewfile captured"
 
     # Git operations if -c flag is passed
     if [[ "$*" == *"-c"* ]]; then
