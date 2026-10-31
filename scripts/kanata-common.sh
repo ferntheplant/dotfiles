@@ -9,6 +9,7 @@
 resolve_kanata_bin() {
   local candidates=(
     "$HOME/.local/bin/kanata"
+    "/opt/nanobrew/prefix/bin/kanata"
     "/opt/homebrew/bin/kanata"
     "/usr/local/bin/kanata"
   )
