@@ -92,10 +92,5 @@ title = ".*"
 bundle_id = "com.1password.1password"
 floating = true
 
-[windows.macshot]
-title = ".*"
-bundle_id = "com.sw33tlie.macshot.macshot"
-floating = true
-
 # Do not add `role` or `subrole` rules: Paneru 0.5.2 ignores those keys, so
 # such a rule matches every window. The keys are only on Paneru's main branch.

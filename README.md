@@ -87,7 +87,7 @@ cd ~/dotfiles && git pull --ff-only && scripts/install.sh # sync after a push
    - link the 1Password native messaging files from
      `~/Library/Application Support/Mozilla/NativeMessagingHosts` into
      `~/Library/Application Support/librewolf/NativeMessagingHosts`
-8. Launch the apps that add themselves to the login items: Hidden Bar, Pandan, macshot, Handy,
+8. Launch the apps that add themselves to the login items: Hidden Bar, Pandan, Handy,
    Syncthing, Tinycast, and Vorssaint. Run `paneru install` to add the Paneru launch agent, then
    `paneru start`, and give Paneru Accessibility access when macOS asks. Paneru stops with an
    error until "Displays have separate Spaces" is on; `scripts/macos-defaults.sh` turns it on, and
@@ -285,7 +285,6 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | latest | nanobrew | null | yes |
 | librewolf | nanobrew | `.librewolf/librewolf.overrides.cfg`, `dotfiles/librewolf` | |
 | linearmouse | nanobrew | `.config/linearmouse` | yes |
-| macshot | nanobrew | null | yes |
 | monitorcontrol | nanobrew | null | yes |
 | spotify | nanobrew | null | |
 | syncthing-app | nanobrew | null | |
