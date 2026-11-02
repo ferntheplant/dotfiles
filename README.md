@@ -8,7 +8,7 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | Profile | Packages | Stow packages |
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
-| `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, linearmouse, paneru, and zed |
+| `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
 
 ```bash
 nb bundle install .Nanobrewfile
@@ -282,10 +282,7 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | ghostty | nanobrew | `.config/ghostty` | |
 | handy | nanobrew | `dotfiles/handy/settings.json` via `scripts/handy-settings.sh` | |
 | hiddenbar | nanobrew | `scripts/macos-defaults.sh` | yes |
-| latest | nanobrew | null | yes |
 | librewolf | nanobrew | `.librewolf/librewolf.overrides.cfg`, `dotfiles/librewolf` | |
-| linearmouse | nanobrew | `.config/linearmouse` | yes |
-| monitorcontrol | nanobrew | null | yes |
 | spotify | nanobrew | null | |
 | syncthing-app | nanobrew | null | |
 | tinycast | nanobrew (`abue-ammar/tinycast` tap) | `dotfiles/tinycast` | yes |
