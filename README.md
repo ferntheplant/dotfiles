@@ -8,17 +8,21 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | Profile | Packages | Stow packages |
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
-| `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
+| `server` (lil-homie, micro-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
+
+On Linux (micro-homie), the server profile also skips the casks, the macOS-only formulas, and the
+ghostty package. `MACOS_ONLY` in `scripts/install-packages.sh` and in `scripts/install.sh` lists
+them.
 
 ```bash
-nb bundle install .Nanobrewfile
-nb bundle install .Nanobrewfile.desktop # desktop only
-scripts/install.sh                      # stow, skills, Claude settings; safe to run again
-                                        # desktop only: macOS defaults, Handy settings
+scripts/install-packages.sh # nanobrew packages for the profile and the OS; safe to run again
+scripts/install.sh          # stow, skills, Claude settings; safe to run again
+                            # desktop only: macOS defaults, Handy settings
 ```
 
 `leave-brew` puts a new formula in `.Nanobrewfile` and a new cask in `.Nanobrewfile.desktop`.
-Move a line by hand when that guess is wrong. It does not run on the server profile.
+Move a line by hand when that guess is wrong. It does not run on the server profile. A new
+formula that has no Linux build must also go in `MACOS_ONLY` in `scripts/install-packages.sh`.
 
 ### Server (lil-homie)
 
@@ -30,6 +34,45 @@ run `agent-browser install` once, so that agents have a browser.
 echo server > ~/dotfiles/.work/profile
 cd ~/dotfiles && git pull --ff-only && scripts/install.sh # sync after a push
 ```
+
+### Linux server (micro-homie)
+
+micro-homie runs Debian 13 with no desktop. Its host setup (Docker, the 1Password CLI) is
+`setup-micro-homie.sh` in the lil-homie repo. Nanobrew installs the Linux builds of most
+`.Nanobrewfile` formulas. The other tools come from other sources:
+
+- `1password-cli` (a cask): 1Password's apt repo, from `setup-micro-homie.sh`
+- `claude-code` (a cask): the native installer, into `~/.local/bin`
+- `stow`: apt
+- `zmx`: mise
+- `mole`: none, because it is a macOS app
+
+1. Install zsh and stow, make zsh the login shell, and install nanobrew. `nb init` must run with
+   sudo: it makes the `/opt/nb` and `/opt/homebrew` links to `/opt/nanobrew/prefix`. Without
+   `/opt/nb`, each package fails with `incomplete relocation`.
+
+   ```bash
+   sudo apt install -y zsh stow
+   chsh -s /usr/bin/zsh
+   curl -fsSL https://nanobrew.trilok.ai/install | bash
+   sudo /opt/nanobrew/prefix/bin/nb init
+   ```
+
+2. Install the other tools, clone the repo, and link the dotfiles.
+
+   ```bash
+   curl https://mise.run | sh
+   curl -fsSL https://claude.ai/install.sh | bash
+   git clone https://github.com/ferntheplant/dotfiles ~/dotfiles
+   mkdir -p ~/dotfiles/.work && echo server > ~/dotfiles/.work/profile
+   cd ~/dotfiles
+   PATH="/opt/nanobrew/prefix/bin:$PATH" scripts/install-packages.sh
+   PATH="/opt/nanobrew/prefix/bin:$PATH" scripts/install.sh
+   ~/.local/bin/mise install
+   ```
+
+To sync after a push, use the same command as lil-homie. Run `scripts/install-packages.sh` too
+when `.Nanobrewfile` changes.
 
 ## Set up a new desktop Mac
 

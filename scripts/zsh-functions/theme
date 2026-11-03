@@ -1,5 +1,5 @@
 theme() {
-	# Prevent concurrent execution using lockf (macOS native file locking)
+	# Prevent concurrent execution with a file lock: lockf on macOS, flock (util-linux) on Linux
 	local lock_file="$HOME/.cache/theme-update.lock"
 
 	# Create cache directory if it doesn't exist
@@ -7,18 +7,22 @@ theme() {
 
 	# Create lock file if it doesn't exist (lockf needs the file to exist)
 	touch "$lock_file"
-	# Use lockf to atomically acquire lock and run all file updates
-	# -k: keep lock until command finishes
-	# -n: non-blocking (skip if lock can't be acquired)
 	local theme_arg="$1"
-	lockf -kn "$lock_file" sh -c "
+	local updates="
     ~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/starship/starship.toml\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/bat/config\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/helix/config.toml\" --$theme_arg --underscore
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.gitconfig\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/leaf/config.toml\" --$theme_arg
-	" || {
+	"
+	# Atomically acquire the lock and run all file updates. -n: non-blocking (skip if the lock
+	# can't be acquired); lockf -k: keep the lock until the command finishes
+	if (( $+commands[lockf] )); then
+		lockf -kn "$lock_file" sh -c "$updates"
+	else
+		flock -n "$lock_file" sh -c "$updates"
+	fi || {
 		# Lock couldn't be acquired (another instance is running), skip silently
     echo "Theme update failed"
 		return 0

@@ -55,7 +55,7 @@ fmt_countdown() {
 
 rl_str=""
 if [ -n "$five_used" ]; then
-  five_remaining=$(printf "%.0f" "$(echo "100 - $five_used" | bc)")
+  five_remaining=$(awk -v u="$five_used" 'BEGIN { printf "%.0f", 100 - u }')
   five_reset_str=""
   if [ -n "$five_resets_at" ]; then
     five_reset_str=" (resets $(fmt_countdown "$five_resets_at"))"
@@ -63,7 +63,7 @@ if [ -n "$five_used" ]; then
   rl_str="${YELLOW}5h left ${five_remaining}%${five_reset_str}${RESET}"
 fi
 if [ -n "$week_used" ]; then
-  week_remaining=$(printf "%.0f" "$(echo "100 - $week_used" | bc)")
+  week_remaining=$(awk -v u="$week_used" 'BEGIN { printf "%.0f", 100 - u }')
   week_reset_str=""
   if [ -n "$week_resets_at" ]; then
     week_reset_str=" (resets $(fmt_countdown "$week_resets_at"))"

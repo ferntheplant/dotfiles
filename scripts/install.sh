@@ -6,7 +6,8 @@ set -euo pipefail
 #
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
-#   server             no packages for desktop-only apps (lil-homie)
+#   server             no packages for desktop-only apps (lil-homie, micro-homie)
+# On Linux, the packages in MACOS_ONLY are skipped too.
 
 fixed_location="$HOME/dotfiles"
 profile="$(cat "$fixed_location/.work/profile" 2>/dev/null || echo desktop)"
@@ -15,6 +16,11 @@ profile="$(cat "$fixed_location/.work/profile" 2>/dev/null || echo desktop)"
 IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 # Packages for apps that the server profile does not install
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
+# Packages for apps that have no Linux build (lil-homie is a Mac server, so it keeps them)
+MACOS_ONLY=("ghostty")
+if [[ "$(uname -s)" == "Linux" ]]; then
+	DESKTOP_ONLY+=("${MACOS_ONLY[@]}")
+fi
 
 cd "$fixed_location"
 

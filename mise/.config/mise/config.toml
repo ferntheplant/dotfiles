@@ -16,6 +16,8 @@ just = "latest"
 "aqua:anomalyco/opencode" = "latest"
 shellcheck = "latest"
 yq = "latest"
+# Nanobrew installs zmx on macOS. On Linux it installs the macOS binary, so mise installs zmx there.
+"github:neurosnap/zmx" = { version = "latest", os = ["linux"] }
 
 [settings]
 activate_aggressive = true
