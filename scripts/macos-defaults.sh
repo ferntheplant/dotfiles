@@ -22,4 +22,12 @@ defaults write "$hiddenbar" isAutoStart -bool true
 defaults write "$hiddenbar" numberOfSecondForAutoHide -int 5
 defaults write "$hiddenbar" useFullStatusBarOnExpandEnabled -bool true
 
+# Sill (me.saffer.sill.mac). Sill reads these at launch, so quit and open Sill to apply a change.
+# Only the settings that differ from Sill's defaults are here. Sill keeps Launch at Login in
+# SMAppService, and the paired devices and Require pairing in the keychain, not in defaults.
+# The keys are in Sources/SillMenuBar/HostSettings.swift in the Sill repo.
+sill=me.saffer.sill.mac
+# Remote Access: paired devices connect through Tailscale on TCP port 7455
+defaults write "$sill" remoteAccess -bool true
+
 echo "✅ Wrote macOS defaults. Log out and back in to apply the menu bar spacing and Spaces setting."

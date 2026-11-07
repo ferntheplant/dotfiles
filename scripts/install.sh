@@ -60,7 +60,7 @@ fi
 "$fixed_location/scripts/link-skills.sh"
 "$fixed_location/scripts/claude-settings.sh"
 
-# Desktop apps: macOS and Hidden Bar defaults, Handy settings
+# Desktop apps: macOS, Hidden Bar, and Sill defaults, Handy settings
 if [[ "$profile" != "server" ]]; then
 	"$fixed_location/scripts/macos-defaults.sh"
 	"$fixed_location/scripts/handy-settings.sh" import

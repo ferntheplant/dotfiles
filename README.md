@@ -134,7 +134,7 @@ when `.Nanobrewfile` changes.
    Syncthing, Tinycast, and Vorssaint. Run `paneru install` to add the Paneru launch agent, then
    `paneru start`, and give Paneru Accessibility access when macOS asks. Paneru stops with an
    error until "Displays have separate Spaces" is on; `scripts/macos-defaults.sh` turns it on, and
-   it applies after step 11.
+   it applies after step 12.
 9. Set up Tinycast: Settings > Backup > Import, and pick `tinycast/settings.tinycast`. It restores
    the settings, hotkeys (Cmd+Space), quicklinks, and the custom commands that run
    `tinycast/commands`, with Show confirmation on. `tinycast/quicklinks.json` is a readable copy of
@@ -142,7 +142,14 @@ when `.Nanobrewfile` changes.
 10. Set up Vorssaint: Settings > Backup > Import settings…, and pick `vorssaint/settings.plist`.
     Vorssaint restarts with the CPU temperature readout, Fan Control, and Keep Awake. Tinycast and
     Paneru do the launcher, clipboard, and window jobs.
-11. Log out and back in, so that the menu bar spacing and the Spaces setting from
+11. Set up Sill. `scripts/macos-defaults.sh` already turned on Remote Access.
+    - open Sill, and allow Screen Recording, Accessibility, and Local Network when macOS asks
+    - in Sill's Settings > General, turn on Launch at login
+    - pair the iPhone and the iPad again: Pair iPhone or iPad… in the Sill menu. The pairing keys
+      are in the keychain, so they do not move to a new Mac.
+    - away from home, the devices connect through Tailscale on TCP port 7455. Tailscale must be on
+      at both ends, with Shields Up off on the Mac. Sill cannot wake a Mac that sleeps.
+12. Log out and back in, so that the menu bar spacing and the Spaces setting from
     `scripts/macos-defaults.sh` apply.
 
 ## Leave a machine
@@ -326,6 +333,7 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | handy | nanobrew | `dotfiles/handy/settings.json` via `scripts/handy-settings.sh` | |
 | hiddenbar | nanobrew | `scripts/macos-defaults.sh` | yes |
 | librewolf | nanobrew | `.librewolf/librewolf.overrides.cfg`, `dotfiles/librewolf` | |
+| sill | nanobrew (`saffsanity/sill` tap) | `scripts/macos-defaults.sh` | yes |
 | spotify | nanobrew | null | |
 | syncthing-app | nanobrew | null | |
 | tinycast | nanobrew (`abue-ammar/tinycast` tap) | `dotfiles/tinycast` | yes |
