@@ -10,6 +10,10 @@ go = "latest"
 # CLI tools (every machine, the server too)
 agent-browser = "latest"
 duckdb = "latest"
+# fj, the Forgejo CLI. Its releases have no macOS build, so cargo builds it on every machine.
+# OPENSSL_STATIC links nanobrew's OpenSSL into the binary: on Linux, /opt/nanobrew/prefix/lib is not
+# on the library path, so a dynamically linked fj cannot find libssl when it starts.
+"cargo:forgejo-cli" = { version = "latest", install_env = { OPENSSL_STATIC = "1" } }
 gitleaks = "latest"
 helix = "latest"
 just = "latest"

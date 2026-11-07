@@ -47,12 +47,13 @@ micro-homie runs Debian 13 with no desktop. Its host setup (Docker, the 1Passwor
 - `zmx`: mise
 - `mole`: none, because it is a macOS app
 
-1. Install zsh and stow, make zsh the login shell, and install nanobrew. `nb init` must run with
+1. Install zsh, stow, and a C compiler, make zsh the login shell, and install nanobrew. mise
+   builds `fj` with cargo, which needs the compiler (`build-essential`). `nb init` must run with
    sudo: it makes the `/opt/nb` and `/opt/homebrew` links to `/opt/nanobrew/prefix`. Without
    `/opt/nb`, each package fails with `incomplete relocation`.
 
    ```bash
-   sudo apt install -y zsh stow
+   sudo apt install -y zsh stow build-essential
    chsh -s /usr/bin/zsh
    curl -fsSL https://nanobrew.trilok.ai/install | bash
    sudo /opt/nanobrew/prefix/bin/nb init
@@ -151,6 +152,38 @@ when `.Nanobrewfile` changes.
       at both ends, with Shields Up off on the Mac. Sill cannot wake a Mac that sleeps.
 12. Log out and back in, so that the menu bar spacing and the Spaces setting from
     `scripts/macos-defaults.sh` apply.
+
+## Set up the Forgejo CLI
+
+`fj` ([forgejo-cli](https://codeberg.org/forgejo-contrib/forgejo-cli)) works with the Forgejo
+instance at `https://micro-homie.tail8cc0d3.ts.net:3001`, through Tailscale. Its releases have no
+macOS build, so `mise install` builds it from source with cargo on every machine. The build finds
+OpenSSL through `pkg-config`, so `openssl@4` and `pkgconf` are in `.Nanobrewfile`. Install them
+before `mise install`. On Linux, cargo also needs a C compiler: see step 1 of
+[Linux server (micro-homie)](#linux-server-micro-homie).
+
+`fj auth login` works only on instances it has an OAuth client for, so sign in with a token:
+
+1. On the instance, open Settings > Applications > Generate new token. Give it **repository** read
+   and write access, and **user** read access.
+2. Add the token to `fj`. The command reads the token from stdin, so it does not go in the shell
+   history.
+
+   ```bash
+   fj -H https://micro-homie.tail8cc0d3.ts.net:3001 auth add-token
+   fj -H https://micro-homie.tail8cc0d3.ts.net:3001 whoami
+   ```
+
+`fj` stores the token in `keys.json`: in `~/Library/Application Support/forgejo-cli.forgejo-cli/`
+on macOS, and in `~/.local/share/forgejo-cli/` on Linux. Each machine needs its own token. Inside a
+clone, `fj` finds the instance from the git remote, so `-H` is not necessary there.
+
+```bash
+fj pr create          # open a pull request from the current branch
+fj pr status 1        # the mergeability and CI status of pull request 1
+fj actions tasks      # recent Actions runs
+fj repo units prs --help   # merge styles and other pull request settings
+```
 
 ## Leave a machine
 
@@ -273,6 +306,8 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | less | nanobrew core | null |
 | libpq | nanobrew core | null |
 | mole | nanobrew core | null |
+| openssl@4 | nanobrew core | null |
+| pkgconf | nanobrew core | null |
 | ripgrep | nanobrew core | null |
 | rtk | nanobrew core | null |
 | starship | nanobrew core | `.config/starship` |
@@ -301,6 +336,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | agent-browser | mise | null |
 | bun | mise | `.config/mise/config.toml` |
 | duckdb | mise | `.duckdbrc` |
+| fj (forgejo-cli) | mise (cargo) | `keys.json`; see [Set up the Forgejo CLI](#set-up-the-forgejo-cli) |
 | gitleaks | mise | null |
 | go | mise | `.config/mise/config.toml` |
 | helix | mise | `.config/helix` |
