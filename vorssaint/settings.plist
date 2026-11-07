@@ -5,7 +5,7 @@
 	<key>settings</key>
 	<dict>
 		<key>appAppearance</key>
-		<string>system</string>
+		<string>dark</string>
 		<key>appUpdatesCheckFrequency</key>
 		<string>off</string>
 		<key>appUpdatesIncludeAppStore</key>

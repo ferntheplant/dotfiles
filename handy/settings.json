@@ -156,7 +156,7 @@
   "show_whats_new_on_update": false,
   "sound_theme": "marimba",
   "start_hidden": true,
-  "theme": "system",
+  "theme": "dark",
   "transcribe_accelerator": "auto",
   "translate_to_english": false,
   "typing_tool": "auto",

@@ -3,9 +3,9 @@ font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 
-theme = dark:Rose Pine Moon,light:Rose Pine Dawn
+theme = Rose Pine Moon
 
-window-theme = system
+window-theme = dark
 window-save-state = always
 
 cursor-style = block

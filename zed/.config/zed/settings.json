@@ -132,7 +132,7 @@
     "calt": false
   },
   "icon_theme": {
-    "mode": "system",
+    "mode": "dark",
     "light": "Zed (Default)",
     "dark": "Zed (Default)"
   },
@@ -169,8 +169,8 @@
   "ui_font_size": 16.0,
   "buffer_font_size": 13.0,
   "theme": {
-    "mode": "system",
-    "light": "Rosé Pine Dawn",
+    "mode": "dark",
+    "light": "Rosé Pine Moon",
     "dark": "Rosé Pine Moon",
   },
   "helix_mode": true,
