@@ -159,7 +159,7 @@ mise config has no profiles; nothing configures them on micro-homie.
 ## Set up the Forgejo CLI
 
 `fj` ([forgejo-cli](https://codeberg.org/forgejo-contrib/forgejo-cli)) works with the Forgejo
-instance at `https://micro-homie.tail8cc0d3.ts.net:3001`, through Tailscale. Its releases have no
+instance at `https://forgejo.tail8cc0d3.ts.net`, through Tailscale. Its releases have no
 macOS build, so `mise install` builds it from source with cargo on every machine. The build finds
 OpenSSL through `pkg-config`, so `openssl@4` and `pkgconf` are in `.Nanobrewfile`. Install them
 before `mise install`. On Linux, cargo also needs a C compiler: see step 1 of
@@ -173,8 +173,8 @@ before `mise install`. On Linux, cargo also needs a C compiler: see step 1 of
    history.
 
    ```bash
-   fj -H https://micro-homie.tail8cc0d3.ts.net:3001 auth add-token
-   fj -H https://micro-homie.tail8cc0d3.ts.net:3001 whoami
+   fj -H https://forgejo.tail8cc0d3.ts.net auth add-token
+   fj -H https://forgejo.tail8cc0d3.ts.net whoami
    ```
 
 `fj` stores the token in `keys.json`: in `~/Library/Application Support/forgejo-cli.forgejo-cli/`
@@ -198,8 +198,11 @@ Claude Code and Pi share one set of instructions and one set of skills:
   are copies with local edits, recorded in `.agents/vendored-files.jsonc`; `/rebaseline files`
   takes upstream's changes. `claude/.claude/CLAUDE.md` imports both. Pi has no imports, so
   `pi/.pi/agent/AGENTS.md` links to the constitution and `APPEND_SYSTEM.md` links to the writing rules.
-- **Skills:** `.agents/skills/`. `scripts/link-skills.sh` links each skill into `~/.claude/skills/`,
-  and Pi reads that folder through the `skills` key in its settings.
+- **Skills:** `.agents/skills/`, and the homielab repo's own skills in
+  `~/homielab/.agents/skills/` when that checkout exists. `scripts/link-skills.sh` links each skill
+  into `~/.claude/skills/`, and Pi reads that folder through the `skills` key in its settings. The
+  dotfiles skills are copies; the homielab skills are links, so a `git pull` in `~/homielab`
+  updates them.
 - **Settings:** each agent writes its own keys to its settings file, so the file is not a link.
   `scripts/claude-settings.sh` and `scripts/pi-settings.sh` merge `settings.base.json` into it.
 
