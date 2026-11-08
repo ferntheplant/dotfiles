@@ -59,6 +59,7 @@ fi
 # Skills live in the hidden .agents/, which the loop above skips
 "$fixed_location/scripts/link-skills.sh"
 "$fixed_location/scripts/claude-settings.sh"
+"$fixed_location/scripts/kata-agent-hooks.sh"
 
 # Desktop apps: macOS, Hidden Bar, and Sill defaults, Handy settings
 if [[ "$profile" != "server" ]]; then

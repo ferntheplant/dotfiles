@@ -1,0 +1,22 @@
+# Kata client config (<KATA_HOME>/config.toml, KATA_HOME is ~/.kata). Stowed as a file link, so
+# ~/.kata stays a real folder for Kata's own state.
+#
+# Every kata command on this machine uses the homielab daemon on micro-homie (see the Kata section
+# of the homielab README). Without a daemon target, kata starts a local daemon with its own database.
+# KATA_SERVER or --daemon overrides it for one command.
+active_daemon = "homielab"
+
+[[daemon]]
+name = "homielab"
+# The API for agents: the actor is KATA_AUTHOR. The UI at https://kata.tail8cc0d3.ts.net puts your
+# Tailscale login on every write, so do not point a client there.
+url = "https://kata-api.tail8cc0d3.ts.net"
+
+# Record the agent and session that closed an issue, on the issue.closed event. Claude Code
+# (CLAUDE_CODE_SESSION_ID) and Codex are found without config.
+[close.transcript]
+enabled = true
+
+[close.transcript.session_id_env]
+# OpenCode sets this in its shell tool
+opencode = "OPENCODE_SESSION_ID"

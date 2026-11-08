@@ -16,7 +16,7 @@ them.
 
 ```bash
 scripts/install-packages.sh # nanobrew packages for the profile and the OS; safe to run again
-scripts/install.sh          # stow, skills, Claude settings; safe to run again
+scripts/install.sh          # stow, skills, Claude settings, Kata hooks; safe to run again
                             # desktop only: macOS defaults, Handy settings
 ```
 
@@ -116,7 +116,7 @@ when `.Nanobrewfile` changes.
 6. Run the installer scripts. `install.sh` is safe to run again.
 
    ```bash
-   scripts/install.sh            # stow, skills, Claude settings, macOS defaults, Handy settings
+   scripts/install.sh            # stow, skills, Claude settings, Kata hooks, macOS defaults, Handy settings
    scripts/rex-settings.sh import
    mise install
    ```
@@ -184,6 +184,33 @@ fj pr status 1        # the mergeability and CI status of pull request 1
 fj actions tasks      # recent Actions runs
 fj repo units prs --help   # merge styles and other pull request settings
 ```
+
+## Kata
+
+[Kata](https://www.katatracker.com/docs/) is the issue tracker for agents. Its daemon runs on
+micro-homie (see the Kata section of the homielab README). This repo sets up the clients.
+
+- **Daemon target:** `kata/.kata/config.toml` sends every `kata` command to
+  `https://kata-api.tail8cc0d3.ts.net`. Without it, `kata` starts a local daemon with its own
+  database. It also turns on close transcripts: `kata close` records the agent and session.
+- **Actor:** each agent sets `KATA_AUTHOR`. OpenCode gets `opencode@<host>` from
+  `opencode/.config/opencode/plugins/kata-env.ts`.
+- **Agent hooks:** `scripts/kata-agent-hooks.sh` (run by `install.sh`) runs
+  `kata agent-hook install` and gives the generated plugin its dependencies with `bun`. The hooks
+  give the agent Kata's contract when a session starts in a repo that has a `.kata.toml`. Kata
+  generates them, so they are not in this repo. Only OpenCode has hooks now.
+
+To use Kata in a repo, run `kata init --project <name>` there. It writes `.kata.toml` (commit it)
+and adds `.kata.local.toml` to `.gitignore`.
+
+```bash
+kata whoami                       # the actor and where it came from
+kata daemon locate                # the daemon this machine uses
+kata agent-hook status opencode   # the installed hooks (offline)
+```
+
+micro-homie is not set up yet: it is a tagged device, so it must use
+`http://127.0.0.1:7778` instead of the URL in `config.toml`.
 
 ## Leave a machine
 
@@ -302,6 +329,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | gzip | nanobrew core | null |
 | httpie | nanobrew core | null |
 | jq | nanobrew core | null |
+| kata | nanobrew core | `.kata/config.toml`; agent hooks from `scripts/kata-agent-hooks.sh`, see [Kata](#kata) |
 | leaf-markdown-viewer | nanobrew core | `.config/leaf/config.toml` |
 | less | nanobrew core | null |
 | libpq | nanobrew core | null |
