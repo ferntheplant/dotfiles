@@ -17,7 +17,8 @@ duckdb = "latest"
 gitleaks = "latest"
 helix = "latest"
 just = "latest"
-"aqua:anomalyco/opencode" = "latest"
+# Pi, the coding agent. Its config is the pi stow package and scripts/pi-settings.sh.
+pi = "latest"
 shellcheck = "latest"
 yq = "latest"
 # Nanobrew installs zmx on macOS. On Linux it installs the macOS binary, so mise installs zmx there.

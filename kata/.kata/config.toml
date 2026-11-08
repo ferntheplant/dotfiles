@@ -18,5 +18,5 @@ url = "https://kata-api.tail8cc0d3.ts.net"
 enabled = true
 
 [close.transcript.session_id_env]
-# OpenCode sets this in its shell tool
-opencode = "OPENCODE_SESSION_ID"
+# Pi sets this in its bash tool
+pi = "PI_SESSION_ID"

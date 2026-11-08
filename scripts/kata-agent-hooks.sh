@@ -13,17 +13,10 @@ if ! command -v kata >/dev/null 2>&1; then
 	exit 0
 fi
 
-# OpenCode: Kata writes the plugin package to ~/.config/opencode/plugins/kata-user/, which OpenCode
-# loads by itself because it is in plugins/. Kata also adds the plugin's absolute path to a config
-# file. --config points that at a file that OpenCode does not read, so the stowed opencode.jsonc
-# does not get a path for one machine, and OpenCode does not load the plugin twice.
-if command -v opencode >/dev/null 2>&1; then
-	opencode_dir="$HOME/.config/opencode"
-	kata agent-hook install opencode --executable kata --config "$opencode_dir/kata-registration.json"
-	# The plugin imports @opencode/plugin. OpenCode does not install a local plugin's dependencies.
-	if command -v bun >/dev/null 2>&1; then
-		bun install --silent --cwd "$opencode_dir/plugins/kata-user"
-	else
-		echo "⚠️  bun not found; run 'bun install' in $opencode_dir/plugins/kata-user after 'mise install'"
-	fi
+# Pi: Kata writes one extension file, ~/.pi/agent/extensions/kata.js, which Pi loads by itself. It
+# imports only Node built-ins, so it needs no install step. It needs Pi 0.99.1 or newer.
+if command -v pi >/dev/null 2>&1; then
+	kata agent-hook install pi --executable kata
+else
+	echo "⚠️  pi not found; run 'mise install', then run this script again for the Pi hooks"
 fi

@@ -1,0 +1,1 @@
+../../../.agents/instructions/constitution.md

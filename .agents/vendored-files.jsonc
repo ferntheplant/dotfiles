@@ -1,0 +1,48 @@
+// Single files copied from other repos and edited in place: the agent instructions. Each entry
+// records the upstream commit the local copy was last merged from (`base`), so `/rebaseline files`
+// can tell a local edit from an upstream change and three-way merge one into the other. These do
+// not come from baseline, so they are merged here from their own upstreams.
+//
+// Every local edit gets a comment on its entry saying what changed and why: the next merge reads
+// those comments to decide which side of a conflict to keep. An edit with no comment reads as
+// drift, and the merge is free to take upstream's version over it.
+//
+// `claude/.claude/CLAUDE.md` imports both files. Pi has no imports, so `pi/.pi/agent/AGENTS.md`
+// links to the constitution and `pi/.pi/agent/APPEND_SYSTEM.md` links to the writing rules.
+{
+  "sources": {
+    "clanker-constitution": {
+      "repo": "https://github.com/kenn-io/constitution",
+      "ref": "main",
+      // CC BY 4.0. The credit and the list of changes are this file and its comments.
+      "license": ".agents/licenses/clanker-constitution.txt",
+    },
+    "asd-ste100": {
+      "repo": "https://gist.github.com/toppa/bf7ff49d6fc44fd4fc3337248f8f2a7e",
+      "ref": "main",
+      // The gist states no license.
+    },
+  },
+  // Keyed by the local path.
+  "files": {
+    ".agents/instructions/constitution.md": {
+      "source": "clanker-constitution",
+      "path": "CONSTITUTION.md",
+      "base": "b3e737c4f2f5577e03894a9acfd3af20505d1025",
+      // Local: the title is "Constitution", without the version comment, since the base here
+      // records the version. The license footer is cut, to keep it out of every prompt; the
+      // credit is here. §7's first bullet names the repo's own instruction file (`CLAUDE.md`, or
+      // `AGENTS.md` where the project keeps one) instead of requiring `AGENTS.md`, since these
+      // instructions are global. §7's "Never trigger a skill…" bullet is cut: §1 already says
+      // literal mentions do not invoke skills.
+    },
+    ".agents/instructions/writing.md": {
+      "source": "asd-ste100",
+      "path": "asd-ste100.md",
+      "base": "f4c43469905bafee05b251190ab0b6ad173d3f2b",
+      // Local: upstream is a Claude Code output style. The frontmatter and its opening line ("You
+      // are an interactive CLI tool…") are cut, and a `# Writing` heading starts the file, since
+      // here it is an instruction file that follows the constitution.
+    },
+  },
+}

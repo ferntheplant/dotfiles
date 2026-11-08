@@ -1,8 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-# Link each skill in ~/dotfiles/.agents/skills into ~/.claude/skills, where Claude Code and
-# OpenCode both find it. A name that something else already provides is skipped, such as the
+# Link each skill in ~/dotfiles/.agents/skills into ~/.claude/skills, where Claude Code finds it.
+# Pi reads the same folder (the skills key in pi/.pi/agent/settings.base.json), so both agents get
+# the same skills. A name that something else already provides is skipped, such as the
 # pillar repo's sync links on the work laptop. A link to a skill that was deleted is removed.
 
 SOURCE="$HOME/dotfiles/.agents/skills"

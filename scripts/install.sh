@@ -7,7 +7,7 @@ set -euo pipefail
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
 #   server             no packages for desktop-only apps (lil-homie)
-#   infra              as server, and no agent config: no Claude Code, OpenCode, Kata, or skills
+#   infra              as server, and no agent config: no Claude Code, Pi, Kata, or skills
 #                      (micro-homie, which runs the homielab services; agents reach it through Rex)
 # On Linux, the packages in MACOS_ONLY are skipped too.
 
@@ -19,7 +19,7 @@ IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 # Packages for apps that the server and infra profiles do not install
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
 # Packages for agents, which the infra profile does not install
-AGENT_ONLY=("claude" "kata" "opencode")
+AGENT_ONLY=("claude" "kata" "pi")
 # Packages for apps that have no Linux build (lil-homie is a Mac server, so it keeps them)
 MACOS_ONLY=("ghostty")
 if [[ "$(uname -s)" == "Linux" ]]; then
@@ -49,7 +49,7 @@ done
 # Remove links into ~/dotfiles whose file was deleted or moved
 {
 	find "$HOME" -maxdepth 1 -type l 2>/dev/null
-	find "$HOME/.config" "$HOME/.local/bin" "$HOME/.claude" "$HOME/.zsh" -name node_modules -prune -o -type l -print 2>/dev/null
+	find "$HOME/.config" "$HOME/.local/bin" "$HOME/.claude" "$HOME/.pi" "$HOME/.zsh" -name node_modules -prune -o -type l -print 2>/dev/null
 } | while read -r link; do
 	if [[ "$(readlink "$link")" == *dotfiles/* && ! -e "$link" ]]; then
 		rm "$link"
@@ -62,11 +62,12 @@ if [[ ! -d "$HOME/.zsh/fzf-tab" ]]; then
 	git clone --depth 1 https://github.com/Aloxaf/fzf-tab "$HOME/.zsh/fzf-tab"
 fi
 
-# Agent config: skills (in the hidden .agents/, which the loop above skips), Claude settings,
-# and Kata hooks
+# Agent config: skills (in the hidden .agents/, which the loop above skips), Claude and Pi
+# settings, and Kata hooks
 if [[ "$profile" != "infra" ]]; then
 	"$fixed_location/scripts/link-skills.sh"
 	"$fixed_location/scripts/claude-settings.sh"
+	"$fixed_location/scripts/pi-settings.sh"
 	"$fixed_location/scripts/kata-agent-hooks.sh"
 fi
 

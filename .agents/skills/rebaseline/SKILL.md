@@ -10,6 +10,7 @@ This repo carries copies of other repos' files and edits them in place:
 
 - **Baseline**: a repo generated from [baseline](https://github.com/ferntheplant/baseline) is a copy of all of it. `.baseline.jsonc` at its root records which baseline commit it last took. Baseline itself has no such file.
 - **Vendored skills**: `.agents/vendored-skills.jsonc` records, for each skill copied from another repo, its source and the commit it was last merged from.
+- **Vendored files**: `.agents/vendored-files.jsonc` does the same for single files, keyed by local path. A file can have a different name and place here than upstream.
 
 That recorded commit is the **base**. Rebaselining is a three-way merge: the upstream changes from the base to the newest upstream commit, applied on top of the local copy. A local edit survives unless upstream changed the same lines, and each manifest's comments say why each local edit was made, which is what decides a conflict.
 
@@ -20,6 +21,7 @@ That recorded commit is the **base**. Rebaselining is a three-way merge: the ups
 | `init` | [Initialise](#initialise): record the base in a repo generated from baseline |
 | none, with `.baseline.jsonc` present | [Merge](#merge) baseline's changes |
 | `skills [<name>...]` | [Merge](#merge) upstream changes into every vendored skill, or only the named ones |
+| `files [<path>...]` | [Merge](#merge) upstream changes into every vendored file, or only the named ones |
 | `add <repo-url> <path> [<name>]` | [Add](#add) a vendored skill |
 
 With no argument and no `.baseline.jsonc`, ask which branch was meant. In a repo generated from baseline, merge baseline before the skills: baseline already carries the upstream skill changes it has taken, so the skills branch is left with only what baseline has not.
@@ -71,7 +73,7 @@ Baseline is `https://github.com/ferntheplant/baseline` at `main`, fetched as `re
 
 ## Merge
 
-There is one **entry** to merge for baseline: source path `.`, local path `.`, plus its excludes. For skills, each entry in `.agents/vendored-skills.jsonc` is one: its source path is `path`, and its local path is `.agents/skills/<name>`. Fetch every source the entries name, then run steps 1 to 5 for each entry.
+There is one **entry** to merge for baseline: source path `.`, local path `.`, plus its excludes. For skills, each entry in `.agents/vendored-skills.jsonc` is one: its source path is `path`, and its local path is `.agents/skills/<name>`. For files, each entry in `.agents/vendored-files.jsonc` is one: its source path is `path`, and its local path is the entry's key. Fetch every source the entries name, then run steps 1 to 5 for each entry.
 
 1. **Skip** an entry upstream has not touched since its base: `git diff --quiet <base> refs/rebaseline/<source> -- <path>`.
 2. **Apply**:
@@ -82,7 +84,13 @@ There is one **entry** to merge for baseline: source path `.`, local path `.`, p
      git apply --3way --directory=.agents/skills/<name>
    # baseline
    git diff --binary <base> refs/rebaseline/baseline -- . ':(exclude)<path>'... | git apply --3way
+   # a file, whose local name can differ from upstream's
+   git show <base>:<path> > "$tmp/base"
+   git show refs/rebaseline/<source>:<path> > "$tmp/upstream"
+   git merge-file -L local -L base -L upstream <local path> "$tmp/base" "$tmp/upstream"
    ```
+
+   `git merge-file` writes conflict markers into the file and exits with the number of conflicts.
 
    Clean hunks land. Overlapping ones leave conflict markers, and `git status` lists their files as unmerged. When upstream deleted or renamed a file the repo also edited, `git apply` names the path and the hunk it could not place: that is a conflict too, resolved by hand. When `<path>` itself is gone upstream, the skill moved or was retired: find where it went with `git log -1 --stat refs/rebaseline/<source> -- <path>`, and ask the user before repointing `path`.
 

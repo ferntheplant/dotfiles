@@ -1,0 +1,17 @@
+{
+  "$schema": "https://pi.dev/schemas/settings.schema.json",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "kimi-k3",
+  "defaultThinkingLevel": "high",
+  "defaultTools": ["+codemode"],
+  "packages": [
+    "npm:pi-web-access",
+    "npm:pi-subagents",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:pi-usage"
+  ],
+  "skills": ["~/.claude/skills"],
+  "quietStartup": true,
+  "collapseChangelog": true,
+  "enableInstallTelemetry": false
+}

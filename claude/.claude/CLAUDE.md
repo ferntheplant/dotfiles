@@ -1,2 +1,2 @@
-@~/.claude/RTK.md
-@~/.config/opencode/AGENTS.md
+@~/dotfiles/.agents/instructions/constitution.md
+@~/dotfiles/.agents/instructions/writing.md

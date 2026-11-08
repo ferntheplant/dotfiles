@@ -10,7 +10,7 @@
 // Every skill here comes from baseline, which vendors most of them from other repos and merges
 // their upstream changes first. Run `/rebaseline skills` in baseline, then here. Here, the skills
 // are global: `scripts/link-skills.sh` links each one into `~/.claude/skills/`, where Claude Code
-// and OpenCode both find it. The local edits make a skill work outside a repo made from baseline.
+// and Pi both find it. The local edits make a skill work outside a repo made from baseline.
 {
   "sources": {
     "baseline": {
@@ -28,24 +28,24 @@
     "agent-browser": {
       "source": "baseline",
       "path": ".agents/skills/agent-browser",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
       // Local: runs the repo's `mise.toml` install inside a repo that has one, and the global
       // install (`.Nanobrewfile`) elsewhere, since the skill is global here.
     },
     "codebase-design": {
       "source": "baseline",
       "path": ".agents/skills/codebase-design",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
     },
     "explain-diff": {
       "source": "baseline",
       "path": ".agents/skills/explain-diff",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
     },
     "grilling": {
       "source": "baseline",
       "path": ".agents/skills/grilling",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
     },
     "pr": {
       "source": "baseline",
@@ -63,11 +63,14 @@
       "source": "baseline",
       "path": ".agents/skills/rebaseline",
       "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      // Local: adds the `files` branch for `.agents/vendored-files.jsonc` (the agent instructions,
+      // which do not come from baseline), merged with `git merge-file` since a file's local name
+      // differs from upstream's.
     },
     "research": {
       "source": "baseline",
       "path": ".agents/skills/research",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
     },
     "wizard": {
       "source": "baseline",
