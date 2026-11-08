@@ -6,7 +6,9 @@ set -euo pipefail
 #
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
-#   server             no packages for desktop-only apps (lil-homie, micro-homie)
+#   server             no packages for desktop-only apps (lil-homie)
+#   infra              as server, and no agent config: no Claude Code, OpenCode, Kata, or skills
+#                      (micro-homie, which runs the homielab services; agents reach it through Rex)
 # On Linux, the packages in MACOS_ONLY are skipped too.
 
 fixed_location="$HOME/dotfiles"
@@ -14,8 +16,10 @@ profile="$(cat "$fixed_location/.work/profile" 2>/dev/null || echo desktop)"
 
 # Directories that are not stow packages
 IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
-# Packages for apps that the server profile does not install
+# Packages for apps that the server and infra profiles do not install
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
+# Packages for agents, which the infra profile does not install
+AGENT_ONLY=("claude" "kata" "opencode")
 # Packages for apps that have no Linux build (lil-homie is a Mac server, so it keeps them)
 MACOS_ONLY=("ghostty")
 if [[ "$(uname -s)" == "Linux" ]]; then
@@ -32,7 +36,9 @@ for subdir in "$fixed_location"/*; do
 			stow -t "$HOME/.local/bin" --ignore="install" scripts
 		elif [[ " ${IGNORE_LIST[*]} " == *" ${subdir_name} "* ]]; then
 			continue
-		elif [[ "$profile" = "server" && " ${DESKTOP_ONLY[*]} " == *" ${subdir_name} "* ]]; then
+		elif [[ "$profile" != "desktop" && " ${DESKTOP_ONLY[*]} " == *" ${subdir_name} "* ]]; then
+			continue
+		elif [[ "$profile" = "infra" && " ${AGENT_ONLY[*]} " == *" ${subdir_name} "* ]]; then
 			continue
 		else
 			stow --no-folding "$subdir_name"
@@ -56,13 +62,16 @@ if [[ ! -d "$HOME/.zsh/fzf-tab" ]]; then
 	git clone --depth 1 https://github.com/Aloxaf/fzf-tab "$HOME/.zsh/fzf-tab"
 fi
 
-# Skills live in the hidden .agents/, which the loop above skips
-"$fixed_location/scripts/link-skills.sh"
-"$fixed_location/scripts/claude-settings.sh"
-"$fixed_location/scripts/kata-agent-hooks.sh"
+# Agent config: skills (in the hidden .agents/, which the loop above skips), Claude settings,
+# and Kata hooks
+if [[ "$profile" != "infra" ]]; then
+	"$fixed_location/scripts/link-skills.sh"
+	"$fixed_location/scripts/claude-settings.sh"
+	"$fixed_location/scripts/kata-agent-hooks.sh"
+fi
 
 # Desktop apps: macOS, Hidden Bar, and Sill defaults, Handy settings
-if [[ "$profile" != "server" ]]; then
+if [[ "$profile" = "desktop" ]]; then
 	"$fixed_location/scripts/macos-defaults.sh"
 	"$fixed_location/scripts/handy-settings.sh" import
 fi

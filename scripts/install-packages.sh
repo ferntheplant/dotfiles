@@ -3,7 +3,8 @@ set -euo pipefail
 
 # Install the nanobrew packages that this machine's profile selects. Safe to run again.
 #   desktop  .Nanobrewfile and .Nanobrewfile.desktop (macOS only)
-#   server   .Nanobrewfile only (lil-homie on macOS, micro-homie on Linux)
+#   server   .Nanobrewfile only (lil-homie, macOS)
+#   infra    .Nanobrewfile without the agent formulas (micro-homie, Linux)
 #
 # On Linux, the casks and the formulas in MACOS_ONLY are left out. The README tells how a Linux
 # server gets the casks' tools.
@@ -21,25 +22,28 @@ MACOS_ONLY=("mole" "stow" "zmx")
 # Homebrew lists for macOS only, so it skips these:
 #   alsa-lib, libxcb  ffmpeg
 LINUX_DEPS=("alsa-lib" "libxcb")
+# Formulas for agents, which the infra profile does not install
+AGENT_ONLY=("kata")
 
 if [[ "$(uname -s)" != "Linux" ]]; then
 	nb bundle install "$fixed_location/.Nanobrewfile"
-	if [[ "$profile" != "server" ]]; then
+	if [[ "$profile" = "desktop" ]]; then
 		nb bundle install "$fixed_location/.Nanobrewfile.desktop"
 	fi
 	exit 0
 fi
 
-if [[ "$profile" != "server" ]]; then
-	echo "❌ Linux supports the server profile only: echo server > $fixed_location/.work/profile" >&2
+if [[ "$profile" != "infra" ]]; then
+	echo "❌ Linux supports the infra profile only: echo infra > $fixed_location/.work/profile" >&2
 	exit 1
 fi
 
 bundle="$(mktemp)"
 trap 'rm -f "$bundle"' EXIT
 
-# Keep the brew lines only, and drop each formula in MACOS_ONLY (with or without a tap prefix)
-awk -F'"' -v skip="${MACOS_ONLY[*]}" '
+# Keep the brew lines only, and drop each formula in MACOS_ONLY and AGENT_ONLY (with or without a
+# tap prefix)
+awk -F'"' -v skip="${MACOS_ONLY[*]} ${AGENT_ONLY[*]}" '
 	BEGIN { n = split(skip, s, " "); for (i = 1; i <= n; i++) macos[s[i]] = 1 }
 	/^brew "/ { short = $2; sub(/.*\//, "", short); if (!(short in macos)) print }
 ' "$fixed_location/.Nanobrewfile" > "$bundle"

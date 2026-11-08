@@ -8,11 +8,14 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | Profile | Packages | Stow packages |
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
-| `server` (lil-homie, micro-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
+| `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
+| `infra` (micro-homie) | `.Nanobrewfile` without the casks, the macOS-only formulas, and kata | as `server`, and also not ghostty, claude, kata, or opencode |
 
-On Linux (micro-homie), the server profile also skips the casks, the macOS-only formulas, and the
-ghostty package. `MACOS_ONLY` in `scripts/install-packages.sh` and in `scripts/install.sh` lists
-them.
+`infra` is for micro-homie, which runs the homielab services. It gets no agent config: no Claude
+Code or OpenCode settings, no skills, and no Kata client or hooks. Agents run on lil-homie or a
+laptop and reach micro-homie through Rex (see the Rex section of the homielab README). Linux
+supports only `infra`. `MACOS_ONLY` and `AGENT_ONLY` in `scripts/install-packages.sh` and in
+`scripts/install.sh` list what it skips.
 
 ```bash
 scripts/install-packages.sh # nanobrew packages for the profile and the OS; safe to run again
@@ -21,7 +24,7 @@ scripts/install.sh          # stow, skills, Claude settings, Kata hooks; safe to
 ```
 
 `leave-brew` puts a new formula in `.Nanobrewfile` and a new cask in `.Nanobrewfile.desktop`.
-Move a line by hand when that guess is wrong. It does not run on the server profile. A new
+Move a line by hand when that guess is wrong. It does not run on the server or infra profile. A new
 formula that has no Linux build must also go in `MACOS_ONLY` in `scripts/install-packages.sh`.
 
 ### Server (lil-homie)
@@ -42,7 +45,7 @@ micro-homie runs Debian 13 with no desktop. Its host setup (Docker, the 1Passwor
 `.Nanobrewfile` formulas. The other tools come from other sources:
 
 - `1password-cli` (a cask): 1Password's apt repo, from `setup-micro-homie.sh`
-- `claude-code` (a cask): the native installer, into `~/.local/bin`
+- `claude-code` (a cask): none, because agents do not run on micro-homie
 - `stow`: apt
 - `zmx`: mise
 - `mole`: none, because it is a macOS app
@@ -63,9 +66,8 @@ micro-homie runs Debian 13 with no desktop. Its host setup (Docker, the 1Passwor
 
    ```bash
    curl https://mise.run | sh
-   curl -fsSL https://claude.ai/install.sh | bash
    git clone https://github.com/ferntheplant/dotfiles ~/dotfiles
-   mkdir -p ~/dotfiles/.work && echo server > ~/dotfiles/.work/profile
+   mkdir -p ~/dotfiles/.work && echo infra > ~/dotfiles/.work/profile
    cd ~/dotfiles
    PATH="/opt/nanobrew/prefix/bin:$PATH" scripts/install-packages.sh
    PATH="/opt/nanobrew/prefix/bin:$PATH" scripts/install.sh
@@ -73,7 +75,8 @@ micro-homie runs Debian 13 with no desktop. Its host setup (Docker, the 1Passwor
    ```
 
 To sync after a push, use the same command as lil-homie. Run `scripts/install-packages.sh` too
-when `.Nanobrewfile` changes.
+when `.Nanobrewfile` changes. `mise install` still installs opencode and agent-browser, because the
+mise config has no profiles; nothing configures them on micro-homie.
 
 ## Set up a new desktop Mac
 
@@ -209,8 +212,7 @@ kata daemon locate                # the daemon this machine uses
 kata agent-hook status opencode   # the installed hooks (offline)
 ```
 
-micro-homie is not set up yet: it is a tagged device, so it must use
-`http://127.0.0.1:7778` instead of the URL in `config.toml`.
+micro-homie (the `infra` profile) has no Kata client: agents do not run there.
 
 ## Leave a machine
 

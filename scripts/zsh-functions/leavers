@@ -7,8 +7,8 @@
 # so a name already in a file keeps its full tap name. Packages in the gitignored
 # .work/Nanobrewfile are machine-only and stay out of both files.
 leave-brew() {
-    if [[ "$(cat .work/profile 2>/dev/null)" == server ]]; then
-        echo "❌ leave-brew rewrites the shared package lists; do not run it on the server profile"
+    if [[ "$(cat .work/profile 2>/dev/null)" == (server|infra) ]]; then
+        echo "❌ leave-brew rewrites the shared package lists; do not run it on the server or infra profile"
         return 1
     fi
     local work=.work/Nanobrewfile
