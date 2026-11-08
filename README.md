@@ -227,7 +227,8 @@ micro-homie (see the Kata section of the homielab README). This repo sets up the
   them, so they are not in this repo. Only Pi has hooks now.
 
 To use Kata in a repo, run `kata init --project <name>` there. It writes `.kata.toml` (commit it)
-and adds `.kata.local.toml` to `.gitignore`.
+and adds `.kata.local.toml` to `.gitignore`. This repo's own project is `dotfiles`: put pending work
+on the dotfiles there.
 
 ```bash
 kata whoami                       # the actor and where it came from
