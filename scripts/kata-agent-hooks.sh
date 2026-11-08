@@ -20,3 +20,11 @@ if command -v pi >/dev/null 2>&1; then
 else
 	echo "⚠️  pi not found; run 'mise install', then run this script again for the Pi hooks"
 fi
+
+# Claude Code: Kata adds its hooks to ~/.claude/settings.json. claude-settings.sh keeps hook groups
+# that are not in the base file, so a later merge leaves them in place.
+if command -v claude >/dev/null 2>&1; then
+	kata agent-hook install claude --executable kata
+else
+	echo "⚠️  claude not found; run this script again after you install Claude Code"
+fi

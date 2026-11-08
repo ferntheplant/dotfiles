@@ -7,15 +7,21 @@ set -euo pipefail
 # (theme, plugins) and keys that other tools write (the pillar sync's telemetry
 # env and trace hooks) survive. A hook group that runs a command in RETIRED is
 # removed, so a hook that left the base file also leaves each machine.
+#
+# The Kata actor is claude@<host>, for example claude@lil-homie, so it is set here and not in the
+# base file. The env key reaches Claude's hooks and its Bash tool. A KATA_AUTHOR already in the
+# file stays.
 
 BASE="$HOME/dotfiles/claude/.claude/settings.base.json"
 TARGET="$HOME/.claude/settings.json"
 # Hook commands that the base file no longer has
 RETIRED='["rtk hook claude"]'
+KATA_AUTHOR="claude@$(hostname -s)"
 
 [[ -f "$TARGET" ]] || echo '{}' > "$TARGET"
 
-merged=$(jq -n --slurpfile base "$BASE" --slurpfile cur "$TARGET" --argjson retired "$RETIRED" '
+merged=$(jq -n --slurpfile base "$BASE" --slurpfile cur "$TARGET" --argjson retired "$RETIRED" \
+  --arg author "$KATA_AUTHOR" '
   def add_groups($have; $add):
     reduce $add[] as $g ($have; if any(.[]; . == $g) then . else . + [$g] end);
   ($base[0]) as $b | ($cur[0]) as $c
@@ -24,6 +30,7 @@ merged=$(jq -n --slurpfile base "$BASE" --slurpfile cur "$TARGET" --argjson reti
       (($c.hooks // {}); .[$e.key] = add_groups(.[$e.key] // []; $e.value)))
   | .hooks |= with_entries(.value |= map(select(any(.hooks[]?; .command as $cmd | $retired | index($cmd)) | not)))
   | .hooks |= with_entries(select(.value | length > 0))
+  | .env.KATA_AUTHOR //= $author
 ')
 
 if [[ "$merged" == "$(jq . "$TARGET")" ]]; then

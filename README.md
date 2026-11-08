@@ -220,11 +220,14 @@ micro-homie (see the Kata section of the homielab README). This repo sets up the
   `https://kata-api.tail8cc0d3.ts.net`. Without it, `kata` starts a local daemon with its own
   database. It also turns on close transcripts: `kata close` records the agent and session.
 - **Actor:** each agent sets `KATA_AUTHOR`. Pi gets `pi@<host>` from
-  `pi/.pi/agent/extensions/kata-env.ts`.
+  `pi/.pi/agent/extensions/kata-env.ts`. Claude Code gets `claude@<host>` from the `env` key that
+  `scripts/claude-settings.sh` writes to `~/.claude/settings.json`.
 - **Agent hooks:** `scripts/kata-agent-hooks.sh` (run by `install.sh`) runs
-  `kata agent-hook install pi`, which writes `~/.pi/agent/extensions/kata.js`. The hooks give the
-  agent Kata's contract when a session starts in a repo that has a `.kata.toml`. Kata generates
-  them, so they are not in this repo. Only Pi has hooks now.
+  `kata agent-hook install` for Pi and Claude Code. For Pi it writes
+  `~/.pi/agent/extensions/kata.js`; for Claude Code it adds hooks to `~/.claude/settings.json`. The
+  hooks give the agent Kata's contract when a session starts, and track the session's attention.
+  Claude Code gets the contract in every session, also outside a Kata repo. Kata generates the
+  hooks, so they are not in this repo.
 
 To use Kata in a repo, run `kata init --project <name>` there. It writes `.kata.toml` (commit it)
 and adds `.kata.local.toml` to `.gitignore`. This repo's own project is `dotfiles`: put pending work
