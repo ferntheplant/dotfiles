@@ -13,5 +13,6 @@
   "skills": ["~/.claude/skills"],
   "quietStartup": true,
   "collapseChangelog": true,
-  "enableInstallTelemetry": false
+  "enableInstallTelemetry": false,
+  "defaultProjectTrust": "always"
 }
