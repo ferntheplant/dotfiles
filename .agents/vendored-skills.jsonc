@@ -40,7 +40,7 @@
     "explain-diff": {
       "source": "baseline",
       "path": ".agents/skills/explain-diff",
-      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
+      "base": "2a7f642a6b274b7c321ae584bd6a2879160e5f9c",
     },
     "grilling": {
       "source": "baseline",
@@ -77,7 +77,7 @@
     "wizard": {
       "source": "baseline",
       "path": ".agents/skills/wizard",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      "base": "2a7f642a6b274b7c321ae584bd6a2879160e5f9c",
     },
     "writing-for-agents": {
       "source": "baseline",
