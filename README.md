@@ -37,6 +37,12 @@ scripts/install.sh          # stow, skills, Claude and Pi settings, Kata hooks; 
 Move a line by hand when that guess is wrong. It does not run on the server or infra profile. A new
 formula that has no Linux build must also go in `MACOS_ONLY` in `scripts/install-packages.sh`.
 
+A Mac can also have Homebrew in `/opt/homebrew`, which links to nanobrew's prefix, so the two
+tools share one Cellar. Nanobrew's kegs have no Homebrew install receipt, so Homebrew's autoremove
+takes them for unused dependencies: one `brew uninstall` removed most of them. The `homebrew`
+package links `~/.homebrew/brew.env`, which sets `HOMEBREW_NO_AUTOREMOVE=1` for every `brew` call,
+from any shell.
+
 ### Server (lil-homie)
 
 The server keeps its own apps and services (OrbStack, Tailscale, and others) in the
