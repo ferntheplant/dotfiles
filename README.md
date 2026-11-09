@@ -209,7 +209,8 @@ Claude Code and Pi share one set of instructions and one set of skills:
 Pi uses the `opencode-go` provider. `scripts/pi-settings.sh` copies the OpenCode Go key from
 `~/.local/share/opencode/auth.json` when that file has one. On a machine without it, run `/login` in
 Pi and pick OpenCode Go. The base settings turn on the `codemode` tool and install these packages:
-`pi-web-access`, `pi-subagents`, `@juicesharp/rpiv-ask-user-question`, and `pi-usage`.
+`pi-web-access`, `pi-subagents`, `@juicesharp/rpiv-ask-user-question`, and
+[`pi-quota-status`](https://github.com/hafiezul/pi-quota-status).
 
 ## Kata
 

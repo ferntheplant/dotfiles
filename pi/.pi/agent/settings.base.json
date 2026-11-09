@@ -1,14 +1,14 @@
 {
   "$schema": "https://pi.dev/schemas/settings.schema.json",
   "defaultProvider": "opencode-go",
-  "defaultModel": "kimi-k3",
+  "defaultModel": "glm-5.3-flash",
   "defaultThinkingLevel": "high",
   "defaultTools": ["+codemode"],
   "packages": [
     "npm:pi-web-access",
     "npm:pi-subagents",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:pi-usage"
+    "git:github.com/hafiezul/pi-quota-status"
   ],
   "skills": ["~/.claude/skills"],
   "quietStartup": true,
