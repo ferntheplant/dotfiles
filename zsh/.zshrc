@@ -21,6 +21,9 @@ alias ghch="gh pr checks --watch"
 alias ghgr="gh pr comment -b '@greptile review'"
 alias ghpr="gh pr create --fill"
 
+# Claude Code: subagents do not write progress summaries, which cost tokens
+export CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES=1
+
 # Function to capture command start time
 preexec() {
   date "+%m/%d %H:%M:%S" >~/.cache/starship_command_time

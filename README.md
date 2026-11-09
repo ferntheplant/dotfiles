@@ -219,9 +219,8 @@ micro-homie (see the Kata section of the homielab README). This repo sets up the
 - **Daemon target:** `kata/.kata/config.toml` sends every `kata` command to
   `https://kata-api.tail8cc0d3.ts.net`. Without it, `kata` starts a local daemon with its own
   database. It also turns on close transcripts: `kata close` records the agent and session.
-- **Actor:** each agent sets `KATA_AUTHOR`. Pi gets `pi@<host>` from
-  `pi/.pi/agent/extensions/kata-env.ts`. Claude Code gets `claude@<host>` from the `env` key that
-  `scripts/claude-settings.sh` writes to `~/.claude/settings.json`.
+- **Actor:** each agent sets `KATA_AUTHOR` to its identity, such as `opus-5-5+claude@lil-homie` (see
+  [Agent identity](#agent-identity)).
 - **Agent hooks:** `scripts/kata-agent-hooks.sh` (run by `install.sh`) runs
   `kata agent-hook install` for Pi and Claude Code. For Pi it writes
   `~/.pi/agent/extensions/kata.js`; for Claude Code it adds hooks to `~/.claude/settings.json`. The
@@ -240,6 +239,28 @@ kata agent-hook status pi         # the installed hooks (offline)
 ```
 
 micro-homie (the `infra` profile) has no Kata client: agents do not run there.
+
+## Agent identity
+
+Each agent has one identity, `<model>+<harness>@<host>`, for example `opus-5-5+claude@lil-homie` or
+`kimi-k3+pi@lil-homie`. The model is the model ID in lowercase, without a provider prefix, a `claude-`
+prefix, or a `[1m]` suffix. The `+` separator is valid in an email address, and no model ID uses it.
+
+- **Kata:** the identity is the actor (`KATA_AUTHOR`) on each issue, comment, and close.
+- **Commits:** you are the author, and the agent ends each commit message with
+  `Co-Authored-By: <identity> <<identity>>`. Claude Code's own trailer is off (`attribution.commit`
+  is empty in `settings.base.json`).
+
+Each harness sets the identity in its own way:
+
+- **Claude Code:** the SessionStart hook `claude/.claude/hooks/agent-identity.sh` reads the session
+  model. It writes `KATA_AUTHOR` to `$CLAUDE_ENV_FILE`, so every Bash command gets it, also in
+  subagents. It also gives Claude the trailer rule as session context. A `/model` switch keeps the
+  identity of the session start. `claude -p` has no session model, so the hook takes the `--model`
+  value (an alias such as `haiku`). Hooks do not get `$CLAUDE_ENV_FILE`, so Kata's own hooks use the
+  fallback in the `env` key, `<model setting>+claude@<host>`, from `scripts/claude-settings.sh`.
+- **Pi:** `pi/.pi/agent/extensions/agent-identity.ts` sets `KATA_AUTHOR` on the Pi process when a
+  session starts and when the model changes. It adds the trailer rule to the system prompt.
 
 ## Leave a machine
 

@@ -18,6 +18,15 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/agent-identity.sh",
+            "timeout": 5
+          }
+        ]
       }
     ]
   },
@@ -36,5 +45,8 @@
   "promptSuggestionEnabled": false,
   "awaySummaryEnabled": false,
   "timeFormat": "24-hour",
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "attribution": {
+    "commit": ""
+  }
 }
