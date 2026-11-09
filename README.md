@@ -9,11 +9,11 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
 | `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
-| `infra` (micro-homie) | `.Nanobrewfile` without the casks, the macOS-only formulas, and kata | as `server`, and also not ghostty, claude, kata, or pi |
+| `infra` (micro-homie) | `.Nanobrewfile` without the casks, the macOS-only formulas, and kata | as `server`, and also not ghostty, claude, kata, kvm-pilot, or pi |
 
 `infra` is for micro-homie, which runs the homielab services. It gets no agent config: no Claude
-Code or Pi settings, no skills, and no Kata client or hooks. Agents run on lil-homie or a
-laptop and reach micro-homie through Rex (see the Rex section of the homielab README). Linux
+Code or Pi settings, no skills, no MCP servers, and no Kata client or hooks. Agents run on lil-homie
+or a laptop and reach micro-homie through Rex (see the Rex section of the homielab README). Linux
 supports only `infra`. `MACOS_ONLY` and `AGENT_ONLY` in `scripts/install-packages.sh` and in
 `scripts/install.sh` list what it skips.
 
@@ -207,6 +207,9 @@ Claude Code and Pi share one set of instructions and one set of skills:
   exclude that folder with `!~/.claude/skills/synced/**`.
 - **Settings:** each agent writes its own keys to its settings file, so the file is not a link.
   `scripts/claude-settings.sh` and `scripts/pi-settings.sh` merge `settings.base.json` into it.
+- **MCP servers:** `scripts/claude-mcp.sh` registers them with `claude mcp` at user scope, because
+  Claude Code owns `~/.claude.json`. Pi has no MCP support, so Pi does not get them. The only server
+  is kvm-pilot (see [KVM](#kvm)).
 
 Pi uses the `opencode-go` provider. `scripts/pi-settings.sh` copies the OpenCode Go key from
 `~/.local/share/opencode/auth.json` when that file has one. On a machine without it, run `/login` in
@@ -247,6 +250,38 @@ kata agent-hook status pi         # the installed hooks (offline)
 ```
 
 micro-homie (the `infra` profile) has no Kata client: agents do not run there.
+
+## KVM
+
+[kvm-pilot](https://github.com/DustinTrap/kvm-pilot) is an MCP server that lets an agent use an
+IP-KVM: it reads the screen, and it can type, click, and control the power. This repo installs it
+on each agent machine. The KVM itself, the Comet that controls gaming-homie, is in "Comet (KVM)" in
+the homielab README.
+
+- **Package:** `pypi:kvm-pilot` in the mise config. `mise install` installs the `kvm-pilot` CLI and
+  the `kvm-pilot-mcp` server.
+- **Profile:** the `kvm-pilot` stow package links `~/.config/kvm-pilot/config.toml`. The `comet`
+  profile has the Comet's address and login name, and gaming-homie's SSH address.
+- **Password:** the macOS keychain, as service `kvm-pilot` and account `comet`. The password is not
+  in this repo. `scripts/kvm-pilot-mcp.sh` reads it and starts the server.
+- **Registration:** `scripts/claude-mcp.sh` (run by `install.sh`) registers the server only on a
+  machine whose keychain has the password. Without it, the script prints the command to add it.
+
+To set up a machine, add the password, then run `install.sh` again:
+
+```bash
+security add-generic-password -s kvm-pilot -a comet -w   # prompts for the Comet admin password
+scripts/install.sh
+claude mcp get kvm-pilot                                 # expect: Status: ✔ Connected
+```
+
+The server starts read-only (`KVM_PILOT_MCP_READ_ONLY=1`). The agent can take screenshots and read
+the state, but it cannot press keys, move the mouse, or change the power. To allow one type of
+action, add its `KVM_PILOT_MCP_ALLOW_*` variable (such as `KVM_PILOT_MCP_ALLOW_HID` for the keyboard
+and mouse) to the registration in `scripts/claude-mcp.sh`, and remove `KVM_PILOT_MCP_READ_ONLY`.
+Each action still asks for approval. The
+[MCP server README](https://github.com/DustinTrap/kvm-pilot/blob/main/src/kvm_pilot/mcp/README.md)
+lists the variables.
 
 ## Agent identity
 
@@ -428,6 +463,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | go | mise | `.config/mise/config.toml` |
 | helix | mise | `.config/helix` |
 | just | mise | null |
+| kvm-pilot | mise (pypi) | `.config/kvm-pilot/config.toml`; see [KVM](#kvm) |
 | node | mise | `.config/mise/config.toml` |
 | pi | mise | `.pi/agent`; see [Agents](#agents) |
 | pnpm | mise | `.config/mise/config.toml` |

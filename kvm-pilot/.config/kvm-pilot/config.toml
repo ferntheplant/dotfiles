@@ -1,0 +1,15 @@
+# kvm-pilot profiles. Each [hosts.<name>] table is one KVM. The password is not here:
+# scripts/kvm-pilot-mcp.sh reads it from the macOS keychain (service kvm-pilot, account <name>).
+# Reference: https://github.com/DustinTrap/kvm-pilot/blob/main/docs/configuration.md
+
+# The GL.iNet Comet (GL-RM1) on the home network. It controls gaming-homie.
+[hosts.comet]
+host = "glkvm.local"
+user = "admin"
+driver = "glkvm"
+scheme = "https"
+port = 443
+verify_ssl = false # the Comet has a self-signed certificate
+# The in-band SSH channel to gaming-homie itself (ssh_reachable, and ssh_exec when allowed)
+ssh_host = "gaming-homie"
+ssh_user = "fjorn"

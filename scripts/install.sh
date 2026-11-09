@@ -19,7 +19,7 @@ IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 # Packages for apps that the server and infra profiles do not install
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
 # Packages for agents, which the infra profile does not install
-AGENT_ONLY=("claude" "kata" "pi")
+AGENT_ONLY=("claude" "kata" "kvm-pilot" "pi")
 # Packages for apps that have no Linux build (lil-homie is a Mac server, so it keeps them)
 MACOS_ONLY=("ghostty")
 if [[ "$(uname -s)" == "Linux" ]]; then
@@ -63,10 +63,11 @@ if [[ ! -d "$HOME/.zsh/fzf-tab" ]]; then
 fi
 
 # Agent config: skills (in the hidden .agents/, which the loop above skips), Claude and Pi
-# settings, and Kata hooks
+# settings, Claude's MCP servers, and Kata hooks
 if [[ "$profile" != "infra" ]]; then
 	"$fixed_location/scripts/link-skills.sh"
 	"$fixed_location/scripts/claude-settings.sh"
+	"$fixed_location/scripts/claude-mcp.sh"
 	"$fixed_location/scripts/pi-settings.sh"
 	"$fixed_location/scripts/kata-agent-hooks.sh"
 fi

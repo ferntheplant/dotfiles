@@ -17,6 +17,9 @@ duckdb = "latest"
 gitleaks = "latest"
 helix = "latest"
 just = "latest"
+# kvm-pilot, the MCP server that lets agents use the Comet KVM. Its profile is the kvm-pilot stow
+# package, and scripts/claude-mcp.sh registers it with Claude Code.
+"pypi:kvm-pilot" = "latest"
 # Pi, the coding agent. Its config is the pi stow package and scripts/pi-settings.sh.
 pi = "latest"
 shellcheck = "latest"
