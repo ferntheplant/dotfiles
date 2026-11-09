@@ -8,24 +8,31 @@ set -euo pipefail
 # env and trace hooks) survive. A hook group that runs a command in RETIRED is
 # removed, so a hook that left the base file also leaves each machine.
 #
-# The Kata actor depends on the host, so it is set here and not in the base file. The env key has a
-# fallback, <model setting>+claude@<host>, for example opus+claude@lil-homie: it reaches Claude's
-# hooks. The SessionStart hook hooks/agent-identity.sh gives the Bash tool the exact model, for
-# example opus-5-5+claude@lil-homie (see "Agent identity" in README.md).
+# The Kata actor depends on the host (the Tailscale machine name), so it is set here and not in the
+# base file. The env key has a fallback, <model setting>+claude@<host>, for example
+# opus+claude@lil-homie: it reaches Claude's hooks. The SessionStart hook hooks/agent-identity.sh
+# takes the host from it and gives the Bash tool the exact model, for example
+# opus-5-5+claude@lil-homie (see "Agent identity" in README.md).
+#
+# The work laptop (it has .work/pillar.gitconfig) keeps Claude Code's own commit trailer, so the
+# base attribution key does not apply there.
 
 BASE="$HOME/dotfiles/claude/.claude/settings.base.json"
 TARGET="$HOME/.claude/settings.json"
 # Hook commands that the base file no longer has
 RETIRED='["rtk hook claude"]'
-KATA_AUTHOR="$(jq -r '.model // "claude"' "$BASE")+claude@$(hostname -s)"
+KATA_AUTHOR="$(jq -r '.model // "claude"' "$BASE")+claude@$("$HOME/dotfiles/scripts/tailnet-name.sh")"
+WORK=false
+[[ -f "$HOME/dotfiles/.work/pillar.gitconfig" ]] && WORK=true
 
 [[ -f "$TARGET" ]] || echo '{}' > "$TARGET"
 
 merged=$(jq -n --slurpfile base "$BASE" --slurpfile cur "$TARGET" --argjson retired "$RETIRED" \
-  --arg author "$KATA_AUTHOR" '
+  --arg author "$KATA_AUTHOR" --argjson work "$WORK" '
   def add_groups($have; $add):
     reduce $add[] as $g ($have; if any(.[]; . == $g) then . else . + [$g] end);
-  ($base[0]) as $b | ($cur[0]) as $c
+  ($base[0] | if $work then del(.attribution) else . end) as $b
+  | ($cur[0] | if $work and .attribution == {commit: ""} then del(.attribution) else . end) as $c
   | ($c * ($b | del(.hooks)))
   | .hooks = (reduce (($b.hooks // {}) | to_entries[]) as $e
       (($c.hooks // {}); .[$e.key] = add_groups(.[$e.key] // []; $e.value)))

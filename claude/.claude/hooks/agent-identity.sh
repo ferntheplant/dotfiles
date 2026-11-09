@@ -6,7 +6,11 @@
 #   subagents. Hooks do not get it: they keep the fallback that claude-settings.sh puts in the env
 #   key, <model setting>+claude@<host>.
 # - Commits: it tells Claude to end each commit message with a Co-Authored-By trailer for the
-#   identity. The base settings turn off Claude Code's own trailer (attribution.commit).
+#   identity. The base settings turn off Claude Code's own trailer (attribution.commit). The work
+#   laptop (it has ~/dotfiles/.work/pillar.gitconfig) keeps Claude Code's own trailer instead.
+#
+# The host is the Tailscale machine name. claude-settings.sh puts it in the fallback, so the hook
+# takes it from there and does not run tailscale at each session start.
 #
 # SessionStart has no model after /clear and in `claude -p`. Then the hook takes the --model value
 # from Claude's command line (an alias such as haiku), or else keeps the fallback. A /model switch
@@ -21,12 +25,18 @@ fi
 if [[ -n "$model" ]]; then
   # claude-opus-5-5[1m] -> opus-5-5
   model=$(printf '%s' "$model" | tr '[:upper:]' '[:lower:]' | sed -E 's|.*/||; s/\[.*\]$//; s/^claude-//')
-  identity="$model+claude@$(hostname -s)"
+  host="${KATA_AUTHOR##*@}"
+  [[ -n "$host" && "$host" != "${KATA_AUTHOR:-}" ]] || host=$("$HOME/dotfiles/scripts/tailnet-name.sh")
+  identity="$model+claude@$host"
   [[ -n "${CLAUDE_ENV_FILE:-}" ]] && printf 'export KATA_AUTHOR=%q\n' "$identity" >> "$CLAUDE_ENV_FILE"
 else
   identity="${KATA_AUTHOR:-}"
 fi
 
 [[ -n "$identity" ]] || exit 0
-jq -n --arg id "$identity" '{hookSpecificOutput: {hookEventName: "SessionStart", additionalContext:
-  "Your agent identity is \($id). It is your Kata actor (KATA_AUTHOR). End each git commit message with this trailer, in place of any other Co-Authored-By trailer for yourself:\nCo-Authored-By: \($id) <\($id)>"}}'
+context="Your agent identity is $identity. It is your Kata actor (KATA_AUTHOR)."
+if [[ ! -f "$HOME/dotfiles/.work/pillar.gitconfig" ]]; then
+  context+=" End each git commit message with this trailer, in place of any other Co-Authored-By trailer for yourself:
+Co-Authored-By: $identity <$identity>"
+fi
+jq -n --arg context "$context" '{hookSpecificOutput: {hookEventName: "SessionStart", additionalContext: $context}}'

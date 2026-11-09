@@ -244,12 +244,14 @@ micro-homie (the `infra` profile) has no Kata client: agents do not run there.
 
 Each agent has one identity, `<model>+<harness>@<host>`, for example `opus-5-5+claude@lil-homie` or
 `kimi-k3+pi@lil-homie`. The model is the model ID in lowercase, without a provider prefix, a `claude-`
-prefix, or a `[1m]` suffix. The `+` separator is valid in an email address, and no model ID uses it.
+prefix, or a `[1m]` suffix. The host is the Tailscale machine name, such as `personal-macbook`, from
+`scripts/tailnet-name.sh`. The `+` separator is valid in an email address, and no model ID uses it.
 
 - **Kata:** the identity is the actor (`KATA_AUTHOR`) on each issue, comment, and close.
 - **Commits:** you are the author, and the agent ends each commit message with
   `Co-Authored-By: <identity> <<identity>>`. Claude Code's own trailer is off (`attribution.commit`
-  is empty in `settings.base.json`).
+  is empty in `settings.base.json`). The work laptop, which has `.work/pillar.gitconfig`, is the
+  exception: there, the agents add no identity trailer, and Claude Code keeps its own trailer.
 
 Each harness sets the identity in its own way:
 

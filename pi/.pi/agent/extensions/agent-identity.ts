@@ -1,4 +1,7 @@
-import { hostname } from "node:os"
+import { execFileSync } from "node:child_process"
+import { existsSync } from "node:fs"
+import { homedir, hostname } from "node:os"
+import { join } from "node:path"
 
 // Pi's agent identity, <model>+pi@<host>, for example kimi-k3+pi@lil-homie (see "Agent identity" in
 // ~/dotfiles/README.md). It follows the model: a /model switch changes it.
@@ -6,10 +9,22 @@ import { hostname } from "node:os"
 // - Kata: it sets KATA_AUTHOR on the Pi process, so the bash tool and Kata's own extension
 //   (extensions/kata.js, from `kata agent-hook install pi`) both get it.
 // - Commits: it tells Pi to end each commit message with a Co-Authored-By trailer for the identity.
+//   The work laptop (it has ~/dotfiles/.work/pillar.gitconfig) gets no trailer rule.
+//
+// The host is the Tailscale machine name, from ~/dotfiles/scripts/tailnet-name.sh.
 //
 // It imports no Pi package: this file is linked from ~/dotfiles, where no Pi package is installed.
 
-const host = hostname().split(".")[0]
+function tailnetName(): string {
+  try {
+    return execFileSync(join(homedir(), "dotfiles/scripts/tailnet-name.sh"), { encoding: "utf8" }).trim()
+  } catch {
+    return hostname().split(".")[0].toLowerCase()
+  }
+}
+
+const host = tailnetName()
+const workLaptop = existsSync(join(homedir(), "dotfiles/.work/pillar.gitconfig"))
 
 // moonshotai/Kimi-K3 -> kimi-k3, claude-opus-5-5 -> opus-5-5
 function identity(modelId: string): string {
@@ -27,8 +42,8 @@ export default function (pi: any) {
   pi.on("before_agent_start", (event: any) => {
     const id = process.env.KATA_AUTHOR
     if (!id?.includes("+pi@")) return
-    return {
-      systemPrompt: `${event.systemPrompt}\n\nYour agent identity is ${id}. It is your Kata actor (KATA_AUTHOR). End each git commit message with this trailer:\nCo-Authored-By: ${id} <${id}>`,
-    }
+    let rule = `Your agent identity is ${id}. It is your Kata actor (KATA_AUTHOR).`
+    if (!workLaptop) rule += ` End each git commit message with this trailer:\nCo-Authored-By: ${id} <${id}>`
+    return { systemPrompt: `${event.systemPrompt}\n\n${rule}` }
   })
 }
