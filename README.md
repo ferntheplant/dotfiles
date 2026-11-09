@@ -202,15 +202,22 @@ Claude Code and Pi share one set of instructions and one set of skills:
   `~/homielab/.agents/skills/` when that checkout exists. `scripts/link-skills.sh` links each skill
   into `~/.claude/skills/`, and Pi reads that folder through the `skills` key in its settings. The
   dotfiles skills are copies; the homielab skills are links, so a `git pull` in `~/homielab`
-  updates them.
+  updates them. Claude Code also syncs the claude.ai account skills (xlsx, pptx, and others) into
+  `~/.claude/skills/synced/`. Claude Code does not show them to the model, and the Pi settings
+  exclude that folder with `!~/.claude/skills/synced/**`.
 - **Settings:** each agent writes its own keys to its settings file, so the file is not a link.
   `scripts/claude-settings.sh` and `scripts/pi-settings.sh` merge `settings.base.json` into it.
 
 Pi uses the `opencode-go` provider. `scripts/pi-settings.sh` copies the OpenCode Go key from
 `~/.local/share/opencode/auth.json` when that file has one. On a machine without it, run `/login` in
 Pi and pick OpenCode Go. The base settings turn on the `codemode` tool and install these packages:
-`pi-web-access`, `pi-subagents`, `@juicesharp/rpiv-ask-user-question`, and
+`pi-web-access`, `@juicesharp/rpiv-ask-user-question`, and
 [`pi-quota-status`](https://github.com/hafiezul/pi-quota-status).
+
+`pi/.pi/agent/extensions/subagent.ts` gives Pi a `subagent` tool. Each task runs in a new child Pi
+process with the parent's model and thinking level, and the tool returns each child's final answer.
+Up to 8 tasks run in parallel, 4 at a time. A child does not see the parent's conversation, and it
+does not get the `subagent` tool. There are no agent types or workflows.
 
 ## Kata
 
