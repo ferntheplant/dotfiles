@@ -77,7 +77,7 @@
     "wizard": {
       "source": "baseline",
       "path": ".agents/skills/wizard",
-      "base": "2a7f642a6b274b7c321ae584bd6a2879160e5f9c",
+      "base": "1a2c64296ec056acd71ae6b929ef1b3a827d1f49",
     },
     "writing-for-agents": {
       "source": "baseline",
