@@ -65,7 +65,9 @@
       "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
       // Local: adds the `files` branch for `.agents/vendored-files.jsonc` (the agent instructions,
       // which do not come from baseline), merged with `git merge-file` since a file's local name
-      // differs from upstream's.
+      // differs from upstream's. Also reads `.scratch/vendored-skills.jsonc` and its `skillsDir`
+      // key, so the same skill rebaselines the Pillar repo's skills in `.scratch/skills/`, and runs
+      // that repo's own checks in place of `vp run ready:agent`.
     },
     "research": {
       "source": "baseline",

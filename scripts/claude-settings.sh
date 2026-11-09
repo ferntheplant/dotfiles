@@ -14,16 +14,23 @@ set -euo pipefail
 # takes the host from it and gives the Bash tool the exact model, for example
 # opus-5-5+claude@lil-homie (see "Agent identity" in README.md).
 #
-# The work laptop (it has .work/pillar.gitconfig) keeps Claude Code's own commit trailer, so the
-# base attribution key does not apply there.
+# The work profile (the Pillar laptop, see .work/profile) has no Kata and no agent identity. There,
+# the script removes KATA_AUTHOR and the agent-identity.sh hook, and Claude Code keeps its own commit
+# trailer, so the base attribution key does not apply.
 
 BASE="$HOME/dotfiles/claude/.claude/settings.base.json"
 TARGET="$HOME/.claude/settings.json"
-# Hook commands that the base file no longer has
+# Hook commands that the base file no longer has. On the work profile, the base file's identity
+# hook is retired too.
 RETIRED='["rtk hook claude"]'
-KATA_AUTHOR="$(jq -r '.model // "claude"' "$BASE")+claude@$("$HOME/dotfiles/scripts/tailnet-name.sh")"
 WORK=false
-[[ -f "$HOME/dotfiles/.work/pillar.gitconfig" ]] && WORK=true
+KATA_AUTHOR=""
+if [[ "$(cat "$HOME/dotfiles/.work/profile" 2>/dev/null)" = "work" ]]; then
+  WORK=true
+  RETIRED='["rtk hook claude", "bash ~/.claude/hooks/agent-identity.sh"]'
+else
+  KATA_AUTHOR="$(jq -r '.model // "claude"' "$BASE")+claude@$("$HOME/dotfiles/scripts/tailnet-name.sh")"
+fi
 
 [[ -f "$TARGET" ]] || echo '{}' > "$TARGET"
 
@@ -38,7 +45,8 @@ merged=$(jq -n --slurpfile base "$BASE" --slurpfile cur "$TARGET" --argjson reti
       (($c.hooks // {}); .[$e.key] = add_groups(.[$e.key] // []; $e.value)))
   | .hooks |= with_entries(.value |= map(select(any(.hooks[]?; .command as $cmd | $retired | index($cmd)) | not)))
   | .hooks |= with_entries(select(.value | length > 0))
-  | .env.KATA_AUTHOR = $author
+  | if $work then del(.env.KATA_AUTHOR) | if .env == {} then del(.env) else . end
+    else .env.KATA_AUTHOR = $author end
 ')
 
 if [[ "$merged" == "$(jq . "$TARGET")" ]]; then

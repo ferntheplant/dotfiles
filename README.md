@@ -10,12 +10,22 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
 | `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
 | `infra` (micro-homie) | `.Nanobrewfile` without the casks, the macOS-only formulas, and kata | as `server`, and also not ghostty, claude, kata, kvm-pilot, or pi |
+| `work` (the Pillar laptop) | as `desktop`, without kata | all except kata and pi |
 
 `infra` is for micro-homie, which runs the homielab services. It gets no agent config: no Claude
 Code or Pi settings, no skills, no MCP servers, and no Kata client or hooks. Agents run on lil-homie
 or a laptop and reach micro-homie through Rex (see the Rex section of the homielab README). Linux
 supports only `infra`. `MACOS_ONLY` and `AGENT_ONLY` in `scripts/install-packages.sh` and in
 `scripts/install.sh` list what it skips.
+
+`work` is for the Pillar work laptop. Pi and Kata are for the homelab, so the work laptop gets
+neither: no Pi settings, no Kata client or hooks, and no agent identity (see
+[Agent identity](#agent-identity)). `HOMELAB_ONLY` in both scripts lists what it skips. Claude Code
+keeps its own commit trailer there. The Pillar repo's own agent sync (`.scratch/agents/sync
+--laptop`) adds its skills, MCP server, and traces on top. When a skill name is in both repos, the
+Pillar link wins, and `scripts/link-skills.sh` skips it. `install.sh` unstows each package that the
+profile skips, so a machine that changes its profile loses those links. It does not uninstall a
+tool: run `mise uninstall pi --all` and `nb remove kata` once.
 
 ```bash
 scripts/install-packages.sh # nanobrew packages for the profile and the OS; safe to run again
@@ -76,7 +86,8 @@ micro-homie runs Debian 13 with no desktop. Its host setup (Docker, the 1Passwor
 
 To sync after a push, use the same command as lil-homie. Run `scripts/install-packages.sh` too
 when `.Nanobrewfile` changes. `mise install` still installs pi and agent-browser, because the
-mise config has no profiles; nothing configures them on micro-homie.
+mise config has no profiles; nothing configures them on micro-homie. On the work profile,
+`install.sh` writes `~/.config/mise/conf.d/work.toml`, which turns pi off (`disable_tools`).
 
 ## Set up a new desktop Mac
 
@@ -190,7 +201,8 @@ fj repo units prs --help   # merge styles and other pull request settings
 
 ## Agents
 
-Claude Code and Pi share one set of instructions and one set of skills:
+Claude Code and Pi share one set of instructions and one set of skills. The `work` profile has no
+Pi.
 
 - **Instructions:** two files in `.agents/instructions/`. `constitution.md` is the
   [Clanker Constitution](https://github.com/kenn-io/constitution), and `writing.md` is the
@@ -255,7 +267,8 @@ kata daemon locate                # the daemon this machine uses
 kata agent-hook status pi         # the installed hooks (offline)
 ```
 
-micro-homie (the `infra` profile) has no Kata client: agents do not run there.
+micro-homie (the `infra` profile) has no Kata client: agents do not run there. The Pillar laptop
+(the `work` profile) has no Kata client either, because Kata is for the homelab.
 
 ## KVM
 
@@ -299,8 +312,10 @@ prefix, or a `[1m]` suffix. The host is the Tailscale machine name, such as `per
 - **Kata:** the identity is the actor (`KATA_AUTHOR`) on each issue, comment, and close.
 - **Commits:** you are the author, and the agent ends each commit message with
   `Co-Authored-By: <identity> <<identity>>`. Claude Code's own trailer is off (`attribution.commit`
-  is empty in `settings.base.json`). The work laptop, which has `.work/pillar.gitconfig`, is the
-  exception: there, the agents add no identity trailer, and Claude Code keeps its own trailer.
+  is empty in `settings.base.json`).
+
+The `work` profile has no agent identity. `scripts/claude-settings.sh` removes the identity hook and
+`KATA_AUTHOR` there, and Claude Code keeps its own commit trailer.
 
 Each harness sets the identity in its own way:
 

@@ -7,7 +7,7 @@
 #   key, <model setting>+claude@<host>.
 # - Commits: it tells Claude to end each commit message with a Co-Authored-By trailer for the
 #   identity. The base settings turn off Claude Code's own trailer (attribution.commit). The work
-#   laptop (it has ~/dotfiles/.work/pillar.gitconfig) keeps Claude Code's own trailer instead.
+#   profile does not run this hook (see scripts/claude-settings.sh).
 #
 # The host is the Tailscale machine name. claude-settings.sh puts it in the fallback, so the hook
 # takes it from there and does not run tailscale at each session start.
@@ -34,9 +34,6 @@ else
 fi
 
 [[ -n "$identity" ]] || exit 0
-context="Your agent identity is $identity. It is your Kata actor (KATA_AUTHOR)."
-if [[ ! -f "$HOME/dotfiles/.work/pillar.gitconfig" ]]; then
-  context+=" End each git commit message with this trailer, in place of any other Co-Authored-By trailer for yourself:
+context="Your agent identity is $identity. It is your Kata actor (KATA_AUTHOR). End each git commit message with this trailer, in place of any other Co-Authored-By trailer for yourself:
 Co-Authored-By: $identity <$identity>"
-fi
 jq -n --arg context "$context" '{hookSpecificOutput: {hookEventName: "SessionStart", additionalContext: $context}}'

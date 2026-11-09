@@ -5,6 +5,7 @@ set -euo pipefail
 #   desktop  .Nanobrewfile and .Nanobrewfile.desktop (macOS only)
 #   server   .Nanobrewfile only (lil-homie, macOS)
 #   infra    .Nanobrewfile without the agent formulas (micro-homie, Linux)
+#   work     as desktop, without the homelab's agent formulas (the Pillar laptop, macOS)
 #
 # On Linux, the casks and the formulas in MACOS_ONLY are left out. The README tells how a Linux
 # server gets the casks' tools.
@@ -24,10 +25,25 @@ MACOS_ONLY=("mole" "stow" "zmx")
 LINUX_DEPS=("alsa-lib" "libxcb")
 # Formulas for agents, which the infra profile does not install
 AGENT_ONLY=("kata")
+# Formulas for the homelab's agent tools, which the work profile does not install
+HOMELAB_ONLY=("kata")
+
+bundle="$(mktemp)"
+trap 'rm -f "$bundle"' EXIT
 
 if [[ "$(uname -s)" != "Linux" ]]; then
-	nb bundle install "$fixed_location/.Nanobrewfile"
-	if [[ "$profile" = "desktop" ]]; then
+	if [[ "$profile" = "work" ]]; then
+		# Drop each formula in HOMELAB_ONLY (with or without a tap prefix), and keep every other line
+		awk -F'"' -v skip="${HOMELAB_ONLY[*]}" '
+			BEGIN { n = split(skip, s, " "); for (i = 1; i <= n; i++) drop[s[i]] = 1 }
+			{ short = $2; sub(/.*\//, "", short) }
+			!(/^brew "/ && short in drop)
+		' "$fixed_location/.Nanobrewfile" > "$bundle"
+		nb bundle install "$bundle"
+	else
+		nb bundle install "$fixed_location/.Nanobrewfile"
+	fi
+	if [[ "$profile" = "desktop" || "$profile" = "work" ]]; then
 		nb bundle install "$fixed_location/.Nanobrewfile.desktop"
 	fi
 	exit 0
@@ -37,9 +53,6 @@ if [[ "$profile" != "infra" ]]; then
 	echo "❌ Linux supports the infra profile only: echo infra > $fixed_location/.work/profile" >&2
 	exit 1
 fi
-
-bundle="$(mktemp)"
-trap 'rm -f "$bundle"' EXIT
 
 # Keep the brew lines only, and drop each formula in MACOS_ONLY and AGENT_ONLY (with or without a
 # tap prefix)

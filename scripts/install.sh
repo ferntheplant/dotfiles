@@ -1,18 +1,23 @@
 #!/bin/bash
 set -euo pipefail
 
-# Link the dotfiles into $HOME with stow, and on the desktop profile write the macOS defaults
-# and the Handy settings. Run it again after a pull: it is safe to repeat.
+# Link the dotfiles into $HOME with stow, and on the desktop and work profiles write the macOS
+# defaults and the Handy settings. Run it again after a pull: it is safe to repeat.
 #
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
 #   server             no packages for desktop-only apps (lil-homie)
 #   infra              as server, and no agent config: no Claude Code, Pi, Kata, or skills
 #                      (micro-homie, which runs the homielab services; agents reach it through Rex)
-# On Linux, the packages in MACOS_ONLY are skipped too.
+#   work               as desktop, and no Pi or Kata, which are for the homelab (the Pillar laptop)
+# On Linux, the packages in MACOS_ONLY are skipped too. A package that the profile skips is
+# unstowed, so a machine that changes its profile loses the links of that package.
 
 fixed_location="$HOME/dotfiles"
 profile="$(cat "$fixed_location/.work/profile" 2>/dev/null || echo desktop)"
+# The work profile gets the desktop apps
+desktop=false
+[[ "$profile" = "desktop" || "$profile" = "work" ]] && desktop=true
 
 # Directories that are not stow packages
 IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
@@ -20,6 +25,8 @@ IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
 # Packages for agents, which the infra profile does not install
 AGENT_ONLY=("claude" "kata" "kvm-pilot" "pi")
+# Packages for the homelab's agent tools, which the work profile does not install
+HOMELAB_ONLY=("kata" "pi")
 # Packages for apps that have no Linux build (lil-homie is a Mac server, so it keeps them)
 MACOS_ONLY=("ghostty")
 if [[ "$(uname -s)" == "Linux" ]]; then
@@ -36,10 +43,10 @@ for subdir in "$fixed_location"/*; do
 			stow -t "$HOME/.local/bin" --ignore="install" scripts
 		elif [[ " ${IGNORE_LIST[*]} " == *" ${subdir_name} "* ]]; then
 			continue
-		elif [[ "$profile" != "desktop" && " ${DESKTOP_ONLY[*]} " == *" ${subdir_name} "* ]]; then
-			continue
-		elif [[ "$profile" = "infra" && " ${AGENT_ONLY[*]} " == *" ${subdir_name} "* ]]; then
-			continue
+		elif [[ "$desktop" = false && " ${DESKTOP_ONLY[*]} " == *" ${subdir_name} "* ]] ||
+			[[ "$profile" = "infra" && " ${AGENT_ONLY[*]} " == *" ${subdir_name} "* ]] ||
+			[[ "$profile" = "work" && " ${HOMELAB_ONLY[*]} " == *" ${subdir_name} "* ]]; then
+			stow -D --no-folding "$subdir_name"
 		else
 			stow --no-folding "$subdir_name"
 		fi
@@ -63,17 +70,28 @@ if [[ ! -d "$HOME/.zsh/fzf-tab" ]]; then
 fi
 
 # Agent config: skills (in the hidden .agents/, which the loop above skips), Claude and Pi
-# settings, Claude's MCP servers, and Kata hooks
+# settings, Claude's MCP servers, and Kata hooks. The work profile gets no Pi and no Kata.
 if [[ "$profile" != "infra" ]]; then
 	"$fixed_location/scripts/link-skills.sh"
 	"$fixed_location/scripts/claude-settings.sh"
 	"$fixed_location/scripts/claude-mcp.sh"
-	"$fixed_location/scripts/pi-settings.sh"
-	"$fixed_location/scripts/kata-agent-hooks.sh"
+	if [[ "$profile" != "work" ]]; then
+		"$fixed_location/scripts/pi-settings.sh"
+		"$fixed_location/scripts/kata-agent-hooks.sh"
+	fi
+fi
+
+# mise has no profiles, so the work profile turns Pi off in a config file of its own
+mise_work="$HOME/.config/mise/conf.d/work.toml"
+if [[ "$profile" = "work" ]]; then
+	mkdir -p "$(dirname "$mise_work")"
+	printf '# Written by ~/dotfiles/scripts/install.sh for the work profile\n[settings]\ndisable_tools = ["pi"]\n' > "$mise_work"
+else
+	rm -f "$mise_work"
 fi
 
 # Desktop apps: macOS, Hidden Bar, and Sill defaults, Handy settings
-if [[ "$profile" = "desktop" ]]; then
+if [[ "$desktop" = true ]]; then
 	"$fixed_location/scripts/macos-defaults.sh"
 	"$fixed_location/scripts/handy-settings.sh" import
 fi
