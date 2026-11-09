@@ -222,6 +222,12 @@ process with the parent's model and thinking level, and the tool returns each ch
 Up to 8 tasks run in parallel, 4 at a time. A child does not see the parent's conversation, and it
 does not get the `subagent` tool. There are no agent types or workflows.
 
+`pi/.pi/agent/extensions/rex.ts` is Rex's session-start hook for Pi. `rex skill setup` gives Claude
+Code a SessionStart hook that tells the agent its Rex session and pane, and asks it to name the
+session after its task. Pi has no command hooks, so Rex installs only its skill for Pi. The extension
+runs `rex __internal session-start --agent pi` and adds the output to the system prompt. It does
+nothing outside Rex or in a subagent.
+
 ## Kata
 
 [Kata](https://www.katatracker.com/docs/) is the issue tracker for agents. Its daemon runs on
