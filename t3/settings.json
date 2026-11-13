@@ -49,7 +49,7 @@
       "model": "claude-opus-5-5"
     }
   ],
-  "idleCompaction": "off",
+  "idleCompaction": "onReturn",
   "linkedEnvironmentsEnabled": true,
   "providerInstances": {
     "grok": {
