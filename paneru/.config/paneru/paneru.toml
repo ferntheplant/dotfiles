@@ -37,29 +37,21 @@ window_swap_south = "ctrl + alt + shift + cmd - j"
 window_swap_north = "ctrl + alt + shift + cmd - k"
 window_swap_east = "ctrl + alt + shift + cmd - l"
 
-# Jump to column N of the row ("bookmarks"). 0 jumps to the last column.
-window_focus_1 = "ctrl + alt + shift - 1"
-window_focus_2 = "ctrl + alt + shift - 2"
-window_focus_3 = "ctrl + alt + shift - 3"
-window_focus_4 = "ctrl + alt + shift - 4"
-window_focus_5 = "ctrl + alt + shift - 5"
-window_focus_6 = "ctrl + alt + shift - 6"
-window_focus_7 = "ctrl + alt + shift - 7"
-window_focus_8 = "ctrl + alt + shift - 8"
-window_focus_9 = "ctrl + alt + shift - 9"
-window_focus_last = "ctrl + alt + shift - 0"
-window_swap_first = "ctrl + alt + shift + cmd - 1"
-window_swap_last = "ctrl + alt + shift + cmd - 0"
-
-# Virtual workspaces: separate rows of windows. Optional, for "pages".
-window_virtualnum_1 = "ctrl + alt + shift - q"
-window_virtualnum_2 = "ctrl + alt + shift - w"
-window_virtualnum_3 = "ctrl + alt + shift - e"
-window_virtualnum_4 = "ctrl + alt + shift - r"
-window_virtualmovenum_1 = "ctrl + alt + shift + cmd - q"
-window_virtualmovenum_2 = "ctrl + alt + shift + cmd - w"
-window_virtualmovenum_3 = "ctrl + alt + shift + cmd - e"
-window_virtualmovenum_4 = "ctrl + alt + shift + cmd - r"
+# Jump to column N of the row. The number row and the q-to-o row (the old
+# AeroSpace workspace keys) both work. 0 and p jump to the last column.
+# Virtual workspaces (more rows) have no bindings: only one row is in use.
+window_focus_1 = ["ctrl + alt + shift - 1", "ctrl + alt + shift - q"]
+window_focus_2 = ["ctrl + alt + shift - 2", "ctrl + alt + shift - w"]
+window_focus_3 = ["ctrl + alt + shift - 3", "ctrl + alt + shift - e"]
+window_focus_4 = ["ctrl + alt + shift - 4", "ctrl + alt + shift - r"]
+window_focus_5 = ["ctrl + alt + shift - 5", "ctrl + alt + shift - t"]
+window_focus_6 = ["ctrl + alt + shift - 6", "ctrl + alt + shift - y"]
+window_focus_7 = ["ctrl + alt + shift - 7", "ctrl + alt + shift - u"]
+window_focus_8 = ["ctrl + alt + shift - 8", "ctrl + alt + shift - i"]
+window_focus_9 = ["ctrl + alt + shift - 9", "ctrl + alt + shift - o"]
+window_focus_last = ["ctrl + alt + shift - 0", "ctrl + alt + shift - p"]
+window_swap_first = ["ctrl + alt + shift + cmd - 1", "ctrl + alt + shift + cmd - q"]
+window_swap_last = ["ctrl + alt + shift + cmd - 0", "ctrl + alt + shift + cmd - p"]
 
 # Size and layout.
 window_shrink = "ctrl + alt + shift - minus"
