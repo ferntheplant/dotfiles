@@ -26,7 +26,8 @@ export CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES=1
 # Pi: also send copied text as OSC 52, so a copy reaches the clipboard of a Rex client on another
 # machine. Pi cannot see that a Rex client is remote, so it writes only to this machine's clipboard.
 export PI_CLIPBOARD_OSC52=1
-# T3 Code: send no usage telemetry. The desktop app reads this from the login shell.
+# T3 Code: send no usage telemetry. The desktop app reads this from the login shell; the background
+# service reads ~/.t3/service.env, which scripts/t3-settings.sh writes.
 export T3CODE_TELEMETRY_ENABLED=false
 
 # Function to capture command start time

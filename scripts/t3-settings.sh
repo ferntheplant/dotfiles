@@ -41,6 +41,18 @@ if [[ ! -d "$USERDATA" ]]; then
 fi
 
 if [[ "$1" == import ]]; then
+  # The background service (`t3 service install`) does not read the login shell, so .zshrc does
+  # not reach it. It reads extra variables from service.env, so turn its telemetry off there too.
+  # A running service applies the change after `t3 service restart`.
+  service_env="$(dirname "$USERDATA")/service.env"
+  telemetry="T3CODE_TELEMETRY_ENABLED=false"
+  if ! grep -qx "$telemetry" "$service_env" 2>/dev/null; then
+    { grep -v -E '^[[:space:]]*(export[[:space:]]+)?T3CODE_TELEMETRY_ENABLED=' "$service_env" 2>/dev/null || true
+      echo "$telemetry"; } > "$service_env.tmp"
+    mv "$service_env.tmp" "$service_env"
+    echo "✅ Set $telemetry in $service_env; run \`t3 service restart\` if the service runs"
+  fi
+
   mkdir -p "$USERDATA/themes"
   for theme in "$DIR"/themes/*.json; do
     [[ -e "$theme" ]] || continue
