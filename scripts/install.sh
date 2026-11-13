@@ -20,7 +20,7 @@ desktop=false
 [[ "$profile" = "desktop" || "$profile" = "work" ]] && desktop=true
 
 # Directories that are not stow packages
-IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
+IGNORE_LIST=("handy" "node_modules" "t3" "themes" "tinycast" "vorssaint")
 # Packages for apps that the server and infra profiles do not install
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
 # Packages for agents, which the infra profile does not install
@@ -69,12 +69,13 @@ if [[ ! -d "$HOME/.zsh/fzf-tab" ]]; then
 	git clone --depth 1 https://github.com/Aloxaf/fzf-tab "$HOME/.zsh/fzf-tab"
 fi
 
-# Agent config: skills (in the hidden .agents/, which the loop above skips), Claude and Pi
-# settings, Claude's MCP servers, and Kata hooks. The work profile gets no Pi and no Kata.
+# Agent config: skills (in the hidden .agents/, which the loop above skips), Claude, Pi, and
+# T3 Code settings, Claude's MCP servers, and Kata hooks. The work profile gets no Pi and no Kata.
 if [[ "$profile" != "infra" ]]; then
 	"$fixed_location/scripts/link-skills.sh"
 	"$fixed_location/scripts/claude-settings.sh"
 	"$fixed_location/scripts/claude-mcp.sh"
+	"$fixed_location/scripts/t3-settings.sh" import
 	if [[ "$profile" != "work" ]]; then
 		"$fixed_location/scripts/pi-settings.sh"
 		"$fixed_location/scripts/kata-agent-hooks.sh"

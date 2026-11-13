@@ -30,6 +30,7 @@ tool: run `mise uninstall pi --all` and `nb remove kata` once.
 ```bash
 scripts/install-packages.sh # nanobrew packages for the profile and the OS; safe to run again
 scripts/install.sh          # stow, skills, Claude and Pi settings, Kata hooks; safe to run again
+                            # not infra: T3 Code settings
                             # desktop only: macOS defaults, Handy settings
 ```
 
@@ -136,7 +137,7 @@ mise config has no profiles; nothing configures them on micro-homie. On the work
 6. Run the installer scripts. `install.sh` is safe to run again.
 
    ```bash
-   scripts/install.sh            # stow, skills, Claude and Pi settings, Kata hooks, macOS defaults, Handy settings
+   scripts/install.sh            # stow, skills, Claude, Pi, and T3 Code settings, Kata hooks, macOS defaults, Handy settings
    scripts/rex-settings.sh import
    mise install
    ```
@@ -334,6 +335,43 @@ Each harness sets the identity in its own way:
 - **Pi:** `pi/.pi/agent/extensions/agent-identity.ts` sets `KATA_AUTHOR` on the Pi process when a
   session starts and when the model changes. It adds the trailer rule to the system prompt.
 
+## T3 Code on another machine
+
+The T3 Code app can show and drive the threads of another Mac: pillar-macbook and lil-homie are
+linked this way. That Mac runs the T3 Code server as a background service, and Tailscale Serve
+publishes it on the tailnet only. Nothing listens on the local network.
+
+1. On the other Mac, run `scripts/install-packages.sh` (it installs the `t3-code` cask on every
+   macOS profile) and `scripts/install.sh` (it imports the shared T3 Code settings). Open the app
+   once to get the `~/.t3/bin/t3` command, or copy that file from a Mac that has it. Then install
+   the background service:
+
+   ```bash
+   ~/.t3/bin/t3 service install
+   ```
+
+2. On the other Mac, make a pairing link. `t3 pair --tailscale` sets Tailscale Serve to publish the
+   server on port 443. If port 443 has a service already, add `--tailscale-serve-port <port>`.
+   lil-homie uses port 8773.
+
+   ```bash
+   ~/.t3/bin/t3 pair --tailscale --tailscale-serve-port 8773 --label <this-mac> --ttl 15m
+   ```
+
+   `t3 pair` runs `tailscale`. The nanobrew formula (lil-homie) puts it on the PATH. The Mac App
+   Store Tailscale (pillar-macbook) does not, and a link to its app binary crashes, so put a
+   wrapper script on the PATH:
+
+   ```bash
+   d=$(mktemp -d)
+   printf '#!/bin/sh\nexec /Applications/Tailscale.app/Contents/MacOS/Tailscale "$@"\n' > "$d/tailscale"
+   chmod +x "$d/tailscale"
+   PATH="$d:$PATH" ~/.t3/bin/t3 pair --tailscale --label <this-mac> --ttl 15m
+   ```
+
+3. On this Mac, run `open '<App link>'` with the `App link` that `t3 pair` printed. The app adds the
+   other Mac. `t3 auth session list` on the other Mac shows the session.
+
 ## Leave a machine
 
 Export the settings that no script saves, then commit. `leave-machine` rewrites the package
@@ -350,6 +388,7 @@ jq 'del(.favicons, .favDomains, .favHashes)' ~/Downloads/sidebery-data-*.json > 
 # Tinycast: export the quicklinks as JSON -> tinycast/quicklinks.json
 # Vorssaint: Settings > Backup > Export settings… -> vorssaint/settings.plist
 scripts/rex-settings.sh export
+scripts/t3-settings.sh export
 leave-machine -c
 ```
 
@@ -471,6 +510,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | zx | nanobrew core | null |
 | 1password-cli | nanobrew core | null |
 | claude-code | nanobrew core | `.claude` |
+| t3-code | nanobrew core | `dotfiles/t3` via `scripts/t3-settings.sh` |
 | colima | nanobrew desktop | null |
 | docker | nanobrew desktop | null |
 | docker-buildx | nanobrew desktop | null |
