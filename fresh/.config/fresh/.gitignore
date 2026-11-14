@@ -1,0 +1,12 @@
+# ~/.config/fresh is a link to this folder, so the files that Fresh makes land here too.
+# Fresh writes the init.ts types on each start.
+/tsconfig.json
+/types/
+# Packages from the package manager: reinstall them from the command palette
+/plugins/packages/
+/themes/packages/
+/languages/packages/
+/bundles/packages/
+# Fresh's crash counter for init.ts, and the temporary file of a settings save
+/logs/
+*.json.tmp

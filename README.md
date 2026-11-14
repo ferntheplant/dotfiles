@@ -30,7 +30,6 @@ tool: run `mise uninstall pi --all` and `nb remove kata` once.
 ```bash
 scripts/install-packages.sh # nanobrew packages for the profile and the OS; safe to run again
 scripts/install.sh          # stow, skills, Claude and Pi settings, Kata hooks; safe to run again
-                            # not infra: T3 Code settings
                             # desktop only: macOS defaults, Handy settings
 ```
 
@@ -137,7 +136,7 @@ mise config has no profiles; nothing configures them on micro-homie. On the work
 6. Run the installer scripts. `install.sh` is safe to run again.
 
    ```bash
-   scripts/install.sh            # stow, skills, Claude, Pi, and T3 Code settings, Kata hooks, macOS defaults, Handy settings
+   scripts/install.sh            # stow, skills, Claude and Pi settings, Kata hooks, macOS defaults, Handy settings
    scripts/rex-settings.sh import
    mise install
    ```
@@ -335,42 +334,29 @@ Each harness sets the identity in its own way:
 - **Pi:** `pi/.pi/agent/extensions/agent-identity.ts` sets `KATA_AUTHOR` on the Pi process when a
   session starts and when the model changes. It adds the trailer rule to the system prompt.
 
-## T3 Code on another machine
+## Fresh
 
-The T3 Code app can show and drive the threads of another Mac: pillar-macbook and lil-homie are
-linked this way. That Mac runs the T3 Code server as a background service, and Tailscale Serve
-publishes it on the tailnet only. Nothing listens on the local network.
+[Fresh](https://getfresh.dev) is a terminal editor. The `fresh` package holds its settings
+(`config.json`) and two themes, Rosé Pine Moon and Rosé Pine Dawn. The `theme` shell function
+switches Fresh between the two themes, with Helix and the other tools. A running Fresh changes its
+theme only when it starts again.
 
-1. On the other Mac, run `scripts/install-packages.sh` (it installs the `t3-code` cask on every
-   macOS profile) and `scripts/install.sh` (it imports the shared T3 Code settings). Open the app
-   once to get the `~/.t3/bin/t3` command, or copy that file from a Mac that has it. Then install
-   the background service:
-
-   ```bash
-   ~/.t3/bin/t3 service install
-   ```
-
-2. On the other Mac, make a pairing link. `t3 pair --tailscale` sets Tailscale Serve to publish the
-   server on port 443. If port 443 has a service already, add `--tailscale-serve-port <port>`.
-   lil-homie uses port 8773.
-
-   ```bash
-   ~/.t3/bin/t3 pair --tailscale --tailscale-serve-port 8773 --label <this-mac> --ttl 15m
-   ```
-
-   `t3 pair` runs `tailscale`. The nanobrew formula (lil-homie) puts it on the PATH. The Mac App
-   Store Tailscale (pillar-macbook) does not, and a link to its app binary crashes, so put a
-   wrapper script on the PATH:
-
-   ```bash
-   d=$(mktemp -d)
-   printf '#!/bin/sh\nexec /Applications/Tailscale.app/Contents/MacOS/Tailscale "$@"\n' > "$d/tailscale"
-   chmod +x "$d/tailscale"
-   PATH="$d:$PATH" ~/.t3/bin/t3 pair --tailscale --label <this-mac> --ttl 15m
-   ```
-
-3. On this Mac, run `open '<App link>'` with the `App link` that `t3 pair` printed. The app adds the
-   other Mac. `t3 auth session list` on the other Mac shows the session.
+- **Link:** `~/.config/fresh` is one link to `fresh/.config/fresh`, not one link for each file.
+  Fresh saves its settings with a temporary file and a rename, and a rename replaces a link to a
+  file with a plain file. With a link to the folder, changes from Fresh's Settings UI land in the
+  repo. `FOLDED` in `scripts/install.sh` lists this package. If `~/.config/fresh` is a plain
+  folder, `install.sh` moves it to `~/.config/fresh.pre-dotfiles` first. The `.gitignore` in the
+  package keeps out the files that Fresh makes there, such as `types/`.
+- **Themes:** Fresh has no Rosé Pine theme, so the two theme files use the
+  [Rosé Pine palette](https://rosepinetheme.com/palette) with the scope colors of the Rosé Pine
+  Helix theme. Fresh 0.5.8 has no `syntax.number`, `syntax.property`, or `syntax.attribute` key, so
+  numbers and attributes use `constant`, and properties use `variable`.
+- **Language servers:** JavaScript and TypeScript use TypeScript 7's own server (`tsc --lsp`) and
+  oxlint. oxfmt formats them. TypeScript 7 has no tsserver, so `typescript-language-server` does
+  not work with it. Rust uses rust-analyzer, which mise installs as a component of the Rust
+  toolchain. The other languages use Fresh's default servers, when they are on the `PATH`.
+- **Updates:** nanobrew updates Fresh, so its own update check is off. This also turns off its
+  anonymous telemetry.
 
 ## Leave a machine
 
@@ -483,6 +469,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | eza | nanobrew core | `.zshrc` |
 | fd | nanobrew core | null |
 | ffmpeg | nanobrew core | null |
+| fresh-editor | nanobrew core | `.config/fresh`; see [Fresh](#fresh) |
 | fzf | nanobrew core | `.zshrc` |
 | gh | nanobrew core | `.config/gh/config.yml` |
 | git-delta | nanobrew core | `.gitconfig` |
@@ -503,14 +490,13 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | tree | nanobrew core | null |
 | unzip | nanobrew core | null |
 | vivid | nanobrew core | null |
-| zmx | nanobrew core | `.zshrc` |
+| zmx | nanobrew (`neurosnap/tap` tap) | `.zshrc` |
 | zoxide | nanobrew core | `.zshrc` |
 | zsh-autosuggestions | nanobrew core | `.zshrc` |
 | zsh-syntax-highlighting | nanobrew core | `.zsh` (theme files) |
 | zx | nanobrew core | null |
 | 1password-cli | nanobrew core | null |
 | claude-code | nanobrew core | `.claude` |
-| t3-code | nanobrew core | `dotfiles/t3` via `scripts/t3-settings.sh` |
 | colima | nanobrew desktop | null |
 | docker | nanobrew desktop | null |
 | docker-buildx | nanobrew desktop | null |
@@ -532,11 +518,13 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | just | mise | null |
 | kvm-pilot | mise (pypi) | `.config/kvm-pilot/config.toml`; see [KVM](#kvm) |
 | node | mise | `.config/mise/config.toml` |
+| oxfmt, oxlint | mise (npm) | null; see [Fresh](#fresh) |
 | pi | mise | `.pi/agent`; see [Agents](#agents) |
 | pnpm | mise | `.config/mise/config.toml` |
 | python | mise | `.config/mise/config.toml` |
 | rust | mise | `.config/mise/config.toml` |
 | shellcheck | mise | null |
+| typescript | mise (npm) | null; see [Fresh](#fresh) |
 | uv | mise | `.config/mise/config.toml` |
 | yq | mise | null |
 | zig | mise | `.config/mise/config.toml` |
@@ -562,7 +550,7 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | sill | nanobrew (`saffsanity/sill` tap) | `scripts/macos-defaults.sh` | yes |
 | spotify | nanobrew | null | |
 | syncthing-app | nanobrew | null | |
-| tinycast | nanobrew (`abue-ammar/tinycast` tap) | `dotfiles/tinycast` | yes |
+| tinycast | nanobrew | `dotfiles/tinycast` | yes |
 | vorssaint | nanobrew | `dotfiles/vorssaint/settings.plist` | yes |
 | zoom | nanobrew | null | |
 | Equinox | mas | null | yes |
@@ -576,6 +564,5 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | Mullvad VPN | download | null | |
 | Signal | download | null | |
 | Steam | download | null | |
-| Suzuri | download | null | |
 | VIA | download | null | |
 | VLC | download | null | |

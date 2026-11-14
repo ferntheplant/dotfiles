@@ -48,5 +48,6 @@
   "skipDangerousModePermissionPrompt": true,
   "attribution": {
     "commit": ""
-  }
+  },
+  "spinnerTipsEnabled": false
 }

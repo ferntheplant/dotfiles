@@ -20,7 +20,7 @@ desktop=false
 [[ "$profile" = "desktop" || "$profile" = "work" ]] && desktop=true
 
 # Directories that are not stow packages
-IGNORE_LIST=("handy" "node_modules" "t3" "themes" "tinycast" "vorssaint")
+IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 # Packages for apps that the server and infra profiles do not install
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
 # Packages for agents, which the infra profile does not install
@@ -32,8 +32,30 @@ MACOS_ONLY=("ghostty")
 if [[ "$(uname -s)" == "Linux" ]]; then
 	DESKTOP_ONLY+=("${MACOS_ONLY[@]}")
 fi
+# Packages that get one link for each folder in .config, not one link for each file. Fresh saves
+# its config with a temporary file and a rename, and a rename replaces a link to a file with a
+# plain file. With a link to the folder, Fresh's saves land in the package.
+FOLDED=("fresh")
 
 cd "$fixed_location"
+
+# Stow a FOLDED package. Stow links a folder only when the target does not exist, so a plain folder
+# that the app made before the first install moves to <folder>.pre-dotfiles first.
+stow_folded() {
+	local pkg="$1" dir target
+	for dir in "$fixed_location/$pkg"/.config/*/; do
+		target="$HOME/.config/$(basename "$dir")"
+		if [[ -d "$target" && ! -L "$target" ]]; then
+			if [[ -e "$target.pre-dotfiles" ]]; then
+				echo "⚠️  skipped $pkg: move $target or $target.pre-dotfiles away, then run again"
+				return 0
+			fi
+			mv "$target" "$target.pre-dotfiles"
+			echo "📦 moved $target to $target.pre-dotfiles"
+		fi
+	done
+	stow "$pkg"
+}
 
 for subdir in "$fixed_location"/*; do
 	if [ -d "$subdir" ]; then
@@ -47,6 +69,8 @@ for subdir in "$fixed_location"/*; do
 			[[ "$profile" = "infra" && " ${AGENT_ONLY[*]} " == *" ${subdir_name} "* ]] ||
 			[[ "$profile" = "work" && " ${HOMELAB_ONLY[*]} " == *" ${subdir_name} "* ]]; then
 			stow -D --no-folding "$subdir_name"
+		elif [[ " ${FOLDED[*]} " == *" ${subdir_name} "* ]]; then
+			stow_folded "$subdir_name"
 		else
 			stow --no-folding "$subdir_name"
 		fi
@@ -69,13 +93,12 @@ if [[ ! -d "$HOME/.zsh/fzf-tab" ]]; then
 	git clone --depth 1 https://github.com/Aloxaf/fzf-tab "$HOME/.zsh/fzf-tab"
 fi
 
-# Agent config: skills (in the hidden .agents/, which the loop above skips), Claude, Pi, and
-# T3 Code settings, Claude's MCP servers, and Kata hooks. The work profile gets no Pi and no Kata.
+# Agent config: skills (in the hidden .agents/, which the loop above skips), Claude and Pi
+# settings, Claude's MCP servers, and Kata hooks. The work profile gets no Pi and no Kata.
 if [[ "$profile" != "infra" ]]; then
 	"$fixed_location/scripts/link-skills.sh"
 	"$fixed_location/scripts/claude-settings.sh"
 	"$fixed_location/scripts/claude-mcp.sh"
-	"$fixed_location/scripts/t3-settings.sh" import
 	if [[ "$profile" != "work" ]]; then
 		"$fixed_location/scripts/pi-settings.sh"
 		"$fixed_location/scripts/kata-agent-hooks.sh"

@@ -1289,9 +1289,9 @@
 		<key>screenshotFreeze</key>
 		<true/>
 		<key>screenshotFullScreenShortcut</key>
-		<string>control+option+command:20</string>
+		<string>shift+command:20</string>
 		<key>screenshotFullScreenShortcutEnabled</key>
-		<false/>
+		<true/>
 		<key>screenshotHideVorssaintWindows</key>
 		<true/>
 		<key>screenshotHighlightWindows</key>
@@ -1343,9 +1343,9 @@
 		<key>screenshotSharingEnabled</key>
 		<true/>
 		<key>screenshotShortcut</key>
-		<string>control+option+command:21</string>
+		<string>shift+command:21</string>
 		<key>screenshotShortcutEnabled</key>
-		<false/>
+		<true/>
 		<key>screenshotShowCaptureMenuOnShortcut</key>
 		<true/>
 		<key>screenshotShowLastRegion</key>
@@ -1492,6 +1492,11 @@
 		<string>command:50</string>
 		<key>switcherWindowlessApps</key>
 		<string>finder</string>
+		<key>systemShortcutTakeOverKeys</key>
+		<array>
+			<string>screenshotFullScreenShortcut</string>
+			<string>screenshotShortcut</string>
+		</array>
 		<key>temperatureUnit</key>
 		<string>celsius</string>
 		<key>textSnippetsEnabled</key>

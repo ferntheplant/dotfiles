@@ -20,7 +20,7 @@ cask "librewolf"
 cask "saffsanity/sill/sill"
 cask "spotify"
 cask "syncthing-app"
-cask "abue-ammar/tinycast/tinycast"
+cask "tinycast"
 cask "vorssaint"
 cask "zoom"
 mas "Equinox", id: 1591510203

@@ -30,4 +30,41 @@ sill=me.saffer.sill.mac
 # Remote Access: paired devices connect through Tailscale on TCP port 7455
 defaults write "$sill" remoteAccess -bool true
 
+# Vorssaint (com.vorssaint.utils): Cmd-Shift-4 opens Vorssaint's screenshot tool (area, with the
+# capture menu) and Cmd-Shift-3 its full-screen capture, in place of the macOS screenshot keys.
+# systemShortcutTakeOverKeys tells Vorssaint to turn off the matching macOS hotkeys while it runs
+# and to give them back when it quits. A shortcut is "<modifiers>:<key code>", with the modifiers in
+# the order control, option, shift, command (20 is the 3 key, 21 is the 4 key). Vorssaint reads
+# these keys only at launch, so the script restarts it when a value changes.
+vorssaint=com.vorssaint.utils
+# Print the current values of the keys below, one line each
+vorssaint_values() {
+	local key
+	for key in screenshotShortcutEnabled screenshotShortcut screenshotFullScreenShortcutEnabled \
+		screenshotFullScreenShortcut systemShortcutTakeOverKeys; do
+		defaults read "$vorssaint" "$key" 2>/dev/null | tr -d ' \n(),"' || true
+		echo
+	done
+}
+vorssaint_wanted=$'1\nshift+command:21\n1\nshift+command:20\nscreenshotFullScreenShortcutscreenshotShortcut'
+if [[ "$(vorssaint_values)" != "$vorssaint_wanted" ]]; then
+	vorssaint_running=false
+	if pgrep -xq Vorssaint; then
+		vorssaint_running=true
+		# Quit first, so that Vorssaint does not save its old values over the new ones
+		osascript -e "quit app id \"$vorssaint\""
+		for _ in {1..20}; do pgrep -xq Vorssaint || break; sleep 0.25; done
+	fi
+	defaults write "$vorssaint" screenshotShortcutEnabled -bool true
+	defaults write "$vorssaint" screenshotShortcut -string "shift+command:21"
+	defaults write "$vorssaint" screenshotFullScreenShortcutEnabled -bool true
+	defaults write "$vorssaint" screenshotFullScreenShortcut -string "shift+command:20"
+	# Vorssaint keeps this list sorted
+	defaults write "$vorssaint" systemShortcutTakeOverKeys -array screenshotFullScreenShortcut screenshotShortcut
+	if [[ "$vorssaint_running" = true ]]; then
+		open -b "$vorssaint"
+		echo "🔁 Restarted Vorssaint to apply its screenshot shortcuts"
+	fi
+fi
+
 echo "✅ Wrote macOS defaults. Log out and back in to apply the menu bar spacing and Spaces setting."

@@ -4,7 +4,8 @@ node = "latest"
 python = "3.12"
 uv = "latest"
 zig = "latest"
-rust = "latest"
+# rust-analyzer is for Helix and Fresh, which start it
+rust = { version = "latest", components = ["rust-analyzer"] }
 pnpm = "latest"
 go = "latest"
 # CLI tools (every machine, the server too)
@@ -17,6 +18,11 @@ duckdb = "latest"
 gitleaks = "latest"
 helix = "latest"
 just = "latest"
+# The language servers and the formatter for JavaScript and TypeScript in Fresh. TypeScript 7 has
+# its own language server (`tsc --lsp`).
+"npm:oxfmt" = "latest"
+"npm:oxlint" = "latest"
+"npm:typescript" = "latest"
 # kvm-pilot, the MCP server that lets agents use the Comet KVM. Its profile is the kvm-pilot stow
 # package, and scripts/claude-mcp.sh registers it with Claude Code.
 "pypi:kvm-pilot" = "latest"

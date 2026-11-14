@@ -1,0 +1,98 @@
+// Fresh settings. Only the keys that differ from Fresh's defaults are here: run
+// `fresh --cmd config show` for the full effective config. Fresh saves changes from its
+// Settings UI to this file and keeps the comments.
+{
+  // themes/rose-pine-moon.json. The `theme` shell function switches it to
+  // rose-pine-dawn.json and back, with Helix, bat, and the other tools.
+  "theme": "rose-pine-moon.json",
+  // Nanobrew installs and updates Fresh. Without the update check, Fresh also sends no
+  // anonymous telemetry.
+  "check_for_updates": false,
+  "self_update": false,
+  "editor": {
+    // Ghostty's font, MesloLGS NF, is a Nerd Font
+    "nerd_font_icons": true,
+    // The same rulers and wrap width as Helix and Zed
+    "rulers": [80, 120],
+    "wrap_column": 120,
+    "indentation_guide": "all",
+    // Helix shows every space and tab
+    "whitespace_spaces_leading": true,
+    "whitespace_spaces_inner": true,
+    "whitespace_spaces_trailing": true,
+    // Off in Zed too
+    "enable_inlay_hints": false
+  },
+  "file_explorer": {
+    // Zed docks its project panel on the right, and the Helix file picker shows hidden files
+    "side": "right",
+    "show_hidden": true
+  },
+  "file_browser": {
+    "show_hidden": true
+  },
+  // oxfmt (mise) formats JavaScript and TypeScript, as in Helix. It replaces Prettier.
+  "languages": {
+    "javascript": {
+      "formatter": {
+        "command": "oxfmt",
+        "args": ["--stdin-filepath", "$FILE"],
+        "stdin": true
+      }
+    },
+    "typescript": {
+      "formatter": {
+        "command": "oxfmt",
+        "args": ["--stdin-filepath", "$FILE"],
+        "stdin": true
+      }
+    }
+  },
+  // A list of servers replaces Fresh's default list for that language, so each entry is
+  // complete. TypeScript 7 (mise) has its own language server, `tsc --lsp`. It has no tsserver,
+  // so typescript-language-server cannot use it. oxlint (mise) adds its lint diagnostics and fixes.
+  "lsp": {
+    "javascript": [
+      {
+        "name": "tsc",
+        "command": "tsc",
+        "args": ["--lsp", "--stdio"],
+        "auto_start": true,
+        "root_markers": ["tsconfig.json", "jsconfig.json", "package.json", ".git"],
+        "language_id_overrides": { "jsx": "javascriptreact" },
+        "except_features": ["format"]
+      },
+      {
+        "name": "oxlint",
+        "command": "oxlint",
+        "args": ["--lsp"],
+        "auto_start": true,
+        "root_markers": ["package.json", ".git"],
+        "only_features": ["diagnostics", "code_action"]
+      }
+    ],
+    "typescript": [
+      {
+        "name": "tsc",
+        "command": "tsc",
+        "args": ["--lsp", "--stdio"],
+        "auto_start": true,
+        "root_markers": ["tsconfig.json", "jsconfig.json", "package.json", ".git"],
+        "language_id_overrides": { "tsx": "typescriptreact" },
+        "except_features": ["format"]
+      },
+      {
+        "name": "oxlint",
+        "command": "oxlint",
+        "args": ["--lsp"],
+        "auto_start": true,
+        "root_markers": ["package.json", ".git"],
+        "only_features": ["diagnostics", "code_action"]
+      }
+    ],
+    // rustup installs rust-analyzer with the mise Rust toolchain
+    "rust": {
+      "auto_start": true
+    }
+  }
+}

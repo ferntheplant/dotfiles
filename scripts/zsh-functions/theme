@@ -15,6 +15,7 @@ theme() {
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/btop/btop.conf\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.gitconfig\" --$theme_arg
 		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/leaf/config.toml\" --$theme_arg
+		~/dotfiles/scripts/update-rose-pine.sh \"\$HOME/.config/fresh/config.json\" --$theme_arg
 	"
 	# Atomically acquire the lock and run all file updates. -n: non-blocking (skip if the lock
 	# can't be acquired); lockf -k: keep the lock until the command finishes

@@ -26,9 +26,6 @@ export CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES=1
 # Pi: also send copied text as OSC 52, so a copy reaches the clipboard of a Rex client on another
 # machine. Pi cannot see that a Rex client is remote, so it writes only to this machine's clipboard.
 export PI_CLIPBOARD_OSC52=1
-# T3 Code: send no usage telemetry. The desktop app reads this from the login shell; the background
-# service reads ~/.t3/service.env, which scripts/t3-settings.sh writes.
-export T3CODE_TELEMETRY_ENABLED=false
 
 # Function to capture command start time
 preexec() {
@@ -56,15 +53,12 @@ precmd() {
 
 source "$HOME/dotfiles/scripts/zsh-functions/loader"
 
-# Only run theme update if not in VSCode/Cursor and starship config exists
+# Only run theme update if not in Cursor and starship config exists
 if [[ -f "$HOME/.config/starship/starship.toml" ]]; then
-  # Check multiple ways to detect VSCode/Cursor to be more robust
-  if [[ "$TERM_PROGRAM" != "vscode" ]] && \
-     [[ "$TERM_PROGRAM" != "cursor" ]] && \
-     [[ -z "$VSCODE_INJECTION" ]] && \
+  # Check multiple ways to detect Cursor to be more robust
+  if [[ "$TERM_PROGRAM" != "cursor" ]] && \
      [[ -z "$CURSOR_SESSION" ]] && \
-     [[ "$(ps -o comm= -p $PPID 2>/dev/null)" != *"cursor"* ]] && \
-     [[ "$(ps -o comm= -p $PPID 2>/dev/null)" != *"code"* ]]; then
+     [[ "$(ps -o comm= -p $PPID 2>/dev/null)" != *"cursor"* ]]; then
     if grep -q 'palette = "rose-pine-dawn"' "$HOME/.config/starship/starship.toml"; then
       theme 'light'
     else

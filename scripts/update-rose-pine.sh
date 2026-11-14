@@ -40,11 +40,12 @@ done
 TMPFILE=$(mktemp) || exit 1
 trap 'rm -f "$TMPFILE"' EXIT
 
-# Perform replacement only on lines that set the theme or palette
+# Perform replacement only on lines that set the theme or palette. The optional quote matches a
+# JSON key, such as "theme" in the Fresh config.
 if [ "$REPLACEMENT_ACTION" == "light" ]; then
-    sed -E '/^[[:space:]]*((-{1,2})?(color_theme|features|theme|palette))[[:space:]]*(=|")/s/rose[_-]pine[_-]moon/rose'${SEPARATOR}'pine'${SEPARATOR}'dawn/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
+    sed -E '/^[[:space:]]*"?((-{1,2})?(color_theme|features|theme|palette))[[:space:]]*(=|")/s/rose[_-]pine[_-]moon/rose'${SEPARATOR}'pine'${SEPARATOR}'dawn/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
 elif [ "$REPLACEMENT_ACTION" == "dark" ]; then
-    sed -E '/^[[:space:]]*((-{1,2})?(color_theme|features|theme|palette))[[:space:]]*(=|")/s/rose[_-]pine[_-]dawn/rose'${SEPARATOR}'pine'${SEPARATOR}'moon/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
+    sed -E '/^[[:space:]]*"?((-{1,2})?(color_theme|features|theme|palette))[[:space:]]*(=|")/s/rose[_-]pine[_-]dawn/rose'${SEPARATOR}'pine'${SEPARATOR}'moon/g' "$TARGET_FILE" > "$TMPFILE" && mv "$TMPFILE" "$TARGET_FILE"
 else
     usage
 fi
