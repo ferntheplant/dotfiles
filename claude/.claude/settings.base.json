@@ -27,6 +27,15 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/rex-resume.sh",
+            "timeout": 5
+          }
+        ]
       }
     ]
   },

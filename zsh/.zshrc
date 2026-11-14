@@ -85,6 +85,9 @@ fi
 
 source "/opt/nanobrew/prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
+# Rex resume: run Claude Code again in a pane that Rex restored after its server stopped
+source "$HOME/.zsh/rex-resume.zsh"
+
 if command -v zmx &> /dev/null; then
   eval "$(zmx completions zsh)"
 fi

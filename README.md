@@ -334,6 +334,31 @@ Each harness sets the identity in its own way:
 - **Pi:** `pi/.pi/agent/extensions/agent-identity.ts` sets `KATA_AUTHOR` on the Pi process when a
   session starts and when the model changes. It adds the trailer rule to the system prompt.
 
+## Rex resume
+
+When the Rex server stops, for example after a crash, an update, or a reboot, it restores its
+sessions and panes at the next start. Each pane gets a new login shell. Rex resume runs
+`claude --resume <ID>` in each restored pane that ran Claude Code when the server stopped. The turn
+that the stop cut off does not continue. Other programs, and processes that Claude started, such as
+background shells, do not come back.
+
+It has two parts, and needs no daemon:
+
+1. **Record:** the SessionStart hook `claude/.claude/hooks/rex-resume.sh` writes
+   `~/.local/state/rex-resume/<REX_BLOCK>`. The file holds the conversation ID, the directory, and
+   the transcript path. The hook records nothing for a `claude -p` run or a subagent. Each start,
+   `/clear`, `/compact`, and resume writes the file again.
+2. **Resume:** `zsh/.zsh/rex-resume.zsh`, which `.zshrc` loads, does two things in a Rex pane:
+   - At each prompt, it removes the pane's file. A prompt means that Claude no longer runs in the
+     pane. A server stop ends the shell before its next prompt, so the file stays.
+   - In a new login shell, it reads the pane's file and removes it. At the first prompt, it runs
+     `claude --resume <ID>`, after a `cd` to the recorded directory if the shell is in another
+     directory. Rex restores each pane under its old ID, so the file names the restored pane.
+
+The shell does not resume a conversation that has no transcript, because Claude writes the
+transcript at the first prompt only. Such a pane keeps its shell. The hook deletes files older than
+30 days, which panes closed while Claude ran leave behind.
+
 ## Fresh
 
 [Fresh](https://getfresh.dev) is a terminal editor. The `fresh` package holds its settings
