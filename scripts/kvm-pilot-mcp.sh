@@ -17,6 +17,11 @@ if ! KVM_PILOT_PASSWD=$(security find-generic-password -s kvm-pilot -a "$profile
 fi
 export KVM_PILOT_PASSWD
 
+# The machine-only KVM_PILOT_SSH_HOST, which the config does not hold (see config.toml)
+work_env="$HOME/dotfiles/.work/kvm-pilot.zsh"
+# shellcheck source=/dev/null
+[[ -f "$work_env" ]] && source "$work_env"
+
 # mise installs kvm-pilot (pypi:kvm-pilot in the global mise config)
 mise_bin="$(command -v mise || echo "$HOME/.local/bin/mise")"
 exec "$mise_bin" exec -- kvm-pilot-mcp "$@"

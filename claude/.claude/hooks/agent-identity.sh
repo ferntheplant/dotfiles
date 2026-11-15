@@ -1,6 +1,6 @@
 #!/bin/bash
 # SessionStart hook: give Claude its agent identity, <model>+claude@<host>, for example
-# opus-5-5+claude@lil-homie (see "Agent identity" in ~/dotfiles/README.md).
+# opus-5-5+claude@personal-macbook (see "Agent identity" in ~/dotfiles/README.md).
 #
 # The hook writes AGENT_IDENTITY to $CLAUDE_ENV_FILE for later Bash commands and subagents.
 # It also tells Claude to use the identity in a Co-Authored-By commit trailer.

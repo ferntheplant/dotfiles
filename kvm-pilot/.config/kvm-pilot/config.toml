@@ -2,7 +2,7 @@
 # scripts/kvm-pilot-mcp.sh reads it from the macOS keychain (service kvm-pilot, account <name>).
 # Reference: https://github.com/DustinTrap/kvm-pilot/blob/main/docs/configuration.md
 
-# The GL.iNet Comet (GL-RM1) on the home network. It controls gaming-homie.
+# The GL.iNet Comet (GL-RM1) on the home network. It controls a gaming PC.
 [hosts.comet]
 host = "glkvm.local"
 user = "admin"
@@ -10,6 +10,7 @@ driver = "glkvm"
 scheme = "https"
 port = 443
 verify_ssl = false # the Comet has a self-signed certificate
-# The in-band SSH channel to gaming-homie itself (ssh_reachable, and ssh_exec when allowed)
-ssh_host = "gaming-homie"
+# The in-band SSH channel to the PC itself (ssh_reachable, and ssh_exec when allowed). The host
+# name is machine-only: KVM_PILOT_SSH_HOST in ~/dotfiles/.work/kvm-pilot.zsh, which .zshrc and
+# scripts/kvm-pilot-mcp.sh read. Without it, kvm-pilot has no SSH channel.
 ssh_user = "fjorn"
