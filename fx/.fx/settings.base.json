@@ -1,0 +1,20 @@
+{
+  "models": {
+    "codex": "gpt-6.1-terra"
+  },
+  "provider": "codex",
+  "status_line": {
+    "context": true,
+    "session": true,
+    "workspace": true
+  },
+  "effort": "high",
+  "sound": {
+    "turn_end": false,
+    "attention_required": false,
+    "max": false
+  },
+  "fast_mode": false,
+  "ultrafast_mode": false,
+  "fast_mode_model_bound": true
+}

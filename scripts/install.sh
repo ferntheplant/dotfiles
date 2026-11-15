@@ -7,9 +7,9 @@ set -euo pipefail
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
 #   server             no packages for desktop-only apps (lil-homie)
-#   infra              as server, and no agent config: no Claude Code, Pi, Kata, or skills
+#   infra              as server, and no agent config: no Claude Code, omp, fx, Kata, or skills
 #                      (micro-homie, which runs the homielab services; agents reach it through Rex)
-#   work               as desktop, and no Pi or Kata, which are for the homelab (the Pillar laptop)
+#   work               as desktop, and no Kata, which is for the homelab (the Pillar laptop)
 # On Linux, the packages in MACOS_ONLY are skipped too. A package that the profile skips is
 # unstowed, so a machine that changes its profile loses the links of that package.
 
@@ -24,9 +24,9 @@ IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 # Packages for apps that the server and infra profiles do not install
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
 # Packages for agents, which the infra profile does not install
-AGENT_ONLY=("claude" "kata" "kvm-pilot" "pi")
+AGENT_ONLY=("claude" "fx" "kata" "kvm-pilot" "omp")
 # Packages for the homelab's agent tools, which the work profile does not install
-HOMELAB_ONLY=("kata" "pi")
+HOMELAB_ONLY=("kata")
 # Packages for apps that have no Linux build (lil-homie is a Mac server, so it keeps them)
 MACOS_ONLY=("ghostty")
 if [[ "$(uname -s)" == "Linux" ]]; then
@@ -78,9 +78,10 @@ for subdir in "$fixed_location"/*; do
 done
 
 # Remove links into ~/dotfiles whose file was deleted or moved
+# Include legacy ~/.pi only to clean up dangling dotfiles links; leave its runtime data alone.
 {
 	find "$HOME" -maxdepth 1 -type l 2>/dev/null
-	find "$HOME/.config" "$HOME/.local/bin" "$HOME/.claude" "$HOME/.pi" "$HOME/.zsh" -name node_modules -prune -o -type l -print 2>/dev/null
+	find "$HOME/.config" "$HOME/.local/bin" "$HOME/.claude" "$HOME/.pi" "$HOME/.omp" "$HOME/.fx" "$HOME/.zsh" -name node_modules -prune -o -type l -print 2>/dev/null
 } | while read -r link; do
 	if [[ "$(readlink "$link")" == *dotfiles/* && ! -e "$link" ]]; then
 		rm "$link"
@@ -93,25 +94,25 @@ if [[ ! -d "$HOME/.zsh/fzf-tab" ]]; then
 	git clone --depth 1 https://github.com/Aloxaf/fzf-tab "$HOME/.zsh/fzf-tab"
 fi
 
-# Agent config: skills (in the hidden .agents/, which the loop above skips), Claude and Pi
-# settings, Claude's MCP servers, and Kata hooks. The work profile gets no Pi and no Kata.
+# Agent config: skills (in the hidden .agents/, which the loop above skips), harness
+# settings, Claude's MCP servers, and Kata hooks. The work profile gets no Kata.
 if [[ "$profile" != "infra" ]]; then
 	"$fixed_location/scripts/link-skills.sh"
 	"$fixed_location/scripts/claude-settings.sh"
+	"$fixed_location/scripts/omp-settings.sh"
+	"$fixed_location/scripts/fx-settings.sh"
 	"$fixed_location/scripts/claude-mcp.sh"
 	if [[ "$profile" != "work" ]]; then
-		"$fixed_location/scripts/pi-settings.sh"
 		"$fixed_location/scripts/kata-agent-hooks.sh"
 	fi
 fi
 
-# mise has no profiles, so the work profile turns Pi off in a config file of its own
+# Remove only the exact legacy Pi override generated here, on every profile. Preserve user edits
+# and symlinks: mise no longer needs a work-profile override for a tool we do not install.
 mise_work="$HOME/.config/mise/conf.d/work.toml"
-if [[ "$profile" = "work" ]]; then
-	mkdir -p "$(dirname "$mise_work")"
-	printf '# Written by ~/dotfiles/scripts/install.sh for the work profile\n[settings]\ndisable_tools = ["pi"]\n' > "$mise_work"
-else
-	rm -f "$mise_work"
+if [[ -f "$mise_work" && ! -L "$mise_work" ]] &&
+	cmp -s "$mise_work" <(printf '# Written by ~/dotfiles/scripts/install.sh for the work profile\n[settings]\ndisable_tools = ["pi"]\n'); then
+	rm "$mise_work"
 fi
 
 # Desktop apps: macOS, Hidden Bar, and Sill defaults, Handy settings

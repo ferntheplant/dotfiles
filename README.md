@@ -9,27 +9,27 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
 | `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
-| `infra` (micro-homie) | `.Nanobrewfile` without the casks, the macOS-only formulas, and kata | as `server`, and also not ghostty, claude, kata, kvm-pilot, or pi |
-| `work` (the Pillar laptop) | as `desktop`, without kata | all except kata and pi |
+| `infra` (micro-homie) | `.Nanobrewfile` without the casks, the macOS-only formulas, and kata | as `server`, and also not ghostty, claude, fx, kata, kvm-pilot, or omp |
+| `work` (the Pillar laptop) | as `desktop`, without kata | all except kata |
 
 `infra` is for micro-homie, which runs the homielab services. It gets no agent config: no Claude
-Code or Pi settings, no skills, no MCP servers, and no Kata client or hooks. Agents run on lil-homie
-or a laptop and reach micro-homie through Rex (see the Rex section of the homielab README). Linux
+Code, omp, or fx settings, no skills, no MCP servers, and no Kata client or hooks. Agents run on
+lil-homie or a laptop and reach micro-homie through Rex (see the Rex section of the homielab README). Linux
 supports only `infra`. `MACOS_ONLY` and `AGENT_ONLY` in `scripts/install-packages.sh` and in
 `scripts/install.sh` list what it skips.
 
-`work` is for the Pillar work laptop. Pi and Kata are for the homelab, so the work laptop gets
-neither: no Pi settings, no Kata client or hooks, and no agent identity (see
-[Agent identity](#agent-identity)). `HOMELAB_ONLY` in both scripts lists what it skips. Claude Code
+`work` is for the Pillar work laptop. Kata is for the homelab, so the work laptop gets no Kata
+client or hooks, and no agent identity (see [Agent identity](#agent-identity)).
+`HOMELAB_ONLY` in both scripts lists what it skips. Claude Code
 keeps its own commit trailer there. The Pillar repo's own agent sync (`.scratch/agents/sync
 --laptop`) adds its skills, MCP server, and traces on top. When a skill name is in both repos, the
 Pillar link wins, and `scripts/link-skills.sh` skips it. `install.sh` unstows each package that the
 profile skips, so a machine that changes its profile loses those links. It does not uninstall a
-tool: run `mise uninstall pi --all` and `nb remove kata` once.
+tool: run `nb remove kata` once.
 
 ```bash
 scripts/install-packages.sh # nanobrew packages for the profile and the OS; safe to run again
-scripts/install.sh          # stow, skills, Claude and Pi settings, Kata hooks; safe to run again
+scripts/install.sh          # stow, skills, harness settings, Kata hooks; safe to run again
                             # desktop only: macOS defaults, Handy settings
 ```
 
@@ -91,9 +91,8 @@ micro-homie runs Debian 13 with no desktop. Its host setup (Docker, the 1Passwor
    ```
 
 To sync after a push, use the same command as lil-homie. Run `scripts/install-packages.sh` too
-when `.Nanobrewfile` changes. `mise install` still installs pi and agent-browser, because the
-mise config has no profiles; nothing configures them on micro-homie. On the work profile,
-`install.sh` writes `~/.config/mise/conf.d/work.toml`, which turns pi off (`disable_tools`).
+when `.Nanobrewfile` changes. `mise install` still installs omp and agent-browser, because the
+mise config has no profiles; nothing configures them on micro-homie.
 
 ## Set up a new desktop Mac
 
@@ -136,7 +135,7 @@ mise config has no profiles; nothing configures them on micro-homie. On the work
 6. Run the installer scripts. `install.sh` is safe to run again.
 
    ```bash
-   scripts/install.sh            # stow, skills, Claude and Pi settings, Kata hooks, macOS defaults, Handy settings
+   scripts/install.sh            # stow, skills, harness settings, Kata hooks, macOS defaults, Handy settings
    scripts/rex-settings.sh import
    mise install
    ```
@@ -207,44 +206,88 @@ fj repo units prs --help   # merge styles and other pull request settings
 
 ## Agents
 
-Claude Code and Pi share one set of instructions and one set of skills. The `work` profile has no
-Pi.
+Claude Code, omp, and fx have shared settings in this repo.
 
 - **Instructions:** two files in `.agents/instructions/`. `constitution.md` is the
   [Clanker Constitution](https://github.com/kenn-io/constitution), and `writing.md` is the
   [ASD-STE100 writing rules](https://gist.github.com/toppa/bf7ff49d6fc44fd4fc3337248f8f2a7e). Both
   are copies with local edits, recorded in `.agents/vendored-files.jsonc`; `/rebaseline files`
-  takes upstream's changes. `claude/.claude/CLAUDE.md` imports both. Pi has no imports, so
-  `pi/.pi/agent/AGENTS.md` links to the constitution and `APPEND_SYSTEM.md` links to the writing rules.
+  takes upstream's changes. `claude/.claude/CLAUDE.md` imports both; omp loads this same entry point.
 - **Skills:** `.agents/skills/`, and the homielab repo's own skills in
   `~/homielab/.agents/skills/` when that checkout exists. `scripts/link-skills.sh` links each skill
-  into `~/.claude/skills/`, and Pi reads that folder through the `skills` key in its settings. The
+  into `~/.claude/skills/` for Claude Code and omp. The
   dotfiles skills are copies; the homielab skills are links, so a `git pull` in `~/homielab`
   updates them. Claude Code also syncs the claude.ai account skills (xlsx, pptx, and others) into
-  `~/.claude/skills/synced/`. Claude Code does not show them to the model, and the Pi settings
-  exclude that folder with `!~/.claude/skills/synced/**`.
+  `~/.claude/skills/synced/`. Claude Code does not show them to the model.
 - **Settings:** each agent writes its own keys to its settings file, so the file is not a link.
-  `scripts/claude-settings.sh` and `scripts/pi-settings.sh` merge `settings.base.json` into it.
+  `scripts/claude-settings.sh` and `scripts/fx-settings.sh` merge `settings.base.json` into it;
+  `scripts/omp-settings.sh` merges `config.base.yml` with `yq`.
 - **MCP servers:** `scripts/claude-mcp.sh` registers them with `claude mcp` at user scope, because
-  Claude Code owns `~/.claude.json`. Pi has no MCP support, so Pi does not get them. The only server
-  is kvm-pilot (see [KVM](#kvm)).
+  Claude Code owns `~/.claude.json`. The only registered server is kvm-pilot (see [KVM](#kvm)).
 
-Pi uses the `opencode-go` provider. `scripts/pi-settings.sh` copies the OpenCode Go key from
-`~/.local/share/opencode/auth.json` when that file has one. On a machine without it, run `/login` in
-Pi and pick OpenCode Go. The base settings turn on the `codemode` tool and install these packages:
-`pi-web-access`, `@juicesharp/rpiv-ask-user-question`, and
-[`pi-quota-status`](https://github.com/hafiezul/pi-quota-status).
+### omp and fx settings
 
-`pi/.pi/agent/extensions/subagent.ts` gives Pi a `subagent` tool. Each task runs in a new child Pi
-process with the parent's model and thinking level, and the tool returns each child's final answer.
-Up to 8 tasks run in parallel, 4 at a time. A child does not see the parent's conversation, and it
-does not get the `subagent` tool. There are no agent types or workflows.
+`omp/.omp/agent/config.base.yml` and `fx/.fx/settings.base.json` capture the shared harness
+preferences. omp uses `openai-codex/gpt-6.1-sol`; fx uses Codex `gpt-6.1-terra` with high effort.
+The installer applies both on desktop, server, and work profiles, but not infra.
 
-`pi/.pi/agent/extensions/rex.ts` is Rex's session-start hook for Pi. `rex skill setup` gives Claude
-Code a SessionStart hook that tells the agent its Rex session and pane, and asks it to name the
-session after its task. Pi has no command hooks, so Rex installs only its skill for Pi. The extension
-runs `rex __internal session-start --agent pi` and adds the output to the system prompt. It does
-nothing outside Rex or in a subagent.
+Edit the base files and run `scripts/install.sh`, or apply only these settings:
+
+```bash
+scripts/omp-settings.sh
+scripts/fx-settings.sh
+```
+
+Both scripts merge nested objects with the base keys winning, retain unlisted machine-local
+keys, and back up changed files. Repeating the merge without changes does not rewrite the file.
+The live files remain writable regular files at `~/.omp/agent/config.yml` and
+`~/.fx/settings.json`; settings changed in the harness are not automatically captured in the
+base files. Credentials, sessions, history, databases, and caches stay outside the repo. Sign in
+on each machine with `omp login` and `fx login codex`. These scripts configure installed
+harnesses; they do not install the binaries.
+
+### Shared instruction and skill discovery
+
+omp opts into Claude user discovery with `enabledProviders: [claude]`.
+`skills.enableClaudeUser: true` also records the shared skill choice explicitly.
+It loads `~/.claude/CLAUDE.md`, including its imports of the dotfiles constitution and writing
+instructions, and skills from `~/.claude/skills`. Existing dotfiles and homielab links remain
+the source of those skills; no second copy or instruction shim is needed.
+
+Project-root `CLAUDE.md` and `AGENTS.md` already work without this opt-in. omp keeps one context
+file per directory depth; standalone `AGENTS.md` wins when both names exist at that depth.
+Use an explicit `@` import when both files must contribute. omp task children retain the shared
+`CLAUDE.md` imports, but omit standalone `AGENTS.md` context.
+
+Claude provider discovery is broader than instructions and skills: supported pre/post JS/TS
+hook factories and Claude plugins can also load. It does not execute Claude Code's
+`settings.json` lifecycle commands such as SessionStart. The current Claude hook folder has only
+standalone shell scripts, not those factory directories. Restart omp after a settings change.
+
+### Rex support in omp
+
+Rex `0.1.0-preview.18` has no `omp` setup target.
+The shared Rex skill works in omp. It does not install automatic startup context.
+`rex __internal session-start --agent omp` already returns usable plain-text context.
+
+omp 18.20.2 already implements [OSC 7501 program status](https://www.superlogical.com/rex/docs/build/program-status.md)
+for idle, working, blocked, done, and error states on interactive terminals.
+No second status adapter is needed. This is source-level support; the discovery smoke proof
+does not verify Rex's visual indicators.
+
+Startup parity needs a small omp extension: obtain Rex context at session start or switch,
+then append it through `before_agent_start`. Gate session naming on `ctx.agent.kind === "main"`
+and the owning Rex pane/session. Children must not rename the parent's Rex session.
+Reuse the installed CLI's context and skill text instead of copying its instructions.
+
+Native Rex management also needs an `omp` harness entry and a versioned, Rex-owned extension
+stub. Setup, status, and removal must handle native user/project/profile roots, preserve foreign
+files, and retain shared skill ownership. Rex's installed setup command does not do this yet.
+See the [Rex agent setup documentation](https://www.superlogical.com/rex/docs/automate/agent-skill.md)
+and [omp extension API](https://github.com/can1357/oh-my-pi/blob/v18.20.2/docs/extensions.md).
+
+The custom Claude resume hooks in this repo are separate from Rex's built-in setup.
+No omp Rex adapter or resume hook is installed by this change.
 
 ## Kata
 
@@ -254,12 +297,11 @@ micro-homie (see the Kata section of the homielab README). This repo sets up the
 - **Daemon target:** `kata/.kata/config.toml` sends every `kata` command to
   `https://kata-api.tail8cc0d3.ts.net`. Without it, `kata` starts a local daemon with its own
   database. It also turns on close transcripts: `kata close` records the agent and session.
-- **Actor:** each agent sets `KATA_AUTHOR` to its identity, such as `opus-5-5+claude@lil-homie` (see
-  [Agent identity](#agent-identity)).
+- **Actor:** Claude Code sets `KATA_AUTHOR` to its identity, such as `opus-5-5+claude@lil-homie`
+  (see [Agent identity](#agent-identity)). omp and fx have no identity integration in this repo.
 - **Agent hooks:** `scripts/kata-agent-hooks.sh` (run by `install.sh`) runs
-  `kata agent-hook install` for Pi and Claude Code. For Pi it writes
-  `~/.pi/agent/extensions/kata.js`; for Claude Code it adds hooks to `~/.claude/settings.json`. The
-  hooks give the agent Kata's contract when a session starts, and track the session's attention.
+  `kata agent-hook install claude`, which adds hooks to `~/.claude/settings.json`. The
+  hooks give Claude Code Kata's contract when a session starts, and track the session's attention.
   Claude Code gets the contract in every session, also outside a Kata repo. Kata generates the
   hooks, so they are not in this repo.
 
@@ -270,7 +312,7 @@ on the dotfiles there.
 ```bash
 kata whoami                       # the actor and where it came from
 kata daemon locate                # the daemon this machine uses
-kata agent-hook status pi         # the installed hooks (offline)
+kata agent-hook status claude     # the installed hooks (offline)
 ```
 
 micro-homie (the `infra` profile) has no Kata client: agents do not run there. The Pillar laptop
@@ -310,9 +352,9 @@ lists the variables.
 
 ## Agent identity
 
-Each agent has one identity, `<model>+<harness>@<host>`, for example `opus-5-5+claude@lil-homie` or
-`kimi-k3+pi@lil-homie`. The model is the model ID in lowercase, without a provider prefix, a `claude-`
-prefix, or a `[1m]` suffix. The host is the Tailscale machine name, such as `personal-macbook`, from
+Claude Code has one identity, `<model>+claude@<host>`, for example `opus-5-5+claude@lil-homie`.
+The model is the model ID in lowercase, without a provider prefix, a `claude-` prefix, or a `[1m]`
+suffix. The host is the Tailscale machine name, such as `personal-macbook`, from
 `scripts/tailnet-name.sh`. The `+` separator is valid in an email address, and no model ID uses it.
 
 - **Kata:** the identity is the actor (`KATA_AUTHOR`) on each issue, comment, and close.
@@ -323,16 +365,12 @@ prefix, or a `[1m]` suffix. The host is the Tailscale machine name, such as `per
 The `work` profile has no agent identity. `scripts/claude-settings.sh` removes the identity hook and
 `KATA_AUTHOR` there, and Claude Code keeps its own commit trailer.
 
-Each harness sets the identity in its own way:
-
-- **Claude Code:** the SessionStart hook `claude/.claude/hooks/agent-identity.sh` reads the session
-  model. It writes `KATA_AUTHOR` to `$CLAUDE_ENV_FILE`, so every Bash command gets it, also in
-  subagents. It also gives Claude the trailer rule as session context. A `/model` switch keeps the
-  identity of the session start. `claude -p` has no session model, so the hook takes the `--model`
-  value (an alias such as `haiku`). Hooks do not get `$CLAUDE_ENV_FILE`, so Kata's own hooks use the
-  fallback in the `env` key, `<model setting>+claude@<host>`, from `scripts/claude-settings.sh`.
-- **Pi:** `pi/.pi/agent/extensions/agent-identity.ts` sets `KATA_AUTHOR` on the Pi process when a
-  session starts and when the model changes. It adds the trailer rule to the system prompt.
+The SessionStart hook `claude/.claude/hooks/agent-identity.sh` reads the session model.
+It writes `KATA_AUTHOR` to `$CLAUDE_ENV_FILE`, so every Bash command gets it, also in subagents.
+It also gives Claude the trailer rule as session context. A `/model` switch keeps the identity of
+the session start. `claude -p` has no session model, so the hook takes the `--model` value
+(an alias such as `haiku`). Hooks do not get `$CLAUDE_ENV_FILE`, so Kata's own hooks use the
+fallback in the `env` key, `<model setting>+claude@<host>`, from `scripts/claude-settings.sh`.
 
 ## Rex resume
 
@@ -358,30 +396,6 @@ It has two parts, and needs no daemon:
 The shell does not resume a conversation that has no transcript, because Claude writes the
 transcript at the first prompt only. Such a pane keeps its shell. The hook deletes files older than
 30 days, which panes closed while Claude ran leave behind.
-
-## Fresh
-
-[Fresh](https://getfresh.dev) is a terminal editor. The `fresh` package holds its settings
-(`config.json`) and two themes, Rosé Pine Moon and Rosé Pine Dawn. The `theme` shell function
-switches Fresh between the two themes, with Helix and the other tools. A running Fresh changes its
-theme only when it starts again.
-
-- **Link:** `~/.config/fresh` is one link to `fresh/.config/fresh`, not one link for each file.
-  Fresh saves its settings with a temporary file and a rename, and a rename replaces a link to a
-  file with a plain file. With a link to the folder, changes from Fresh's Settings UI land in the
-  repo. `FOLDED` in `scripts/install.sh` lists this package. If `~/.config/fresh` is a plain
-  folder, `install.sh` moves it to `~/.config/fresh.pre-dotfiles` first. The `.gitignore` in the
-  package keeps out the files that Fresh makes there, such as `types/`.
-- **Themes:** Fresh has no Rosé Pine theme, so the two theme files use the
-  [Rosé Pine palette](https://rosepinetheme.com/palette) with the scope colors of the Rosé Pine
-  Helix theme. Fresh 0.5.8 has no `syntax.number`, `syntax.property`, or `syntax.attribute` key, so
-  numbers and attributes use `constant`, and properties use `variable`.
-- **Language servers:** JavaScript and TypeScript use TypeScript 7's own server (`tsc --lsp`) and
-  oxlint. oxfmt formats them. TypeScript 7 has no tsserver, so `typescript-language-server` does
-  not work with it. Rust uses rust-analyzer, which mise installs as a component of the Rust
-  toolchain. The other languages use Fresh's default servers, when they are on the `PATH`.
-- **Updates:** nanobrew updates Fresh, so its own update check is off. This also turns off its
-  anonymous telemetry.
 
 ## Leave a machine
 
@@ -494,7 +508,6 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | eza | nanobrew core | `.zshrc` |
 | fd | nanobrew core | null |
 | ffmpeg | nanobrew core | null |
-| fresh-editor | nanobrew core | `.config/fresh`; see [Fresh](#fresh) |
 | fzf | nanobrew core | `.zshrc` |
 | gh | nanobrew core | `.config/gh/config.yml` |
 | git-delta | nanobrew core | `.gitconfig` |
@@ -543,13 +556,13 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | just | mise | null |
 | kvm-pilot | mise (pypi) | `.config/kvm-pilot/config.toml`; see [KVM](#kvm) |
 | node | mise | `.config/mise/config.toml` |
-| oxfmt, oxlint | mise (npm) | null; see [Fresh](#fresh) |
-| pi | mise | `.pi/agent`; see [Agents](#agents) |
+| oxfmt, oxlint | mise (npm) | null |
+| omp | mise (GitHub) | `.omp/agent/config.yml`; see [Agents](#agents) |
 | pnpm | mise | `.config/mise/config.toml` |
 | python | mise | `.config/mise/config.toml` |
 | rust | mise | `.config/mise/config.toml` |
 | shellcheck | mise | null |
-| typescript | mise (npm) | null; see [Fresh](#fresh) |
+| typescript | mise (npm) | null |
 | uv | mise | `.config/mise/config.toml` |
 | yq | mise | null |
 | zig | mise | `.config/mise/config.toml` |

@@ -7,8 +7,7 @@
 // those comments to decide which side of a conflict to keep. An edit with no comment reads as
 // drift, and the merge is free to take upstream's version over it.
 //
-// `claude/.claude/CLAUDE.md` imports both files. Pi has no imports, so `pi/.pi/agent/AGENTS.md`
-// links to the constitution and `pi/.pi/agent/APPEND_SYSTEM.md` links to the writing rules.
+// `claude/.claude/CLAUDE.md` imports both files.
 {
   "sources": {
     "clanker-constitution": {

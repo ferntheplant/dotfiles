@@ -13,14 +13,6 @@ if ! command -v kata >/dev/null 2>&1; then
 	exit 0
 fi
 
-# Pi: Kata writes one extension file, ~/.pi/agent/extensions/kata.js, which Pi loads by itself. It
-# imports only Node built-ins, so it needs no install step. It needs Pi 0.99.1 or newer.
-if command -v pi >/dev/null 2>&1; then
-	kata agent-hook install pi --executable kata
-else
-	echo "⚠️  pi not found; run 'mise install', then run this script again for the Pi hooks"
-fi
-
 # Claude Code: Kata adds its hooks to ~/.claude/settings.json. claude-settings.sh keeps hook groups
 # that are not in the base file, so a later merge leaves them in place.
 if command -v claude >/dev/null 2>&1; then

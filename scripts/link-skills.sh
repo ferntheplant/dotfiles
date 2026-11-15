@@ -1,9 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-# Link each skill in the source folders into ~/.claude/skills, where Claude Code finds it. Pi reads
-# the same folder (the skills key in pi/.pi/agent/settings.base.json), so both agents get the same
-# skills. A name that something else already provides is skipped, such as the pillar repo's sync
+# Link each skill in the source folders into ~/.claude/skills, where Claude Code finds it.
+# A name that something else already provides is skipped, such as the pillar repo's sync
 # links on the work laptop, or a skill of the same name from an earlier source. A link to a skill
 # that was deleted is removed.
 #

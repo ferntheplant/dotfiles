@@ -9,8 +9,8 @@
 //
 // Every skill here comes from baseline, which vendors most of them from other repos and merges
 // their upstream changes first. Run `/rebaseline skills` in baseline, then here. Here, the skills
-// are global: `scripts/link-skills.sh` links each one into `~/.claude/skills/`, where Claude Code
-// and Pi both find it. The local edits make a skill work outside a repo made from baseline.
+// are global: `scripts/link-skills.sh` links each one into `~/.claude/skills/` for Claude Code
+// and compatible harness discovery. The local edits make a skill work outside a baseline repo.
 {
   "sources": {
     "baseline": {

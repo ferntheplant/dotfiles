@@ -16,7 +16,3 @@ url = "https://kata-api.tail8cc0d3.ts.net"
 # (CLAUDE_CODE_SESSION_ID) and Codex are found without config.
 [close.transcript]
 enabled = true
-
-[close.transcript.session_id_env]
-# Pi sets this in its bash tool
-pi = "PI_SESSION_ID"

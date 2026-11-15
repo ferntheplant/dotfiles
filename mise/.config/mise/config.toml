@@ -26,12 +26,12 @@ just = "latest"
 # kvm-pilot, the MCP server that lets agents use the Comet KVM. Its profile is the kvm-pilot stow
 # package, and scripts/claude-mcp.sh registers it with Claude Code.
 "pypi:kvm-pilot" = "latest"
-# Pi, the coding agent. Its config is the pi stow package and scripts/pi-settings.sh.
-pi = "latest"
 shellcheck = "latest"
 yq = "latest"
 # Nanobrew installs zmx on macOS. On Linux it installs the macOS binary, so mise installs zmx there.
 "github:neurosnap/zmx" = { version = "latest", os = ["linux"] }
+# omp, the coding agent. Its config is the omp stow package and scripts/omp-settings.sh.
+"github:can1357/oh-my-pi" = "latest"
 
 [settings]
 activate_aggressive = true
