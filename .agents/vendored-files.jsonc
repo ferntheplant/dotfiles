@@ -1,13 +1,15 @@
 // Single files copied from other repos and edited in place: the agent instructions. Each entry
 // records the upstream commit the local copy was last merged from (`base`), so `/rebaseline files`
-// can tell a local edit from an upstream change and three-way merge one into the other. These do
-// not come from baseline, so they are merged here from their own upstreams.
+// can tell a local edit from an upstream change and three-way merge one into the other.
 //
 // Every local edit gets a comment on its entry saying what changed and why: the next merge reads
 // those comments to decide which side of a conflict to keep. An edit with no comment reads as
 // drift, and the merge is free to take upstream's version over it.
 //
-// `claude/.claude/CLAUDE.md` imports both files.
+// One repo maintains these files and merges their upstream changes. It publishes the files and
+// this manifest into the dotfiles, where `claude/.claude/CLAUDE.md` imports both files as the
+// global agent instructions. Make a change in the maintaining repo: the next publish replaces an
+// edit made in a copy.
 {
   "sources": {
     "clanker-constitution": {

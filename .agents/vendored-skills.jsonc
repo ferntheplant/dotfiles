@@ -1,88 +1,111 @@
 // Skills copied from other repos and edited in place. Each entry records the upstream commit the
 // local copy was last merged from (`base`), so `/rebaseline skills` can tell a local edit from an
 // upstream change and three-way merge one into the other. A skill in `.agents/skills/` with no
-// entry here is this repo's own.
+// entry here is the maintainer's own.
 //
 // Every local edit gets a comment on its entry saying what changed and why: the next merge reads
 // those comments to decide which side of a conflict to keep. An edit with no comment reads as
 // drift, and the merge is free to take upstream's version over it.
 //
-// Every skill here comes from baseline, which vendors most of them from other repos and merges
-// their upstream changes first. Run `/rebaseline skills` in baseline, then here. Here, the skills
-// are global: `scripts/link-skills.sh` links each one into `~/.claude/skills/` for Claude Code
-// and compatible harness discovery. The local edits make a skill work outside a baseline repo.
+// One repo maintains these skills and merges their upstream changes. It publishes the skills and
+// this file into each repo that ships them, so the copies and this file stay the same everywhere.
+// Make a change in the maintaining repo: the next publish replaces an edit made in a copy. Each
+// skill works inside a repo and as a global skill, so one copy serves both.
 {
   "sources": {
-    "baseline": {
-      "repo": "https://github.com/ferntheplant/baseline",
+    "mattpocock": {
+      "repo": "https://github.com/mattpocock/skills",
       "ref": "main",
-      // Baseline has no license of its own. Its vendored skills keep their upstream licenses:
-      // mattpocock-skills.txt (codebase-design, grilling, pr, prototype, research, wizard,
-      // writing-for-agents), explain-diff-html.txt (explain-diff), agent-browser.txt (agent-browser).
-      // rebaseline is baseline's own.
-      "license": ".agents/licenses/",
+      "license": ".agents/licenses/mattpocock-skills.txt",
+    },
+    "explain-diff-html": {
+      "repo": "https://github.com/malav2110/explain-diff-html",
+      "ref": "main",
+      "license": ".agents/licenses/explain-diff-html.txt",
+    },
+    "agent-browser": {
+      "repo": "https://github.com/vercel-labs/agent-browser",
+      "ref": "main",
+      "license": ".agents/licenses/agent-browser.txt",
     },
   },
   // Keyed by the skill's directory under `.agents/skills/`.
   "skills": {
     "agent-browser": {
-      "source": "baseline",
-      "path": ".agents/skills/agent-browser",
-      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
-      // Local: runs the repo's `mise.toml` install inside a repo that has one, and the global
-      // install (`.Nanobrewfile`) elsewhere, since the skill is global here.
+      "source": "agent-browser",
+      "path": "skills/agent-browser",
+      "base": "4b0e9f01fa8d214d39bbfe5391257640634fb9a0",
+      // Local: the description says when to reach for it (checking a change in a browser) instead
+      // of listing upstream's every use; the "Why agent-browser" sales pitch is cut.
+      // Local: the install line runs the CLI from the checkout when the repo's `mise.toml`
+      // installs it, and the global install elsewhere, so the skill works in a repo and globally.
     },
     "codebase-design": {
-      "source": "baseline",
-      "path": ".agents/skills/codebase-design",
-      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
+      "source": "mattpocock",
+      "path": "skills/engineering/codebase-design",
+      "base": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
+      // Local: names the project's vocabulary file `CONTEXT.md`, the name baseline's AGENTS.md and
+      // the global writing instructions use, where upstream renamed it `GLOSSARY.md`.
     },
     "explain-diff": {
-      "source": "baseline",
-      "path": ".agents/skills/explain-diff",
-      "base": "2a7f642a6b274b7c321ae584bd6a2879160e5f9c",
+      "source": "explain-diff-html",
+      "path": "skills/explain-diff-html",
+      "base": "407d90d24843ca42e129fb5077591d19f7483f6f",
+      // Local: renamed `explain-diff` (the directory and `name`), and user-invoked
+      // (`disable-model-invocation: true`), since an explainer is asked for by hand.
+      // `agents/openai.yaml` is this copy's own, keeping it user-invoked in Codex too.
+      // Local: the PR fetch drops the old `refs/explain/pr-<n>` and fetches with `+`, and says STOP
+      // when the fetch fails. Upstream's fetch refused a force-pushed head and went on with the old.
+      // Local: `html-template.html` has a Content-Security-Policy that runs only its two scripts
+      // (by hash) and the pinned Mermaid file. SKILL.md and references/validation.md say to keep it
+      // and the scripts unchanged. An injected `</pre><script>` that escaping missed cannot run.
+      // Local: the header of `scripts/validate-output.js` names upstream's repo, where its source
+      // (`src/validate-output.ts`) and `npm run build` are. This copy has only the bundle.
     },
     "grilling": {
-      "source": "baseline",
-      "path": ".agents/skills/grilling",
-      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
+      "source": "mattpocock",
+      "path": "skills/productivity/grilling",
+      "base": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
     },
     "pr": {
-      "source": "baseline",
-      "path": ".agents/skills/pr",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      "source": "mattpocock",
+      "path": "skills/engineering/pr",
+      "base": "49dd158d1076134a641b33efb035946536778336",
+      // Local: Blast Radius is named in "a few words", the widest impact, not one word; evidence
+      // shows the exact test, with pseudocode only when no specific test applies; the vocabulary
+      // file is `CONTEXT.md`, the name baseline's AGENTS.md and the global writing instructions
+      // use, where upstream renamed it `GLOSSARY.md`.
     },
     "prototype": {
-      "source": "baseline",
-      "path": ".agents/skills/prototype",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
-      // Local: a UI prototype runs with the project's own runner, `vp run <name>` only in a Vite+
-      // repo, since the skill is global here.
-    },
-    "rebaseline": {
-      "source": "baseline",
-      "path": ".agents/skills/rebaseline",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
-      // Local: adds the `files` branch for `.agents/vendored-files.jsonc` (the agent instructions,
-      // which do not come from baseline), merged with `git merge-file` since a file's local name
-      // differs from upstream's. Also reads `.scratch/vendored-skills.jsonc` and its `skillsDir`
-      // key, so the same skill rebaselines the Pillar repo's skills in `.scratch/skills/`, and runs
-      // that repo's own checks in place of `vp run ready:agent`.
+      "source": "mattpocock",
+      "path": "skills/engineering/prototype",
+      "base": "49dd158d1076134a641b33efb035946536778336",
+      // Local: rewritten to state rules positively (the anti-pattern lists are gone, folded into
+      // the rules they negated).
+      // Local: a UI prototype is a `package.json` script run with the project's own runner
+      // (`vp run <name>` in a Vite+ repo such as baseline), so the skill works outside Vite+ too.
     },
     "research": {
-      "source": "baseline",
-      "path": ".agents/skills/research",
-      "base": "a38d11491844455a7cfb37baf5e54b1539bde123",
+      "source": "mattpocock",
+      "path": "skills/engineering/research",
+      "base": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
+      // Local: notes go to `RESEARCH-<topic>.md` at the repo root, a deliberate placeholder until
+      // someone folds them into the real docs, and the agent reports the path back.
     },
     "wizard": {
-      "source": "baseline",
-      "path": ".agents/skills/wizard",
-      "base": "1a2c64296ec056acd71ae6b929ef1b3a827d1f49",
+      "source": "mattpocock",
+      "path": "skills/engineering/wizard",
+      "base": "49dd158d1076134a641b33efb035946536778336",
+      // Local: one comment in `template.sh` reworded ("names of the secrets set this run").
+      // Local: `write_env` single-quotes a value with no ', double-quotes a value with a ' but no
+      // " \ $ or `, and refuses any other value. Upstream wrote shell's '\'' escape, which dotenv
+      // readers do not undo: Node's parseEnv read `it's` back as `it`. The file must also be safe
+      // to source (`set -a; . ./.env`), so it never uses backticks or an expandable double quote.
     },
     "writing-for-agents": {
-      "source": "baseline",
-      "path": ".agents/skills/writing-for-agents",
-      "base": "a2e7ed101b37531ae57a1da47fca706e3166b008",
+      "source": "mattpocock",
+      "path": "skills/productivity/writing-for-agents",
+      "base": "49dd158d1076134a641b33efb035946536778336",
     },
   },
 }
