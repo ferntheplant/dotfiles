@@ -210,12 +210,14 @@ Claude Code, omp, and fx have shared settings in this repo.
 - **Instructions:** two files in `.agents/instructions/`. `constitution.md` is the
   [Clanker Constitution](https://github.com/kenn-io/constitution), and `writing.md` is the
   [ASD-STE100 writing rules](https://gist.github.com/toppa/bf7ff49d6fc44fd4fc3337248f8f2a7e). Both
-  are copies with local edits, recorded in `.agents/vendored-files.jsonc`; `/rebaseline files`
-  takes upstream's changes. `claude/.claude/CLAUDE.md` imports both; omp loads this same entry point.
+  are copies with local edits, recorded in `.agents/vendored-files.jsonc`. Another repo maintains
+  them, merges upstream's changes, and publishes them here, so an edit here is lost at the next
+  publish. `claude/.claude/CLAUDE.md` imports both; omp loads this same entry point.
 - **Skills:** `.agents/skills/`, and the homielab repo's own skills in
   `~/homielab/.agents/skills/` when that checkout exists. `scripts/link-skills.sh` links each skill
   into `~/.claude/skills/` for Claude Code and omp. The
-  dotfiles skills are copies; the homielab skills are links, so a `git pull` in `~/homielab`
+  dotfiles skills are copies, published here the same way as the instructions and recorded in
+  `.agents/vendored-skills.jsonc`; the homielab skills are links, so a `git pull` in `~/homielab`
   updates them. Claude Code also syncs the claude.ai account skills (xlsx, pptx, and others) into
   `~/.claude/skills/synced/`. Claude Code does not show them to the model.
 - **Settings:** each agent writes its own keys to its settings file, so the file is not a link.
