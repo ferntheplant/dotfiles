@@ -21,6 +21,32 @@ alias ghch="gh pr checks --watch"
 alias ghgr="gh pr comment -b '@greptile review'"
 alias ghpr="gh pr create --fill"
 
+lat() {
+  local arg target="" missing=""
+  local after_options=false
+  for arg in "$@"; do
+    if [[ "$arg" == -- && "$after_options" == false ]]; then
+      after_options=true
+    elif [[ "$after_options" == false && "$arg" == -* ]]; then
+      continue
+    elif [[ -f "$arg" || -d "$arg" ]]; then
+      target="$arg"
+      break
+    else
+      missing="$arg"
+    fi
+  done
+
+  if [[ -z "$target" && -n "$missing" ]]; then
+    print -u2 "lat: not a file or directory: $missing"
+    return 1
+  elif [[ -z "$target" || -d "$target" ]]; then
+    l1 "$@"
+  else
+    bat "$@"
+  fi
+}
+
 # Claude Code: subagents do not write progress summaries, which cost tokens
 export CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES=1
 
