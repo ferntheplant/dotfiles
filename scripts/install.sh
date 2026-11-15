@@ -6,9 +6,9 @@ set -euo pipefail
 #
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
-#   server             no packages for desktop-only apps (lil-homie)
+#   server             no packages for desktop-only apps (a Mac server)
 #   infra              as server, and no agent config: no Claude Code, omp, fx, or skills
-#                      (micro-homie, which runs the homielab services; agents reach it through Rex)
+#                      (a Linux server that runs services; agents reach it through Rex)
 #   work               as desktop (the Pillar laptop)
 # On Linux, the packages in MACOS_ONLY are skipped too. A package that the profile skips is
 # unstowed, so a machine that changes its profile loses the links of that package.
@@ -25,7 +25,7 @@ IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
 # Packages for agents, which the infra profile does not install
 AGENT_ONLY=("claude" "fx" "kvm-pilot" "omp")
-# Packages for apps that have no Linux build (lil-homie is a Mac server, so it keeps them)
+# Packages for apps that have no Linux build (the server profile is for a Mac, so it keeps them)
 MACOS_ONLY=("ghostty")
 if [[ "$(uname -s)" == "Linux" ]]; then
 	DESKTOP_ONLY+=("${MACOS_ONLY[@]}")

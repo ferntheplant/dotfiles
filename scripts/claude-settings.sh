@@ -9,9 +9,9 @@ set -euo pipefail
 # removed, so a hook that left the base file also leaves each machine.
 #
 # The agent identity uses the host's Tailscale machine name, so it is set here.
-# AGENT_IDENTITY holds <model setting>+claude@<host>, for example opus+claude@lil-homie.
+# AGENT_IDENTITY holds <model setting>+claude@<host>, for example opus+claude@personal-macbook.
 # The SessionStart hook hooks/agent-identity.sh replaces the model with the session model,
-# for example opus-5-5+claude@lil-homie (see "Agent identity" in README.md).
+# for example opus-5-5+claude@personal-macbook (see "Agent identity" in README.md).
 #
 # The work profile keeps Claude Code's own commit trailer and omits this identity hook.
 

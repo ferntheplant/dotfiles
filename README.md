@@ -8,13 +8,13 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | Profile | Packages | Stow packages |
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
-| `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
-| `infra` (micro-homie) | `.Nanobrewfile` without the casks and the macOS-only formulas | as `server`, and also not ghostty, claude, fx, kvm-pilot, or omp |
+| `server` (a Mac server) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
+| `infra` (a Linux server) | `.Nanobrewfile` without the casks and the macOS-only formulas | as `server`, and also not ghostty, claude, fx, kvm-pilot, or omp |
 | `work` (the Pillar laptop) | as `desktop` | all of them |
 
-`infra` is for micro-homie, which runs the homielab services.
+`infra` is for a Linux server that runs services.
 It gets no agent config: no Claude Code, omp, or fx settings, no skills, and no MCP servers.
-Agents run on lil-homie or a laptop and reach micro-homie through Rex (see the Rex section of the homielab README).
+Agents run on the Mac server or a laptop and reach the Linux server through Rex.
 Linux supports only `infra`.
 `MACOS_ONLY` in `scripts/install-packages.sh` lists the formulas that Linux skips.
 `DESKTOP_ONLY`, `AGENT_ONLY`, and `MACOS_ONLY` in `scripts/install.sh` select the stow packages.
@@ -42,10 +42,10 @@ takes them for unused dependencies: one `brew uninstall` removed most of them. T
 package links `~/.homebrew/brew.env`, which sets `HOMEBREW_NO_AUTOREMOVE=1` for every `brew` call,
 from any shell.
 
-### Server (lil-homie)
+### Mac server
 
-The server keeps its own apps and services (OrbStack, Tailscale, and others) in the
-lil-homie repo. Rex is not in nanobrew: install it from `Rex.dmg`. Run `mise install`, and then
+The server keeps its own apps and services (OrbStack, Tailscale, and others) in a separate
+private repo. Rex is not in nanobrew: install it from `Rex.dmg`. Run `mise install`, and then
 run `agent-browser install` once, so that agents have a browser.
 
 ```bash
@@ -53,14 +53,14 @@ echo server > ~/dotfiles/.work/profile
 cd ~/dotfiles && git pull --ff-only && scripts/install.sh # sync after a push
 ```
 
-### Linux server (micro-homie)
+### Linux server
 
-micro-homie runs Debian 13 with no desktop. Its host setup (Docker, the 1Password CLI) is
-`setup-micro-homie.sh` in the lil-homie repo. Nanobrew installs the Linux builds of most
+The Linux server runs Debian 13 with no desktop. Its host setup (Docker, the 1Password CLI) is
+in the same private repo as the Mac server's. Nanobrew installs the Linux builds of most
 `.Nanobrewfile` formulas. The other tools come from other sources:
 
-- `1password-cli` (a cask): 1Password's apt repo, from `setup-micro-homie.sh`
-- `claude-code` (a cask): none, because agents do not run on micro-homie
+- `1password-cli` (a cask): 1Password's apt repo, from the host setup
+- `claude-code` (a cask): none, because agents do not run on the Linux server
 - `stow`: apt
 - `zmx`: mise
 - `mole`: none, because it is a macOS app
@@ -89,9 +89,9 @@ micro-homie runs Debian 13 with no desktop. Its host setup (Docker, the 1Passwor
    ~/.local/bin/mise install
    ```
 
-To sync after a push, use the same command as lil-homie. Run `scripts/install-packages.sh` too
+To sync after a push, use the same command as the Mac server. Run `scripts/install-packages.sh` too
 when `.Nanobrewfile` changes. `mise install` still installs omp and agent-browser, because the
-mise config has no profiles; nothing configures them on micro-homie.
+mise config has no profiles; nothing configures them on the Linux server.
 
 ## Set up a new desktop Mac
 
@@ -174,11 +174,11 @@ mise config has no profiles; nothing configures them on micro-homie.
 ## Set up the Forgejo CLI
 
 `fj` ([forgejo-cli](https://codeberg.org/forgejo-contrib/forgejo-cli)) works with the Forgejo
-instance at `https://forgejo.tail8cc0d3.ts.net`, through Tailscale. Its releases have no
-macOS build, so `mise install` builds it from source with cargo on every machine. The build finds
+instance on the tailnet. The examples below call its URL `https://forgejo.example`. Its releases
+have no macOS build, so `mise install` builds it from source with cargo on every machine. The build finds
 OpenSSL through `pkg-config`, so `openssl@4` and `pkgconf` are in `.Nanobrewfile`. Install them
 before `mise install`. On Linux, cargo also needs a C compiler: see step 1 of
-[Linux server (micro-homie)](#linux-server-micro-homie).
+[Linux server](#linux-server).
 
 `fj auth login` works only on instances it has an OAuth client for, so sign in with a token:
 
@@ -188,8 +188,8 @@ before `mise install`. On Linux, cargo also needs a C compiler: see step 1 of
    history.
 
    ```bash
-   fj -H https://forgejo.tail8cc0d3.ts.net auth add-token
-   fj -H https://forgejo.tail8cc0d3.ts.net whoami
+   fj -H https://forgejo.example auth add-token
+   fj -H https://forgejo.example whoami
    ```
 
 `fj` stores the token in `keys.json`: in `~/Library/Application Support/forgejo-cli.forgejo-cli/`
@@ -255,9 +255,9 @@ harnesses; they do not install the binaries.
 
 omp opts into Claude user discovery with `enabledProviders: [claude]`.
 `skills.enableClaudeUser: true` also records the shared skill choice explicitly.
-It loads `~/.claude/CLAUDE.md`, including its imports of the dotfiles constitution and writing
-instructions, and skills from `~/.claude/skills`. Existing dotfiles and homielab links remain
-the source of those skills; no second copy or instruction shim is needed.
+It loads `~/.claude/CLAUDE.md`, including its imports of the constitution and writing
+instructions, and skills from `~/.claude/skills`. The links that `scripts/link-agents.sh` makes are
+the source of both; no second copy or instruction shim is needed.
 
 Project-root `CLAUDE.md` and `AGENTS.md` already work without this opt-in. omp keeps one context
 file per directory depth; standalone `AGENTS.md` wins when both names exist at that depth.
@@ -298,13 +298,15 @@ No omp Rex adapter or resume hook is installed by this change.
 
 [kvm-pilot](https://github.com/DustinTrap/kvm-pilot) is an MCP server that lets an agent use an
 IP-KVM: it reads the screen, and it can type, click, and control the power. This repo installs it
-on each agent machine. The KVM itself, the Comet that controls gaming-homie, is in "Comet (KVM)" in
-the homielab README.
+on each agent machine. The KVM is a GL.iNet Comet on the home network. It controls a gaming PC.
 
 - **Package:** `pypi:kvm-pilot` in the mise config. `mise install` installs the `kvm-pilot` CLI and
   the `kvm-pilot-mcp` server.
 - **Profile:** the `kvm-pilot` stow package links `~/.config/kvm-pilot/config.toml`. The `comet`
-  profile has the Comet's address and login name, and gaming-homie's SSH address.
+  profile has the Comet's address and login name, and the SSH login name for the PC.
+- **SSH host:** machine-only. `~/dotfiles/.work/kvm-pilot.zsh` exports `KVM_PILOT_SSH_HOST`, the PC's
+  SSH address. `.zshrc` sources it for the CLI, and `scripts/kvm-pilot-mcp.sh` sources it for the
+  server. Without it, kvm-pilot has no SSH channel to the PC.
 - **Password:** the macOS keychain, as service `kvm-pilot` and account `comet`. The password is not
   in this repo. `scripts/kvm-pilot-mcp.sh` reads it and starts the server.
 - **Registration:** `scripts/claude-mcp.sh` (run by `install.sh`) registers the server only on a
@@ -328,7 +330,7 @@ lists the variables.
 
 ## Agent identity
 
-Claude Code uses one identity, `<model>+claude@<host>`, for example `opus-5-5+claude@lil-homie`.
+Claude Code uses one identity, `<model>+claude@<host>`, for example `opus-5-5+claude@personal-macbook`.
 The model is the model ID in lowercase, without a provider prefix, a `claude-` prefix, or a `[1m]` suffix.
 The host is the Tailscale machine name, such as `personal-macbook`, from `scripts/tailnet-name.sh`.
 The `+` separator is valid in an email address, and no model ID uses it.

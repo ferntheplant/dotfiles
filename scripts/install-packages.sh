@@ -3,8 +3,8 @@ set -euo pipefail
 
 # Install the nanobrew packages that this machine's profile selects. Safe to run again.
 #   desktop  .Nanobrewfile and .Nanobrewfile.desktop (macOS only)
-#   server   .Nanobrewfile only (lil-homie, macOS)
-#   infra    .Nanobrewfile without casks and macOS-only formulas (micro-homie, Linux)
+#   server   .Nanobrewfile only (a Mac server)
+#   infra    .Nanobrewfile without casks and macOS-only formulas (a Linux server)
 #   work     as desktop (the Pillar laptop, macOS)
 #
 # On Linux, the casks and the formulas in MACOS_ONLY are left out. The README tells how a Linux
