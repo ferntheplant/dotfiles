@@ -7,9 +7,9 @@ set -euo pipefail
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
 #   server             no packages for desktop-only apps (lil-homie)
-#   infra              as server, and no agent config: no Claude Code, omp, fx, Kata, or skills
+#   infra              as server, and no agent config: no Claude Code, omp, fx, or skills
 #                      (micro-homie, which runs the homielab services; agents reach it through Rex)
-#   work               as desktop, and no Kata, which is for the homelab (the Pillar laptop)
+#   work               as desktop (the Pillar laptop)
 # On Linux, the packages in MACOS_ONLY are skipped too. A package that the profile skips is
 # unstowed, so a machine that changes its profile loses the links of that package.
 
@@ -24,9 +24,7 @@ IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 # Packages for apps that the server and infra profiles do not install
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
 # Packages for agents, which the infra profile does not install
-AGENT_ONLY=("claude" "fx" "kata" "kvm-pilot" "omp")
-# Packages for the homelab's agent tools, which the work profile does not install
-HOMELAB_ONLY=("kata")
+AGENT_ONLY=("claude" "fx" "kvm-pilot" "omp")
 # Packages for apps that have no Linux build (lil-homie is a Mac server, so it keeps them)
 MACOS_ONLY=("ghostty")
 if [[ "$(uname -s)" == "Linux" ]]; then
@@ -66,8 +64,7 @@ for subdir in "$fixed_location"/*; do
 		elif [[ " ${IGNORE_LIST[*]} " == *" ${subdir_name} "* ]]; then
 			continue
 		elif [[ "$desktop" = false && " ${DESKTOP_ONLY[*]} " == *" ${subdir_name} "* ]] ||
-			[[ "$profile" = "infra" && " ${AGENT_ONLY[*]} " == *" ${subdir_name} "* ]] ||
-			[[ "$profile" = "work" && " ${HOMELAB_ONLY[*]} " == *" ${subdir_name} "* ]]; then
+			[[ "$profile" = "infra" && " ${AGENT_ONLY[*]} " == *" ${subdir_name} "* ]]; then
 			stow -D --no-folding "$subdir_name"
 		elif [[ " ${FOLDED[*]} " == *" ${subdir_name} "* ]]; then
 			stow_folded "$subdir_name"
@@ -95,16 +92,13 @@ if [[ ! -d "$HOME/.zsh/fzf-tab" ]]; then
 fi
 
 # Agent config: skills (in the hidden .agents/, which the loop above skips), harness
-# settings, Claude's MCP servers, and Kata hooks. The work profile gets no Kata.
+# settings, and Claude's MCP servers.
 if [[ "$profile" != "infra" ]]; then
 	"$fixed_location/scripts/link-skills.sh"
 	"$fixed_location/scripts/claude-settings.sh"
 	"$fixed_location/scripts/omp-settings.sh"
 	"$fixed_location/scripts/fx-settings.sh"
 	"$fixed_location/scripts/claude-mcp.sh"
-	if [[ "$profile" != "work" ]]; then
-		"$fixed_location/scripts/kata-agent-hooks.sh"
-	fi
 fi
 
 # Remove only the exact legacy Pi override generated here, on every profile. Preserve user edits

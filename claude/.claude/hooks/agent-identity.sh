@@ -2,15 +2,12 @@
 # SessionStart hook: give Claude its agent identity, <model>+claude@<host>, for example
 # opus-5-5+claude@lil-homie (see "Agent identity" in ~/dotfiles/README.md).
 #
-# - Kata: it writes KATA_AUTHOR to $CLAUDE_ENV_FILE, which reaches every later Bash command, also in
-#   subagents. Hooks do not get it: they keep the fallback that claude-settings.sh puts in the env
-#   key, <model setting>+claude@<host>.
-# - Commits: it tells Claude to end each commit message with a Co-Authored-By trailer for the
-#   identity. The base settings turn off Claude Code's own trailer (attribution.commit). The work
-#   profile does not run this hook (see scripts/claude-settings.sh).
+# The hook writes AGENT_IDENTITY to $CLAUDE_ENV_FILE for later Bash commands and subagents.
+# It also tells Claude to use the identity in a Co-Authored-By commit trailer.
+# The base settings turn off Claude Code's own trailer (attribution.commit).
 #
-# The host is the Tailscale machine name. claude-settings.sh puts it in the fallback, so the hook
-# takes it from there and does not run tailscale at each session start.
+# The host is the Tailscale machine name. claude-settings.sh puts it in AGENT_IDENTITY,
+# so the hook does not run tailscale at each session start.
 #
 # SessionStart has no model after /clear and in `claude -p`. Then the hook takes the --model value
 # from Claude's command line (an alias such as haiku), or else keeps the fallback. A /model switch
@@ -25,15 +22,16 @@ fi
 if [[ -n "$model" ]]; then
   # claude-opus-5-5[1m] -> opus-5-5
   model=$(printf '%s' "$model" | tr '[:upper:]' '[:lower:]' | sed -E 's|.*/||; s/\[.*\]$//; s/^claude-//')
-  host="${KATA_AUTHOR##*@}"
-  [[ -n "$host" && "$host" != "${KATA_AUTHOR:-}" ]] || host=$("$HOME/dotfiles/scripts/tailnet-name.sh")
+  host="${AGENT_IDENTITY:-}"
+  host="${host##*@}"
+  [[ -n "$host" && "$host" != "${AGENT_IDENTITY:-}" ]] || host=$("$HOME/dotfiles/scripts/tailnet-name.sh")
   identity="$model+claude@$host"
-  [[ -n "${CLAUDE_ENV_FILE:-}" ]] && printf 'export KATA_AUTHOR=%q\n' "$identity" >> "$CLAUDE_ENV_FILE"
+  [[ -n "${CLAUDE_ENV_FILE:-}" ]] && printf 'export AGENT_IDENTITY=%q\n' "$identity" >> "$CLAUDE_ENV_FILE"
 else
-  identity="${KATA_AUTHOR:-}"
+  identity="${AGENT_IDENTITY:-}"
 fi
 
 [[ -n "$identity" ]] || exit 0
-context="Your agent identity is $identity. It is your Kata actor (KATA_AUTHOR). End each git commit message with this trailer, in place of any other Co-Authored-By trailer for yourself:
+context="Your agent identity is $identity. End each git commit message with this trailer, in place of any other Co-Authored-By trailer for yourself:
 Co-Authored-By: $identity <$identity>"
 jq -n --arg context "$context" '{hookSpecificOutput: {hookEventName: "SessionStart", additionalContext: $context}}'

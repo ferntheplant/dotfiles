@@ -4,8 +4,8 @@ set -euo pipefail
 # Install the nanobrew packages that this machine's profile selects. Safe to run again.
 #   desktop  .Nanobrewfile and .Nanobrewfile.desktop (macOS only)
 #   server   .Nanobrewfile only (lil-homie, macOS)
-#   infra    .Nanobrewfile without the agent formulas (micro-homie, Linux)
-#   work     as desktop, without the homelab's agent formulas (the Pillar laptop, macOS)
+#   infra    .Nanobrewfile without casks and macOS-only formulas (micro-homie, Linux)
+#   work     as desktop (the Pillar laptop, macOS)
 #
 # On Linux, the casks and the formulas in MACOS_ONLY are left out. The README tells how a Linux
 # server gets the casks' tools.
@@ -23,26 +23,12 @@ MACOS_ONLY=("mole" "stow" "zmx")
 # Homebrew lists for macOS only, so it skips these:
 #   alsa-lib, libxcb  ffmpeg
 LINUX_DEPS=("alsa-lib" "libxcb")
-# Formulas for agents, which the infra profile does not install
-AGENT_ONLY=("kata")
-# Formulas for the homelab's agent tools, which the work profile does not install
-HOMELAB_ONLY=("kata")
 
 bundle="$(mktemp)"
 trap 'rm -f "$bundle"' EXIT
 
 if [[ "$(uname -s)" != "Linux" ]]; then
-	if [[ "$profile" = "work" ]]; then
-		# Drop each formula in HOMELAB_ONLY (with or without a tap prefix), and keep every other line
-		awk -F'"' -v skip="${HOMELAB_ONLY[*]}" '
-			BEGIN { n = split(skip, s, " "); for (i = 1; i <= n; i++) drop[s[i]] = 1 }
-			{ short = $2; sub(/.*\//, "", short) }
-			!(/^brew "/ && short in drop)
-		' "$fixed_location/.Nanobrewfile" > "$bundle"
-		nb bundle install "$bundle"
-	else
-		nb bundle install "$fixed_location/.Nanobrewfile"
-	fi
+	nb bundle install "$fixed_location/.Nanobrewfile"
 	if [[ "$profile" = "desktop" || "$profile" = "work" ]]; then
 		nb bundle install "$fixed_location/.Nanobrewfile.desktop"
 	fi
@@ -54,9 +40,8 @@ if [[ "$profile" != "infra" ]]; then
 	exit 1
 fi
 
-# Keep the brew lines only, and drop each formula in MACOS_ONLY and AGENT_ONLY (with or without a
-# tap prefix)
-awk -F'"' -v skip="${MACOS_ONLY[*]} ${AGENT_ONLY[*]}" '
+# Keep the brew lines only, and drop each formula in MACOS_ONLY (with or without a tap prefix)
+awk -F'"' -v skip="${MACOS_ONLY[*]}" '
 	BEGIN { n = split(skip, s, " "); for (i = 1; i <= n; i++) macos[s[i]] = 1 }
 	/^brew "/ { short = $2; sub(/.*\//, "", short); if (!(short in macos)) print }
 ' "$fixed_location/.Nanobrewfile" > "$bundle"

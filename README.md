@@ -9,27 +9,26 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
 | `server` (lil-homie) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
-| `infra` (micro-homie) | `.Nanobrewfile` without the casks, the macOS-only formulas, and kata | as `server`, and also not ghostty, claude, fx, kata, kvm-pilot, or omp |
-| `work` (the Pillar laptop) | as `desktop`, without kata | all except kata |
+| `infra` (micro-homie) | `.Nanobrewfile` without the casks and the macOS-only formulas | as `server`, and also not ghostty, claude, fx, kvm-pilot, or omp |
+| `work` (the Pillar laptop) | as `desktop` | all of them |
 
-`infra` is for micro-homie, which runs the homielab services. It gets no agent config: no Claude
-Code, omp, or fx settings, no skills, no MCP servers, and no Kata client or hooks. Agents run on
-lil-homie or a laptop and reach micro-homie through Rex (see the Rex section of the homielab README). Linux
-supports only `infra`. `MACOS_ONLY` and `AGENT_ONLY` in `scripts/install-packages.sh` and in
-`scripts/install.sh` list what it skips.
+`infra` is for micro-homie, which runs the homielab services.
+It gets no agent config: no Claude Code, omp, or fx settings, no skills, and no MCP servers.
+Agents run on lil-homie or a laptop and reach micro-homie through Rex (see the Rex section of the homielab README).
+Linux supports only `infra`.
+`MACOS_ONLY` in `scripts/install-packages.sh` lists the formulas that Linux skips.
+`DESKTOP_ONLY`, `AGENT_ONLY`, and `MACOS_ONLY` in `scripts/install.sh` select the stow packages.
 
-`work` is for the Pillar work laptop. Kata is for the homelab, so the work laptop gets no Kata
-client or hooks, and no agent identity (see [Agent identity](#agent-identity)).
-`HOMELAB_ONLY` in both scripts lists what it skips. Claude Code
-keeps its own commit trailer there. The Pillar repo's own agent sync (`.scratch/agents/sync
---laptop`) adds its skills, MCP server, and traces on top. When a skill name is in both repos, the
-Pillar link wins, and `scripts/link-skills.sh` skips it. `install.sh` unstows each package that the
-profile skips, so a machine that changes its profile loses those links. It does not uninstall a
-tool: run `nb remove kata` once.
+`work` is for the Pillar work laptop.
+Claude Code keeps its own commit trailer there, without the shared agent identity.
+The Pillar repo's own agent sync (`.scratch/agents/sync --laptop`) adds its skills, MCP server, and traces on top.
+The Pillar link wins when a skill name is in both repos, and `scripts/link-skills.sh` skips it.
+`install.sh` unstows each package that the profile skips, so a machine that changes its profile loses those links.
+It does not uninstall a tool.
 
 ```bash
 scripts/install-packages.sh # nanobrew packages for the profile and the OS; safe to run again
-scripts/install.sh          # stow, skills, harness settings, Kata hooks; safe to run again
+scripts/install.sh          # stow, skills, harness settings; safe to run again
                             # desktop only: macOS defaults, Handy settings
 ```
 
@@ -135,7 +134,7 @@ mise config has no profiles; nothing configures them on micro-homie.
 6. Run the installer scripts. `install.sh` is safe to run again.
 
    ```bash
-   scripts/install.sh            # stow, skills, harness settings, Kata hooks, macOS defaults, Handy settings
+   scripts/install.sh            # stow, skills, harness settings, macOS defaults, Handy settings
    scripts/rex-settings.sh import
    mise install
    ```
@@ -289,35 +288,6 @@ and [omp extension API](https://github.com/can1357/oh-my-pi/blob/v18.20.2/docs/e
 The custom Claude resume hooks in this repo are separate from Rex's built-in setup.
 No omp Rex adapter or resume hook is installed by this change.
 
-## Kata
-
-[Kata](https://www.katatracker.com/docs/) is the issue tracker for agents. Its daemon runs on
-micro-homie (see the Kata section of the homielab README). This repo sets up the clients.
-
-- **Daemon target:** `kata/.kata/config.toml` sends every `kata` command to
-  `https://kata-api.tail8cc0d3.ts.net`. Without it, `kata` starts a local daemon with its own
-  database. It also turns on close transcripts: `kata close` records the agent and session.
-- **Actor:** Claude Code sets `KATA_AUTHOR` to its identity, such as `opus-5-5+claude@lil-homie`
-  (see [Agent identity](#agent-identity)). omp and fx have no identity integration in this repo.
-- **Agent hooks:** `scripts/kata-agent-hooks.sh` (run by `install.sh`) runs
-  `kata agent-hook install claude`, which adds hooks to `~/.claude/settings.json`. The
-  hooks give Claude Code Kata's contract when a session starts, and track the session's attention.
-  Claude Code gets the contract in every session, also outside a Kata repo. Kata generates the
-  hooks, so they are not in this repo.
-
-To use Kata in a repo, run `kata init --project <name>` there. It writes `.kata.toml` (commit it)
-and adds `.kata.local.toml` to `.gitignore`. This repo's own project is `dotfiles`: put pending work
-on the dotfiles there.
-
-```bash
-kata whoami                       # the actor and where it came from
-kata daemon locate                # the daemon this machine uses
-kata agent-hook status claude     # the installed hooks (offline)
-```
-
-micro-homie (the `infra` profile) has no Kata client: agents do not run there. The Pillar laptop
-(the `work` profile) has no Kata client either, because Kata is for the homelab.
-
 ## KVM
 
 [kvm-pilot](https://github.com/DustinTrap/kvm-pilot) is an MCP server that lets an agent use an
@@ -352,25 +322,23 @@ lists the variables.
 
 ## Agent identity
 
-Claude Code has one identity, `<model>+claude@<host>`, for example `opus-5-5+claude@lil-homie`.
-The model is the model ID in lowercase, without a provider prefix, a `claude-` prefix, or a `[1m]`
-suffix. The host is the Tailscale machine name, such as `personal-macbook`, from
-`scripts/tailnet-name.sh`. The `+` separator is valid in an email address, and no model ID uses it.
+Claude Code uses one identity, `<model>+claude@<host>`, for example `opus-5-5+claude@lil-homie`.
+The model is the model ID in lowercase, without a provider prefix, a `claude-` prefix, or a `[1m]` suffix.
+The host is the Tailscale machine name, such as `personal-macbook`, from `scripts/tailnet-name.sh`.
+The `+` separator is valid in an email address, and no model ID uses it.
 
-- **Kata:** the identity is the actor (`KATA_AUTHOR`) on each issue, comment, and close.
-- **Commits:** you are the author, and the agent ends each commit message with
-  `Co-Authored-By: <identity> <<identity>>`. Claude Code's own trailer is off (`attribution.commit`
-  is empty in `settings.base.json`).
-
-The `work` profile has no agent identity. `scripts/claude-settings.sh` removes the identity hook and
-`KATA_AUTHOR` there, and Claude Code keeps its own commit trailer.
+You are the commit author.
+The agent ends each commit message with `Co-Authored-By: <identity> <<identity>>`.
+Claude Code's own trailer is off (`attribution.commit` is empty in `settings.base.json`).
+The `work` profile keeps Claude Code's own commit trailer without this identity or its hook.
 
 The SessionStart hook `claude/.claude/hooks/agent-identity.sh` reads the session model.
-It writes `KATA_AUTHOR` to `$CLAUDE_ENV_FILE`, so every Bash command gets it, also in subagents.
-It also gives Claude the trailer rule as session context. A `/model` switch keeps the identity of
-the session start. `claude -p` has no session model, so the hook takes the `--model` value
-(an alias such as `haiku`). Hooks do not get `$CLAUDE_ENV_FILE`, so Kata's own hooks use the
-fallback in the `env` key, `<model setting>+claude@<host>`, from `scripts/claude-settings.sh`.
+It writes `AGENT_IDENTITY` to `$CLAUDE_ENV_FILE`, so every Bash command gets it, also in subagents.
+It also gives Claude the trailer rule as session context.
+A `/model` switch keeps the identity of the session start.
+`claude -p` has no session model, so the hook takes the `--model` value (an alias such as `haiku`).
+Without a model, the hook keeps the fallback in `AGENT_IDENTITY` from `scripts/claude-settings.sh`.
+The fallback is `<model setting>+claude@<host>`.
 
 ## Rex resume
 

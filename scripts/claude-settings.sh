@@ -8,34 +8,30 @@ set -euo pipefail
 # env and trace hooks) survive. A hook group that runs a command in RETIRED is
 # removed, so a hook that left the base file also leaves each machine.
 #
-# The Kata actor depends on the host (the Tailscale machine name), so it is set here and not in the
-# base file. The env key has a fallback, <model setting>+claude@<host>, for example
-# opus+claude@lil-homie: it reaches Claude's hooks. The SessionStart hook hooks/agent-identity.sh
-# takes the host from it and gives the Bash tool the exact model, for example
-# opus-5-5+claude@lil-homie (see "Agent identity" in README.md).
+# The agent identity uses the host's Tailscale machine name, so it is set here.
+# AGENT_IDENTITY holds <model setting>+claude@<host>, for example opus+claude@lil-homie.
+# The SessionStart hook hooks/agent-identity.sh replaces the model with the session model,
+# for example opus-5-5+claude@lil-homie (see "Agent identity" in README.md).
 #
-# The work profile (the Pillar laptop, see .work/profile) has no Kata and no agent identity. There,
-# the script removes KATA_AUTHOR and the agent-identity.sh hook, and Claude Code keeps its own commit
-# trailer, so the base attribution key does not apply.
+# The work profile keeps Claude Code's own commit trailer and omits this identity hook.
 
 BASE="$HOME/dotfiles/claude/.claude/settings.base.json"
 TARGET="$HOME/.claude/settings.json"
-# Hook commands that the base file no longer has. On the work profile, the base file's identity
-# hook is retired too.
+# Hook commands that the base file no longer has.
 RETIRED='["rtk hook claude"]'
 WORK=false
-KATA_AUTHOR=""
+AGENT_IDENTITY=""
 if [[ "$(cat "$HOME/dotfiles/.work/profile" 2>/dev/null)" = "work" ]]; then
   WORK=true
   RETIRED='["rtk hook claude", "bash ~/.claude/hooks/agent-identity.sh"]'
 else
-  KATA_AUTHOR="$(jq -r '.model // "claude"' "$BASE")+claude@$("$HOME/dotfiles/scripts/tailnet-name.sh")"
+  AGENT_IDENTITY="$(jq -r '.model // "claude"' "$BASE")+claude@$("$HOME/dotfiles/scripts/tailnet-name.sh")"
 fi
 
 [[ -f "$TARGET" ]] || echo '{}' > "$TARGET"
 
 merged=$(jq -n --slurpfile base "$BASE" --slurpfile cur "$TARGET" --argjson retired "$RETIRED" \
-  --arg author "$KATA_AUTHOR" --argjson work "$WORK" '
+  --arg identity "$AGENT_IDENTITY" --argjson work "$WORK" '
   def add_groups($have; $add):
     reduce $add[] as $g ($have; if any(.[]; . == $g) then . else . + [$g] end);
   ($base[0] | if $work then del(.attribution) else . end) as $b
@@ -45,8 +41,8 @@ merged=$(jq -n --slurpfile base "$BASE" --slurpfile cur "$TARGET" --argjson reti
       (($c.hooks // {}); .[$e.key] = add_groups(.[$e.key] // []; $e.value)))
   | .hooks |= with_entries(.value |= map(select(any(.hooks[]?; .command as $cmd | $retired | index($cmd)) | not)))
   | .hooks |= with_entries(select(.value | length > 0))
-  | if $work then del(.env.KATA_AUTHOR) | if .env == {} then del(.env) else . end
-    else .env.KATA_AUTHOR = $author end
+  | if $work then del(.env.AGENT_IDENTITY) | if .env == {} then del(.env) else . end
+    else .env.AGENT_IDENTITY = $identity end
 ')
 
 if [[ "$merged" == "$(jq . "$TARGET")" ]]; then

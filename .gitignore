@@ -6,4 +6,3 @@ node_modules
 
 # Machine-only config, such as work shell and git settings
 .work/
-.kata.local.toml
