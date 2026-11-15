@@ -483,7 +483,6 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | gzip | nanobrew core | null |
 | httpie | nanobrew core | null |
 | jq | nanobrew core | null |
-| kata | nanobrew core | `.kata/config.toml`; agent hooks from `scripts/kata-agent-hooks.sh`, see [Kata](#kata) |
 | leaf-markdown-viewer | nanobrew core | `.config/leaf/config.toml` |
 | less | nanobrew core | null |
 | libpq | nanobrew core | null |
