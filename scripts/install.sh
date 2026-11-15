@@ -91,10 +91,10 @@ if [[ ! -d "$HOME/.zsh/fzf-tab" ]]; then
 	git clone --depth 1 https://github.com/Aloxaf/fzf-tab "$HOME/.zsh/fzf-tab"
 fi
 
-# Agent config: skills (in the hidden .agents/, which the loop above skips), harness
+# Agent config: skills and instructions (in the hidden .agents/, which the loop above skips), harness
 # settings, and Claude's MCP servers.
 if [[ "$profile" != "infra" ]]; then
-	"$fixed_location/scripts/link-skills.sh"
+	"$fixed_location/scripts/link-agents.sh"
 	"$fixed_location/scripts/claude-settings.sh"
 	"$fixed_location/scripts/omp-settings.sh"
 	"$fixed_location/scripts/fx-settings.sh"

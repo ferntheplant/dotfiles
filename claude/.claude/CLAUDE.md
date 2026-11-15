@@ -1,2 +1,2 @@
-@~/dotfiles/.agents/instructions/constitution.md
-@~/dotfiles/.agents/instructions/writing.md
+@~/.claude/agent-instructions/constitution.md
+@~/.claude/agent-instructions/writing.md
