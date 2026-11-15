@@ -22,7 +22,7 @@ Linux supports only `infra`.
 `work` is for the Pillar work laptop.
 Claude Code keeps its own commit trailer there, without the shared agent identity.
 The Pillar repo's own agent sync (`.scratch/agents/sync --laptop`) adds its skills, MCP server, and traces on top.
-The Pillar link wins when a skill name is in both repos, and `scripts/link-skills.sh` skips it.
+The Pillar link wins when a skill name is in both repos, and `scripts/link-agents.sh` skips it.
 `install.sh` unstows each package that the profile skips, so a machine that changes its profile loses those links.
 It does not uninstall a tool.
 
@@ -212,14 +212,18 @@ Claude Code, omp, and fx have shared settings in this repo.
   [ASD-STE100 writing rules](https://gist.github.com/toppa/bf7ff49d6fc44fd4fc3337248f8f2a7e). Both
   are copies with local edits, recorded in `.agents/vendored-files.jsonc`. Another repo maintains
   them, merges upstream's changes, and publishes them here, so an edit here is lost at the next
-  publish. `claude/.claude/CLAUDE.md` imports both; omp loads this same entry point.
-- **Skills:** `.agents/skills/`, and the homielab repo's own skills in
-  `~/homielab/.agents/skills/` when that checkout exists. `scripts/link-skills.sh` links each skill
-  into `~/.claude/skills/` for Claude Code and omp. The
-  dotfiles skills are copies, published here the same way as the instructions and recorded in
-  `.agents/vendored-skills.jsonc`; the homielab skills are links, so a `git pull` in `~/homielab`
-  updates them. Claude Code also syncs the claude.ai account skills (xlsx, pptx, and others) into
-  `~/.claude/skills/synced/`. Claude Code does not show them to the model.
+  publish. `claude/.claude/CLAUDE.md` imports both through `~/.claude/agent-instructions`, a link
+  that `scripts/link-agents.sh` makes. omp loads this same entry point.
+- **Skills:** `.agents/skills/`. `scripts/link-agents.sh` links each skill into `~/.claude/skills/`
+  for Claude Code and omp. The skills are copies, published here the same way as the instructions
+  and recorded in `.agents/vendored-skills.jsonc`. Claude Code also syncs the claude.ai account
+  skills (xlsx, pptx, and others) into `~/.claude/skills/synced/`. Claude Code does not show them
+  to the model.
+- **Local sources:** the gitignored `.work/agent-sources` file changes the material on one machine.
+  It adds skill folders before `.agents/skills/`, and it can replace the instructions folder. Use
+  it to try a change before it is published here, or to add the skills that another checkout owns.
+  The comment at the top of `scripts/link-agents.sh` gives the format. To go back to the published
+  copies, remove the file and run the script again.
 - **Settings:** each agent writes its own keys to its settings file, so the file is not a link.
   `scripts/claude-settings.sh` and `scripts/fx-settings.sh` merge `settings.base.json` into it;
   `scripts/omp-settings.sh` merges `config.base.yml` with `yq`.
