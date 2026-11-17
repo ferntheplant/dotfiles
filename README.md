@@ -282,6 +282,20 @@ Use `omp usage --redact` for detailed limits.
 The extension uses the [public extension interface](https://github.com/can1357/oh-my-pi/blob/v18.22.0/docs/extensions.md)
 and [composer contract](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/tui/src/components/composer/types.ts).
 
+#### omp stop time
+
+`omp/.omp/agent/extensions/stop-time.ts` adds `stopped at HH:MM` under the last text of each reply that ends a turn.
+Use it to tell whether the provider prompt cache is likely to have expired.
+The time is the local time when the reply completed.
+A reply from an earlier day also shows its date.
+Replies that call tools do not get the line.
+
+The extension uses the opt-in `extensionRenderers.assistantText` setting in `config.base.yml`.
+The line is visible in the transcript only.
+The session file, exports, and model context keep the reply as written.
+omp 18.22.0 gives extensions no interface to change the built-in `… this turn` usage row.
+Thus the time goes in the reply text instead.
+
 #### omp input mouse limits
 
 omp 18.22.0 has no supported setting for cursor placement through mouse clicks in the input text.

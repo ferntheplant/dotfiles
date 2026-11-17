@@ -34,6 +34,8 @@ display:
   cacheMissMarker: true
   collapseCompacted: false
 personality: default
+extensionRenderers:
+  assistantText: true
 images:
   describeForTextModels: false
 steeringMode: one-at-a-time
