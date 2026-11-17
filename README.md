@@ -408,7 +408,7 @@ Long field values scroll to keep the cursor visible. Small panes show a size not
 `Tab` advances except in Directory, where it completes the chosen path.
 `Shift+Tab` goes back. Arrows or `Ctrl+N`/`Ctrl+P` choose a match.
 `Cmd+Enter` or `Ctrl+S` opens from any field. `Esc` or `Ctrl+C` cancels.
-The form retains the origin session and directory. It routes selection to the origin client.
+The form retains the origin session and directory. It removes its float before it selects the destination on the origin client.
 Outside the form, `Cmd+Enter` still splits the pane.
 
 [Raptor](https://github.com/alienxp03/raptor) uses a separate native macOS panel, not a Rex popup.

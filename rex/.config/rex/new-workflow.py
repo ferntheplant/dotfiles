@@ -415,11 +415,15 @@ class Form:
             self.enter_field()
             return None
         if self.client:
-            args = ["-C", self.client, "do", "session.select", "session_id=" + sid] + (["window_id=" + wid] if wid else [])
-            try:
-                subprocess.run(["rex"] + args, capture_output=True, timeout=8)
-            except subprocess.TimeoutExpired:
-                pass
+            # Remove the float before selection; its later close must not restore the old tab.
+            block = os.environ.get("REX_BLOCK")
+            if block and self.origin_session:
+                rex(LOCAL, "api", "call", "-s", self.origin_session, "session.detach_block",
+                    json.dumps({"block_id": block}))
+            args = ["-C", self.client, "do", "session.select", "session_id=" + sid]
+            if wid:
+                args.append("window_id=" + wid)
+            rex(LOCAL, *args)
         return True
 
     # Keep the renderer separate from field editing and Rex routing.
