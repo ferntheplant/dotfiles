@@ -348,6 +348,37 @@ A `/model` switch keeps the identity of the session start.
 Without a model, the hook keeps the fallback in `AGENT_IDENTITY` from `scripts/claude-settings.sh`.
 The fallback is `<model setting>+claude@<host>`.
 
+## Rex selector
+
+`Cmd+Shift+O` opens **New Tab or Session** from `rex/.config/rex/init.lua`.
+The form uses Python curses in a Rex floating pane. It needs no extra UI package.
+It shows the destination, the active field, match counts, and keyboard help.
+Directory rows show the folder name above its path. Colors use the terminal palette.
+Long field values scroll to keep the cursor visible. Small panes show a size notice.
+
+- **Host:** choose the local server or a configured Rex host.
+- **Session:** choose an existing session for a new tab, or `+ new session`.
+- **Directory:** search zoxide history, or type a path that starts with `/`, `~`, or `.`.
+- **Name:** keep the folder name or type a new name.
+
+`Enter` advances through the fields. It opens the destination from the name field.
+`Tab` advances except in Directory, where it completes the chosen path.
+`Shift+Tab` goes back. Arrows or `Ctrl+N`/`Ctrl+P` choose a match.
+`Cmd+Enter` or `Ctrl+S` opens from any field. `Esc` or `Ctrl+C` cancels.
+The form retains the origin session and directory. It routes selection to the origin client.
+Outside the form, `Cmd+Enter` still splits the pane.
+
+[Raptor](https://github.com/alienxp03/raptor) uses a separate native macOS panel, not a Rex popup.
+Its [host](https://github.com/alienxp03/raptor/blob/master/Sources/raptor/Host/RaptorApp.swift)
+places SwiftUI content in an AppKit `NSPanel`, with glass or a visual-effect surface.
+Its [Rex plugin](https://github.com/alienxp03/raptor/blob/master/init.lua) permits that panel only for a local macOS app client.
+That approach does not display the panel on a remote Rex client.
+
+The installed Rex preview exposes fixed native pickers, but no custom form or embedded HTML interface.
+The selector borrows Raptor's clear sections, row details, and destination preview within the supported terminal surface.
+It does not install Raptor, change terminals, or change client settings.
+Use `rex actions`, `rex -C CLIENT actions`, and `rex block types --json` to check later versions.
+
 ## Rex resume
 
 When the Rex server stops, for example after a crash, an update, or a reboot, it restores its

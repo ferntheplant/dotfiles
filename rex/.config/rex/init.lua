@@ -91,7 +91,7 @@ rex.action{
     local window = view and (find_block(view, ctx.block_id))
     local _, err = rex.session.new_layer{
       window_id = window and window.window_id or nil,
-      bounds = window and float_bounds(view, ctx.block_id, 84, 22) or { 0.25, 0.2, 0.5, 0.5 },
+      bounds = window and float_bounds(view, ctx.block_id, 84, 26) or { 0.1, 0.1, 0.8, 0.8 },
       focus = true,
       layout = rex.layout.block{
         flavor = TERMINAL .. ".shell",

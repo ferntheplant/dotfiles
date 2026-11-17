@@ -20,6 +20,7 @@ import os
 import shutil
 import subprocess
 import threading
+import unicodedata
 
 LOCAL = "local"
 NEW_SESSION = "+ new session"
@@ -172,6 +173,26 @@ def fuzzy(text, options):
     starts = [o for o in options if o.lower().startswith(t)]
     has = [o for o in options if t in o.lower() and o not in starts]
     return starts + has
+
+
+def cell_width(text):
+    return sum(0 if unicodedata.combining(ch) else
+               2 if unicodedata.east_asian_width(ch) in ("W", "F") else 1
+               for ch in text)
+
+
+def clip_cells(text, width):
+    """Clip terminal text by cells, not Python character count."""
+    out = []
+    used = 0
+    for ch in text:
+        ch = ch if ch.isprintable() else "?"
+        size = cell_width(ch)
+        if used + size > width:
+            break
+        out.append(ch)
+        used += size
+    return "".join(out)
 
 
 class Form:
@@ -401,67 +422,144 @@ class Form:
                 pass
         return True
 
-    # Drawing
+    # Keep the renderer separate from field editing and Rex routing.
     def draw(self, scr):
         scr.erase()
         rows, cols = scr.getmaxyx()
-        w = max(10, cols - 4)
+        accent = getattr(self, "accent", curses.A_BOLD)
+        muted = curses.A_DIM
+        left, width = 2, max(0, cols - 4)
 
-        def put(y, x, s, attr=0):
-            if 0 <= y < rows and x < cols:
+        def put(y, x, text, attr=0, limit=None):
+            available = min(cols - x - 1, limit if limit is not None else cols)
+            if 0 <= y < rows and 0 <= x < cols and available > 0:
                 try:
-                    scr.addnstr(y, x, s, max(0, cols - x - 1), attr)
+                    scr.addstr(y, x, clip_cells(text, available), attr)
                 except curses.error:
                     pass
 
-        put(1, 2, "New tab or session", curses.A_BOLD)
+        if rows < 20 or cols < 40:
+            put(0, 0, "Enlarge this pane to at least 40 × 20.", curses.A_BOLD)
+            put(2, 0, "Esc cancel · Ctrl+S open", muted)
+            scr.refresh()
+            return
+
         sid = self.session_id()
-        labels = {"host": "Host", "session": "Session", "dir": "Directory", "name": "Tab name" if sid else "Session name"}
+        field = FIELDS[self.focus]
+        labels = {"host": "Host", "session": "Session", "dir": "Directory",
+                  "name": "Tab name" if sid else "Session name"}
+        put(1, left, "New tab or session", curses.A_BOLD)
+        badge = "NEW TAB" if sid else "NEW SESSION"
+        put(1, cols - len(badge) - 2, badge, accent)
+        put(2, left, f"Step {self.focus + 1} of 4 · Choose where to open your shell", muted)
+
+        x = 18
+        field_width = cols - x - 3
         cursor_pos = None
         for i, f in enumerate(FIELDS):
-            y = 3 + i
+            y = 4 + i
             focused = i == self.focus
-            put(y, 2, ("› " if focused else "  ") + labels[f].ljust(13), curses.A_BOLD if focused else curses.A_DIM)
-            x = 17
+            put(y, left, ("› " if focused else "  ") + labels[f],
+                accent | curses.A_BOLD if focused else muted, 15)
             if focused:
-                attr = curses.A_REVERSE if not self.touched and self.text else curses.A_UNDERLINE
-                put(y, x, self.text or " ", attr)
-                cursor_pos = (y, x + self.cursor)
+                # Keep the insertion point visible, including after wide characters.
+                start = 0
+                while cell_width(self.text[start:self.cursor]) >= field_width:
+                    start += 1
+                value = self.text[start:]
+                attr = curses.A_REVERSE if not self.touched else curses.A_UNDERLINE
+                put(y, x, " " * field_width, attr)
+                put(y, x, value, attr, field_width)
+                cursor_pos = (y, x + cell_width(self.text[start:self.cursor]))
             else:
-                value = self.name_value() if f == "name" else (self.short(self.values[f]) if f == "dir" else self.values[f])
-                put(y, x, value)
-            if f == "host" and self.host.loading:
-                put(y, x + len(self.values["host"]) + 2, "loading…", curses.A_DIM)
+                value = self.name_value() if f == "name" else self.values[f]
+                put(y, x, self.short(value) if f == "dir" else value, limit=field_width)
 
-        top = 8
-        put(top, 2, "─" * w, curses.A_DIM)
-        sugg = self.suggestions()
-        room = max(1, rows - top - 4)
+        hints = {
+            "host": "Choose a host · Type to filter",
+            "session": "Choose an existing session for a tab, or + new session",
+            "dir": "Search recent folders · Start with /, ~ or . for a path",
+            "name": "Type a name, or keep the folder name",
+        }
+        put(9, left, hints[field], muted, width)
+        put(10, left, "─" * width, muted)
+        suggestions = self.suggestions()
+        heading = {"host": "HOSTS", "session": "SESSIONS",
+                   "dir": "DIRECTORIES", "name": "DESTINATION"}[field]
+        put(11, left, heading, accent)
+        top, bottom = 13, rows - 6
+        stride = 2 if field == "dir" and rows >= 24 else 1
+        room = max(1, (bottom - top) // stride)
         hl = self.hl if self.hl is not None else -1
         if hl >= self.scroll + room:
             self.scroll = hl - room + 1
         if 0 <= hl < self.scroll:
             self.scroll = hl
-        for k, s in enumerate(sugg[self.scroll: self.scroll + room]):
-            idx = self.scroll + k
-            put(top + 1 + k, 2, ("› " if idx == hl else "  ") + s, curses.A_REVERSE if idx == hl else 0)
-        if not sugg and FIELDS[self.focus] == "dir" and self.host.loading:
-            put(top + 1, 4, "Reading directories…", curses.A_DIM)
+        self.scroll = max(0, min(self.scroll, max(0, len(suggestions) - room)))
+        if suggestions:
+            count = f"{self.scroll + 1}–{min(self.scroll + room, len(suggestions))} of {len(suggestions)}"
+            put(11, cols - cell_width(count) - 2, count, muted)
+        for k, suggestion in enumerate(suggestions[self.scroll:self.scroll + room]):
+            y = top + k * stride
+            selected = self.scroll + k == hl
+            attr = curses.A_REVERSE if selected else 0
+            put(y, left, " " * width, attr)
+            title = (os.path.basename(suggestion.rstrip("/")) or suggestion) if stride == 2 else suggestion
+            detail = ""
+            if field == "session":
+                if suggestion == NEW_SESSION:
+                    detail = "create"
+                elif any(label == suggestion and session == self.origin_session
+                         for label, session in self.host.sessions) and self.host.name == LOCAL:
+                    detail = "current"
+                else:
+                    detail = "new tab"
+            elif field == "host" and suggestion == LOCAL:
+                detail = "this server"
+            put(y, left, ("› " if selected else "  ") + title, attr, width - len(detail) - 3)
+            if detail:
+                put(y, cols - len(detail) - 3, detail, attr if selected else muted)
+            if stride == 2:
+                put(y + 1, left + 2, suggestion, muted, width - 2)
+        if not suggestions:
+            if self.host.loading:
+                message = "Load host data…"
+            elif field == "name":
+                message = self.short(self.values["dir"])
+            elif field == "dir":
+                message = "No recent folders. Type an absolute path." if not self.touched else "No matching folders. Type a path or change the search."
+            else:
+                message = "No matches. Change the search."
+            put(top, left + 2, message, muted, width - 2)
 
-        msg = self.status or self.host.error
-        if msg:
-            put(rows - 3, 2, msg)
-        keys = "↵ next  ⇧⇥ back  ↑↓ choose  ⇥ complete  ⌘↵ open  esc cancel"
-        put(rows - 2, 2, keys, curses.A_DIM)
+        put(rows - 6, left, "─" * width, muted)
+        target = f"New tab in {self.values['session']}" if sid else "New session"
+        name = (self.text.strip() or self.name_default()) if field == "name" and self.touched else self.name_value()
+        put(rows - 5, left, f"{target} · {self.values['host']} · {name}", curses.A_BOLD, width)
+        message = self.status or self.host.error or ("Load host data…" if self.host.loading else "")
+        put(rows - 4, left, message,
+            getattr(self, "error_attr", curses.A_BOLD) if self.status or self.host.error else muted, width)
+        tab = "Tab complete" if field == "dir" else "Tab next"
+        enter = "Enter open" if field == "name" else "Enter next"
+        keys = f"{enter} · {tab} · Shift+Tab back · ↑↓ choose"
+        if cols < 64:
+            keys = f"↵ {'open' if field == 'name' else 'next'} · ⇥ {'complete' if field == 'dir' else 'next'} · ⇧⇥ back · ↑↓"
+        put(rows - 3, left, keys, muted, width)
+        put(rows - 2, left, "⌘Enter / Ctrl+S open · Esc cancel", accent, width)
         if cursor_pos:
-            try:
-                scr.move(*cursor_pos)
-            except curses.error:
-                pass
+            scr.move(*cursor_pos)
         scr.refresh()
 
     def run(self, scr):
-        curses.use_default_colors()
+        self.accent = curses.A_BOLD
+        self.error_attr = curses.A_BOLD
+        if curses.has_colors():
+            curses.start_color()
+            curses.use_default_colors()
+            curses.init_pair(1, curses.COLOR_CYAN, -1)
+            curses.init_pair(2, curses.COLOR_RED, -1)
+            self.accent = curses.color_pair(1)
+            self.error_attr = curses.color_pair(2) | curses.A_BOLD
         # Raw mode turns off flow control, so Ctrl+S (the submit key) reaches the form.
         curses.raw()
         try:
