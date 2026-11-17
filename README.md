@@ -251,6 +251,49 @@ base files. Credentials, sessions, history, databases, and caches stay outside t
 on each machine with `omp login` and `fx login codex`. These scripts configure installed
 harnesses; they do not install the binaries.
 
+#### omp quota status
+
+The native extension at `omp/.omp/agent/extensions/quota-status.ts` adds separate Codex and OpenCode Go rows below the status line.
+Run `stow -R omp` after an update to link the extension.
+Restart omp to load it.
+Keep `statusLine.showHookStatus: true` to show these rows.
+
+Each row shows the percentage used, the reset countdown (`↻`), and the age of the report.
+Codex shows its primary and secondary quota windows, plus a credit cap if the provider reports one.
+OpenCode Go shows its five-hour, weekly, and monthly limits.
+The rows stay visible when another provider is active.
+Multiple accounts get numbered rows without account identifiers.
+`unavailable` means no report exists; `?` means an amount is unknown.
+Reports older than ten minutes show `stale`.
+`↻due` means the reported reset time passed; it does not mean the quota is empty or full.
+
+The extension uses omp 18.22.0's built-in providers through `ctx.modelRegistry.authStorage.usage.reports()`.
+It reads reports once per minute outside the render path.
+The host shares its cache, five-minute cache lifetime, failure cooldown, and credential handling with `omp usage`.
+No extension code reads credentials or makes direct provider requests.
+Use `omp usage --redact` for detailed limits.
+See the [extension API](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/coding-agent/src/extensibility/extensions/types.ts),
+[usage API](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/ai/src/auth/types.ts),
+and built-in [Codex](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/ai/src/usage/openai-codex.ts)
+and [OpenCode Go](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/ai/src/usage/opencode-go.ts) providers.
+
+#### omp input mouse limits
+
+omp 18.22.0 has no supported setting for cursor placement through mouse clicks in the input text.
+`tui.mouse` controls clicks on subagent cards and extension links, not the editor cursor.
+It also captures wheel events, so this configuration leaves it off.
+Use the arrow keys, Home/End, or Ctrl+A/Ctrl+E to move the cursor.
+
+The upstream fix belongs in `InputController.#handleInlineMouse` and the editor layout code.
+The controller consumes every recognized mouse report before the editor receives it.
+It only dispatches link activation and subagent focus.
+The editor needs a supported conversion from screen coordinates to a text position, including wrapped lines and wide characters.
+The public extension API does not supply that conversion.
+This configuration does not replace the editor or patch the installed binary.
+See the [input controller](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/coding-agent/src/modes/controllers/input-controller.ts#L858-L877),
+[TUI dispatch](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/tui/src/tui.ts#L3101-L3149),
+and [editor](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/tui/src/components/editor.ts).
+
 ### Shared instruction and skill discovery
 
 omp opts into Claude user discovery with `enabledProviders: [claude]`.
