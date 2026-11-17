@@ -251,31 +251,36 @@ base files. Credentials, sessions, history, databases, and caches stay outside t
 on each machine with `omp login` and `fx login codex`. These scripts configure installed
 harnesses; they do not install the binaries.
 
-#### omp quota status
+#### omp status line
 
-The native extension at `omp/.omp/agent/extensions/quota-status.ts` adds separate Codex and OpenCode Go rows below the status line.
-Run `stow -R omp` after an update to link the extension.
-Restart omp to load it.
-Keep `statusLine.showHookStatus: true` to show these rows.
+`omp/.omp/agent/extensions/status-line.ts` supplies a compact footer with the current theme's colors and icons.
+It keeps the built-in rail input style through the supported composer interface.
+The footer shows:
 
-Each row shows the percentage used, the reset countdown (`↻`), and the age of the report.
-Codex shows its primary and secondary quota windows, plus a credit cap if the provider reports one.
-OpenCode Go shows its five-hour, weekly, and monthly limits.
-The rows stay visible when another provider is active.
-Multiple accounts get numbered rows without account identifiers.
-`unavailable` means no report exists; `?` means an amount is unknown.
-Reports older than ten minutes show `stale`.
-`↻due` means the reported reset time passed; it does not mean the quota is empty or full.
+- The model name and thinking level.
+- The current directory and Git branch.
+- The percentage of the context window that remains.
+- The five-hour and weekly quota that remains, with each reset countdown.
 
-The extension uses omp 18.22.0's built-in providers through `ctx.modelRegistry.authStorage.usage.reports()`.
-It reads reports once per minute outside the render path.
-The host shares its cache, five-minute cache lifetime, failure cooldown, and credential handling with `omp usage`.
-No extension code reads credentials or makes direct provider requests.
+Quota applies only to the selected model's provider and active account.
+Providers without a usage interface show no quota group.
+The footer omits monthly limits, session cost, token totals, and report ages.
+It shortens the directory before it uses two rows on a narrow terminal.
+`?` means unknown data. `~` marks a quota report older than ten minutes.
+A passed reset shows `? (now)` until a later report confirms the new quota.
+
+Run `stow -R omp` after an update.
+Run `scripts/omp-settings.sh` to apply the shared layout.
+Restart omp to load the extension.
+The shared settings select **Accent Rail · Compact Status**, with the native status bar disabled.
+
+Usage reads run outside rendering through omp's shared cache and built-in credential handling.
+Only the active provider refreshes, once per minute or after a model or account change.
+Git branch reads run at most once per five seconds, not on each frame.
+No extension code reads credential bytes or makes direct provider requests.
 Use `omp usage --redact` for detailed limits.
-See the [extension API](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/coding-agent/src/extensibility/extensions/types.ts),
-[usage API](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/ai/src/auth/types.ts),
-and built-in [Codex](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/ai/src/usage/openai-codex.ts)
-and [OpenCode Go](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/ai/src/usage/opencode-go.ts) providers.
+The extension uses the [public extension interface](https://github.com/can1357/oh-my-pi/blob/v18.22.0/docs/extensions.md)
+and [composer contract](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/tui/src/components/composer/types.ts).
 
 #### omp input mouse limits
 

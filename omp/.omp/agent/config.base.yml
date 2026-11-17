@@ -9,7 +9,7 @@ theme:
   dark: dark-rose-pine
 colorBlindMode: true
 composer:
-  shape: rail
+  shape: compact-status
   tokenRate: true
 statusLine:
   preset: custom
@@ -17,8 +17,10 @@ statusLine:
   sessionAccent: true
   transparent: false
   compactThinkingLevel: false
-  showHookStatus: true
-  contextLine: embedded
+  showHookStatus: false
+  contextLine: off
+  leftSegments: []
+  rightSegments: []
 tui:
   textSizing: true
   reactions: false
