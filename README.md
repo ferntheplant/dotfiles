@@ -218,8 +218,8 @@ Claude Code, opencode, and fx have shared settings in this repo.
 - **Skills:** `.agents/skills/`. `scripts/link-agents.sh` links each skill into `~/.claude/skills/`
   for Claude Code and opencode. The skills are copies, published here the same way as the
   instructions and recorded in `.agents/vendored-skills.jsonc`. Claude Code also syncs the claude.ai
-  account skills (xlsx, pptx, and others) into `~/.claude/skills/synced/`. Claude Code does not
-  show them to the model, but opencode does.
+  account skills (xlsx, pptx, and others) into `~/.claude/skills/synced/`. Neither agent shows
+  them to the model (see [opencode plugins](#opencode-plugins)).
 - **Local sources:** the gitignored `.work/agent-sources` file changes the material on one machine.
   It adds skill folders before `.agents/skills/`, and it can replace the instructions folder. Use
   it to try a change before it is published here, or to add the skills that another checkout owns.
@@ -273,7 +273,10 @@ The `agent-context` plugin has two parts:
 
 - `server.ts` runs in the shared server. It gives the agent its identity
   (see [Agent identity](#agent-identity)). It also holds the first prompt of each new root session
-  for at most 250 ms, until the entries from `tui.ts` exist.
+  for at most 250 ms, until the entries from `tui.ts` exist. It also removes the synced claude.ai
+  skills: Claude Code reads only the folders directly in `~/.claude/skills`, but opencode searches
+  six folders deep and finds `synced/<account>/<skill>`. A policy cannot remove them, because it
+  matches skill IDs, and the account skills change.
 - `tui.ts` runs in each terminal client, so it knows the pane. It adds the Rex context (see
   [Rex support in opencode](#rex-support-in-opencode)) and records the session for
   [Rex resume](#rex-resume). It also adds the text of the file in `$AGENT_INSTRUCTIONS_FILE`,
