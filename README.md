@@ -620,7 +620,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | node | mise | `.config/mise/config.toml` |
 | oxfmt, oxlint | mise (npm) | null |
 | pnpm | mise | `.config/mise/config.toml` |
-| px0 | mise (github) | `.px0/settings.json` |
+| px0 | mise (github) | `.px0/settings.base.json`, merged by `scripts/px0-settings.sh` |
 | python | mise | `.config/mise/config.toml` |
 | rust | mise | `.config/mise/config.toml` |
 | shellcheck | mise | null |
@@ -632,10 +632,12 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | mise | manual | `.config/mise/config.toml` |
 
 px0 reads and reviews code and agent diffs in a browser. `px0 .` serves the current directory at
-`http://127.0.0.1:7777`, and `px0` with no target opens the workbench. Its settings file is linked
-from this repo, so a change that px0 saves in its Settings panel lands here. px0 also replaces its
-own binary when it finds a newer release; `mise upgrade` installs that release into mise's own
-version directory.
+`http://127.0.0.1:7777`, and `px0` with no target opens the workbench. Its settings file is
+`~/.px0/settings.json`. On each install, `scripts/px0-settings.sh` merges the shared settings from
+this repo into that file. px0 also writes to the file when its Settings panel saves a change, and
+that change can be a forge token. A token therefore stays in `~/.px0/settings.json` and out of
+this repo. px0 replaces its own binary when it finds a newer release; `mise upgrade` installs
+that release into mise's own version directory.
 
 `typescript-language-server`, which px0 and Helix start, needs the `tsserver` module that
 TypeScript 7 does not ship. Its mise entry adds TypeScript 6 to the server's own `node_modules`.

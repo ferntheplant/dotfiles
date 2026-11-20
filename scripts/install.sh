@@ -101,6 +101,9 @@ if [[ "$profile" != "infra" ]]; then
 	"$fixed_location/scripts/claude-mcp.sh"
 fi
 
+# px0 is on every profile, so its settings merge outside the agent block
+"$fixed_location/scripts/px0-settings.sh"
+
 # Remove only the exact legacy Pi override generated here, on every profile. Preserve user edits
 # and symlinks: mise no longer needs a work-profile override for a tool we do not install.
 mise_work="$HOME/.config/mise/conf.d/work.toml"
