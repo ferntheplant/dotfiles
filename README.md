@@ -620,14 +620,26 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | node | mise | `.config/mise/config.toml` |
 | oxfmt, oxlint | mise (npm) | null |
 | pnpm | mise | `.config/mise/config.toml` |
+| px0 | mise (github) | `.px0/settings.json` |
 | python | mise | `.config/mise/config.toml` |
 | rust | mise | `.config/mise/config.toml` |
 | shellcheck | mise | null |
 | typescript | mise (npm) | null |
+| typescript-language-server | mise (npm) | null |
 | uv | mise | `.config/mise/config.toml` |
 | yq | mise | null |
 | zig | mise | `.config/mise/config.toml` |
 | mise | manual | `.config/mise/config.toml` |
+
+px0 reads and reviews code and agent diffs in a browser. `px0 .` serves the current directory at
+`http://127.0.0.1:7777`, and `px0` with no target opens the workbench. Its settings file is linked
+from this repo, so a change that px0 saves in its Settings panel lands here. px0 also replaces its
+own binary when it finds a newer release; `mise upgrade` installs that release into mise's own
+version directory.
+
+`typescript-language-server`, which px0 and Helix start, needs the `tsserver` module that
+TypeScript 7 does not ship. Its mise entry adds TypeScript 6 to the server's own `node_modules`.
+A project that uses TypeScript 7 keeps its TypeScript and its `tsc --lsp`.
 
 ### Apps
 

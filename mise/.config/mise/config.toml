@@ -18,11 +18,20 @@ duckdb = "latest"
 gitleaks = "latest"
 helix = "latest"
 just = "latest"
+# px0 reads and reviews the diffs that agents write, in a browser. It checks GitHub for a newer
+# release on each start and updates its own binary; `mise upgrade` also updates it.
+"github:px0-ai/px0" = "latest"
 # The language servers and the formatter for JavaScript and TypeScript in Fresh. TypeScript 7 has
 # its own language server (`tsc --lsp`).
 "npm:oxfmt" = "latest"
 "npm:oxlint" = "latest"
 "npm:typescript" = "latest"
+# px0 and Helix start typescript-language-server for JavaScript and TypeScript. The server needs
+# tsserver, which TypeScript 7 does not ship. Its own node_modules gets TypeScript 6, which has
+# tsserver, so a project that uses TypeScript 7 keeps its TypeScript. npm installs it after each
+# install of the server. The server is a linked package: npm must skip its devDependencies and
+# its `prepare` script.
+"npm:typescript-language-server" = { version = "latest", depends = ["node"], postinstall = { run = "npm install --prefix \"$MISE_TOOL_INSTALL_PATH\" --omit=dev --ignore-scripts --no-fund --no-audit typescript@6.0.3", when = "always" } }
 # kvm-pilot, the MCP server that lets agents use the Comet KVM. Its profile is the kvm-pilot stow
 # package, and scripts/claude-mcp.sh registers it with Claude Code.
 "pypi:kvm-pilot" = "latest"

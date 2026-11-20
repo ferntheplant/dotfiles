@@ -1,0 +1,11 @@
+{
+  "agent": "opencode",
+  "editor.fontFamily": "\"MesloLGS NF\", \"Input Mono\", ui-monospace, monospace",
+  "editor.fontSize": 13,
+  "editor.renderWhitespace": "all",
+  "editor.tabSize": 2,
+  "editor.vimMode": true,
+  "telemetry.enabled": false,
+  "tips.enabled": false,
+  "workbench.colorTheme": "rose-pine"
+}
