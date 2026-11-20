@@ -9,11 +9,11 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 | --- | --- | --- |
 | `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
 | `server` (a Mac server) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
-| `infra` (a Linux server) | `.Nanobrewfile` without the casks and the macOS-only formulas | as `server`, and also not ghostty, claude, fx, kvm-pilot, or omp |
+| `infra` (a Linux server) | `.Nanobrewfile` without the casks and the macOS-only formulas | as `server`, and also not ghostty, claude, fx, kvm-pilot, or opencode |
 | `work` (the Pillar laptop) | as `desktop` | all of them |
 
 `infra` is for a Linux server that runs services.
-It gets no agent config: no Claude Code, omp, or fx settings, no skills, and no MCP servers.
+It gets no agent config: no Claude Code, opencode, or fx settings, no skills, and no MCP servers.
 Agents run on the Mac server or a laptop and reach the Linux server through Rex.
 Linux supports only `infra`.
 `MACOS_ONLY` in `scripts/install-packages.sh` lists the formulas that Linux skips.
@@ -90,8 +90,8 @@ in the same private repo as the Mac server's. Nanobrew installs the Linux builds
    ```
 
 To sync after a push, use the same command as the Mac server. Run `scripts/install-packages.sh` too
-when `.Nanobrewfile` changes. `mise install` still installs omp and agent-browser, because the
-mise config has no profiles; nothing configures them on the Linux server.
+when `.Nanobrewfile` changes. `mise install` still installs agent-browser, because the mise config
+has no profiles; nothing configures it on the Linux server.
 
 ## Set up a new desktop Mac
 
@@ -205,7 +205,7 @@ fj repo units prs --help   # merge styles and other pull request settings
 
 ## Agents
 
-Claude Code, omp, and fx have shared settings in this repo.
+Claude Code, opencode, and fx have shared settings in this repo.
 
 - **Instructions:** two files in `.agents/instructions/`. `constitution.md` is the
   [Clanker Constitution](https://github.com/kenn-io/constitution), and `writing.md` is the
@@ -213,148 +213,104 @@ Claude Code, omp, and fx have shared settings in this repo.
   are copies with local edits, recorded in `.agents/vendored-files.jsonc`. Another repo maintains
   them, merges upstream's changes, and publishes them here, so an edit here is lost at the next
   publish. `claude/.claude/CLAUDE.md` imports both through `~/.claude/agent-instructions`, a link
-  that `scripts/link-agents.sh` makes. omp loads this same entry point.
+  that `scripts/link-agents.sh` makes. opencode loads the same folder (see
+  [Shared instruction and skill discovery](#shared-instruction-and-skill-discovery)).
 - **Skills:** `.agents/skills/`. `scripts/link-agents.sh` links each skill into `~/.claude/skills/`
-  for Claude Code and omp. The skills are copies, published here the same way as the instructions
-  and recorded in `.agents/vendored-skills.jsonc`. Claude Code also syncs the claude.ai account
-  skills (xlsx, pptx, and others) into `~/.claude/skills/synced/`. Claude Code does not show them
-  to the model.
+  for Claude Code and opencode. The skills are copies, published here the same way as the
+  instructions and recorded in `.agents/vendored-skills.jsonc`. Claude Code also syncs the claude.ai
+  account skills (xlsx, pptx, and others) into `~/.claude/skills/synced/`. Claude Code does not
+  show them to the model, but opencode does.
 - **Local sources:** the gitignored `.work/agent-sources` file changes the material on one machine.
   It adds skill folders before `.agents/skills/`, and it can replace the instructions folder. Use
   it to try a change before it is published here, or to add the skills that another checkout owns.
   The comment at the top of `scripts/link-agents.sh` gives the format. To go back to the published
   copies, remove the file and run the script again.
 - **Settings:** each agent writes its own keys to its settings file, so the file is not a link.
-  `scripts/claude-settings.sh` and `scripts/fx-settings.sh` merge `settings.base.json` into it;
-  `scripts/omp-settings.sh` merges `config.base.yml` with `yq`.
+  `scripts/claude-settings.sh`, `scripts/opencode-settings.sh`, and `scripts/fx-settings.sh` merge
+  the base files into it.
 - **MCP servers:** `scripts/claude-mcp.sh` registers them with `claude mcp` at user scope, because
   Claude Code owns `~/.claude.json`. The only registered server is kvm-pilot (see [KVM](#kvm)).
 
-### omp and fx settings
+### opencode and fx settings
 
-`omp/.omp/agent/config.base.yml` and `fx/.fx/settings.base.json` capture the shared harness
-preferences. omp uses `openai-codex/gpt-6.1-sol`; fx uses Codex `gpt-6.1-terra` with high effort.
-The installer applies both on desktop, server, and work profiles, but not infra.
+The base files capture the shared harness preferences:
+
+| Base file | Live file | What it holds |
+| --- | --- | --- |
+| `opencode/.config/opencode/opencode.base.json` | `~/.config/opencode/opencode.json` | The opencode server: the shared instructions |
+| `opencode/.config/opencode/cli.base.json` | `~/.config/opencode/cli.json` | The opencode terminal client: theme, tabs, diffs, auto-accept |
+| `fx/.fx/settings.base.json` | `~/.fx/settings.json` | fx: Codex `gpt-6.1-terra` with high effort |
+
+opencode keeps its selected model in its own state, not in a settings file.
+The installer applies these settings on desktop, server, and work profiles, but not infra.
 
 Edit the base files and run `scripts/install.sh`, or apply only these settings:
 
 ```bash
-scripts/omp-settings.sh
+scripts/opencode-settings.sh
 scripts/fx-settings.sh
 ```
 
 Both scripts merge nested objects with the base keys winning, retain unlisted machine-local
 keys, and back up changed files. Repeating the merge without changes does not rewrite the file.
-The live files remain writable regular files at `~/.omp/agent/config.yml` and
-`~/.fx/settings.json`; settings changed in the harness are not automatically captured in the
-base files. Credentials, sessions, history, databases, and caches stay outside the repo. Sign in
-on each machine with `omp login` and `fx login codex`. These scripts configure installed
-harnesses; they do not install the binaries.
+The live files remain writable regular files. Settings changed in the harness are not
+automatically captured in the base files. Credentials, sessions, history, databases, and caches
+stay outside the repo. Sign in on each machine with `opencode auth` and `fx login codex`. These
+scripts configure installed harnesses; they do not install the binaries.
 
-#### omp status line
+opencode v2 runs a background service (`opencode service`) that every terminal client shares.
+After a change to the settings or a plugin, run `opencode reload`.
+A new plugin folder needs `opencode service restart`, which ends the sessions that run.
 
-`omp/.omp/agent/extensions/status-line.ts` supplies a compact footer with the current theme's colors and icons.
-It keeps the built-in rail input style through the supported composer interface.
-The footer shows:
+#### opencode plugins
 
-- The model name and thinking level.
-- The current directory and Git branch.
-- The percentage of the context window that remains.
-- The five-hour and weekly quota that remains, with each reset countdown.
+`opencode/.config/opencode/plugins/` holds the plugins. opencode loads each folder in
+`~/.config/opencode/plugins/`, but it skips a server plugin file that is a link. Thus stow skips the
+plugins (`opencode/.stow-local-ignore`), and `scripts/opencode-settings.sh` links each plugin
+folder. `scripts/install.sh` removes a link whose folder is gone.
 
-Quota applies only to the selected model's provider and active account.
-Providers without a usage interface show no quota group.
-The footer omits monthly limits, session cost, token totals, and report ages.
-It shortens the directory before it uses two rows on a narrow terminal.
-`?` means unknown data. `~` marks a quota report older than ten minutes.
-A passed reset shows `? (now)` until a later report confirms the new quota.
+The `agent-context` plugin has two parts:
 
-Run `stow -R omp` after an update.
-Run `scripts/omp-settings.sh` to apply the shared layout.
-Restart omp to load the extension.
-The shared settings select **Accent Rail · Compact Status**, with the native status bar disabled.
+- `server.ts` runs in the shared server. It gives the agent its identity
+  (see [Agent identity](#agent-identity)). It also holds the first prompt of each new root session
+  for at most 250 ms, until the entries from `tui.ts` exist.
+- `tui.ts` runs in each terminal client, so it knows the pane. It adds the Rex context (see
+  [Rex support in opencode](#rex-support-in-opencode)) and records the session for
+  [Rex resume](#rex-resume). It also adds the text of the file in `$AGENT_INSTRUCTIONS_FILE`,
+  because opencode has no option for extra system text. A launcher sets that variable.
 
-Usage reads run outside rendering through omp's shared cache and built-in credential handling.
-Only the active provider refreshes, once per minute or after a model or account change.
-Git branch reads run at most once per five seconds, not on each frame.
-No extension code reads credential bytes or makes direct provider requests.
-Use `omp usage --redact` for detailed limits.
-The extension uses the [public extension interface](https://github.com/can1357/oh-my-pi/blob/v18.22.0/docs/extensions.md)
-and [composer contract](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/tui/src/components/composer/types.ts).
-
-#### omp stop time
-
-`omp/.omp/agent/extensions/stop-time.ts` adds `stopped at HH:MM` under the last text of each reply that ends a turn.
-Use it to tell whether the provider prompt cache is likely to have expired.
-The time is the local time when the reply completed.
-A reply from an earlier day also shows its date.
-Replies that call tools do not get the line.
-
-The extension uses the opt-in `extensionRenderers.assistantText` setting in `config.base.yml`.
-The line is visible in the transcript only.
-The session file, exports, and model context keep the reply as written.
-omp 18.22.0 gives extensions no interface to change the built-in `… this turn` usage row.
-Thus the time goes in the reply text instead.
-
-#### omp input mouse limits
-
-omp 18.22.0 has no supported setting for cursor placement through mouse clicks in the input text.
-`tui.mouse` controls clicks on subagent cards and extension links, not the editor cursor.
-It also captures wheel events, so this configuration leaves it off.
-Use the arrow keys, Home/End, or Ctrl+A/Ctrl+E to move the cursor.
-
-The upstream fix belongs in `InputController.#handleInlineMouse` and the editor layout code.
-The controller consumes every recognized mouse report before the editor receives it.
-It only dispatches link activation and subagent focus.
-The editor needs a supported conversion from screen coordinates to a text position, including wrapped lines and wide characters.
-The public extension API does not supply that conversion.
-This configuration does not replace the editor or patch the installed binary.
-See the [input controller](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/coding-agent/src/modes/controllers/input-controller.ts#L858-L877),
-[TUI dispatch](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/tui/src/tui.ts#L3101-L3149),
-and [editor](https://github.com/can1357/oh-my-pi/blob/v18.22.0/packages/tui/src/components/editor.ts).
+Each part of the context from `tui.ts` is an instruction entry on the session. An entry that
+changes reaches the model at its next step. A subagent's session gets no entries from `tui.ts`.
 
 ### Shared instruction and skill discovery
 
-omp opts into Claude user discovery with `enabledProviders: [claude]`.
-`skills.enableClaudeUser: true` also records the shared skill choice explicitly.
-It loads `~/.claude/CLAUDE.md`, including its imports of the constitution and writing
-instructions, and skills from `~/.claude/skills`. The links that `scripts/link-agents.sh` makes are
-the source of both; no second copy or instruction shim is needed.
+`opencode.base.json` sets `instructions` to `~/.claude/agent-instructions/*.md`, the folder that
+`scripts/link-agents.sh` links. opencode also reads `~/.claude/CLAUDE.md` when there is no
+`~/.config/opencode/AGENTS.md`, but it does not follow the `@` imports in that file. Without
+the `instructions` setting, opencode gets only the two import lines.
 
-Project-root `CLAUDE.md` and `AGENTS.md` already work without this opt-in. omp keeps one context
-file per directory depth; standalone `AGENTS.md` wins when both names exist at that depth.
-Use an explicit `@` import when both files must contribute. omp task children retain the shared
-`CLAUDE.md` imports, but omit standalone `AGENTS.md` context.
+opencode reads skills from `~/.claude/skills` and `~/.agents/skills`, so the links that
+`scripts/link-agents.sh` makes need no second copy. Project-root `AGENTS.md` and `CLAUDE.md` work
+too. In each folder, `AGENTS.md` wins when both names exist.
 
-Claude provider discovery is broader than instructions and skills: supported pre/post JS/TS
-hook factories and Claude plugins can also load. It does not execute Claude Code's
-`settings.json` lifecycle commands such as SessionStart. The current Claude hook folder has only
-standalone shell scripts, not those factory directories. Restart omp after a settings change.
+### Rex support in opencode
 
-### Rex support in omp
+`rex skill setup` installs the Rex skill for opencode in `~/.agents/skills/rex`. Rex has no startup
+hook for opencode, because opencode has no command hooks. `rex skill status` reports the hook as
+`unsupported`.
 
-Rex `0.1.0-preview.18` has no `omp` setup target.
-The shared Rex skill works in omp. It does not install automatic startup context.
-`rex __internal session-start --agent omp` already returns usable plain-text context.
+The `agent-context` plugin does the work of that hook. In a Rex pane, `tui.ts` runs
+`rex __internal session-start --agent opencode` and adds its text to each root session that the
+pane shows. The text holds the pane's own `REX_SESSION` and `REX_BLOCK`, and the rule to name the
+Rex session. Subagents do not get it, so they do not rename the parent's Rex session.
 
-omp 18.20.2 already implements [OSC 7501 program status](https://www.superlogical.com/rex/docs/build/program-status.md)
-for idle, working, blocked, done, and error states on interactive terminals.
-No second status adapter is needed. This is source-level support; the discovery smoke proof
-does not verify Rex's visual indicators.
+The background server's environment holds the IDs of the pane that started the service. Thus the
+server part never reads Rex IDs from its environment. Each client sends its own environment to
+the shell tool, so `$REX_SESSION` and `$REX_BLOCK` in the agent's commands belong to its pane.
 
-Startup parity needs a small omp extension: obtain Rex context at session start or switch,
-then append it through `before_agent_start`. Gate session naming on `ctx.agent.kind === "main"`
-and the owning Rex pane/session. Children must not rename the parent's Rex session.
-Reuse the installed CLI's context and skill text instead of copying its instructions.
-
-Native Rex management also needs an `omp` harness entry and a versioned, Rex-owned extension
-stub. Setup, status, and removal must handle native user/project/profile roots, preserve foreign
-files, and retain shared skill ownership. Rex's installed setup command does not do this yet.
-See the [Rex agent setup documentation](https://www.superlogical.com/rex/docs/automate/agent-skill.md)
-and [omp extension API](https://github.com/can1357/oh-my-pi/blob/v18.20.2/docs/extensions.md).
-
-The custom Claude resume hooks in this repo are separate from Rex's built-in setup.
-No omp Rex adapter or resume hook is installed by this change.
+opencode v2 reports its state to Rex itself with
+[OSC 7501 program status](https://www.superlogical.com/rex/docs/build/program-status.md)
+(`app=opencode`). Rex's activity indicators need no adapter.
 
 ## KVM
 
@@ -392,7 +348,8 @@ lists the variables.
 
 ## Agent identity
 
-Claude Code uses one identity, `<model>+claude@<host>`, for example `opus-5-5+claude@personal-macbook`.
+Each agent uses one identity, `<model>+<harness>@<host>`, for example
+`opus-5-5+claude@personal-macbook` or `gpt-6.1-sol+opencode@personal-macbook`.
 The model is the model ID in lowercase, without a provider prefix, a `claude-` prefix, or a `[1m]` suffix.
 The host is the Tailscale machine name, such as `personal-macbook`, from `scripts/tailnet-name.sh`.
 The `+` separator is valid in an email address, and no model ID uses it.
@@ -400,7 +357,7 @@ The `+` separator is valid in an email address, and no model ID uses it.
 You are the commit author.
 The agent ends each commit message with `Co-Authored-By: <identity> <<identity>>`.
 Claude Code's own trailer is off (`attribution.commit` is empty in `settings.base.json`).
-The `work` profile keeps Claude Code's own commit trailer without this identity or its hook.
+The `work` profile keeps each harness's own commit trailer without this identity or its hook.
 
 The SessionStart hook `claude/.claude/hooks/agent-identity.sh` reads the session model.
 It writes `AGENT_IDENTITY` to `$CLAUDE_ENV_FILE`, so every Bash command gets it, also in subagents.
@@ -409,6 +366,10 @@ A `/model` switch keeps the identity of the session start.
 `claude -p` has no session model, so the hook takes the `--model` value (an alias such as `haiku`).
 Without a model, the hook keeps the fallback in `AGENT_IDENTITY` from `scripts/claude-settings.sh`.
 The fallback is `<model setting>+claude@<host>`.
+
+In opencode, the `server.ts` part of the `agent-context` plugin adds the identity and the trailer
+rule to each model request. It takes the model from the request, so a model switch changes the
+identity at once. opencode does not set `AGENT_IDENTITY` in the shell.
 
 ## Rex selector
 
@@ -445,26 +406,31 @@ Use `rex actions`, `rex -C CLIENT actions`, and `rex block types --json` to chec
 
 When the Rex server stops, for example after a crash, an update, or a reboot, it restores its
 sessions and panes at the next start. Each pane gets a new login shell. Rex resume runs
-`claude --resume <ID>` in each restored pane that ran Claude Code when the server stopped. The turn
-that the stop cut off does not continue. Other programs, and processes that Claude started, such as
-background shells, do not come back.
+`claude --resume <ID>` or `opencode --session <ID>` in each restored pane that ran Claude Code or
+opencode when the server stopped. The turn that the stop cut off does not continue. Other programs,
+and processes that the agent started, such as background shells, do not come back.
 
 It has two parts, and needs no daemon:
 
-1. **Record:** the SessionStart hook `claude/.claude/hooks/rex-resume.sh` writes
-   `~/.local/state/rex-resume/<REX_BLOCK>`. The file holds the conversation ID, the directory, and
-   the transcript path. The hook records nothing for a `claude -p` run or a subagent. Each start,
-   `/clear`, `/compact`, and resume writes the file again.
+1. **Record:** the agent writes `~/.local/state/rex-resume/<REX_BLOCK>`. The file holds the
+   conversation ID, the directory, the transcript path, and the agent, separated by tabs. A file
+   without an agent is from Claude Code.
+   - Claude Code: the SessionStart hook `claude/.claude/hooks/rex-resume.sh`. The hook records
+     nothing for a `claude -p` run or a subagent. Each start, `/clear`, `/compact`, and resume
+     writes the file again.
+   - opencode: `tui.ts` in the `agent-context` plugin. It records the root session that the pane
+     shows, each time the pane shows another session. It leaves the transcript field empty.
+     `opencode run` does not record.
 2. **Resume:** `zsh/.zsh/rex-resume.zsh`, which `.zshrc` loads, does two things in a Rex pane:
-   - At each prompt, it removes the pane's file. A prompt means that Claude no longer runs in the
-     pane. A server stop ends the shell before its next prompt, so the file stays.
+   - At each prompt, it removes the pane's file. A prompt means that the agent no longer runs in
+     the pane. A server stop ends the shell before its next prompt, so the file stays.
    - In a new login shell, it reads the pane's file and removes it. At the first prompt, it runs
-     `claude --resume <ID>`, after a `cd` to the recorded directory if the shell is in another
+     the agent's resume command, after a `cd` to the recorded directory if the shell is in another
      directory. Rex restores each pane under its old ID, so the file names the restored pane.
 
-The shell does not resume a conversation that has no transcript, because Claude writes the
-transcript at the first prompt only. Such a pane keeps its shell. The hook deletes files older than
-30 days, which panes closed while Claude ran leave behind.
+The shell does not resume a Claude conversation that has no transcript, because Claude writes the
+transcript at the first prompt only. Such a pane keeps its shell. The Claude hook deletes files
+older than 30 days, which panes closed while an agent ran leave behind.
 
 ## Leave a machine
 
@@ -603,6 +569,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | zx | nanobrew core | null |
 | 1password-cli | nanobrew core | null |
 | claude-code | nanobrew core | `.claude` |
+| opencode-v2 (`anomalyco/tap`) | nanobrew core, macOS only | `.config/opencode`; see [Agents](#agents) |
 | colima | nanobrew desktop | null |
 | docker | nanobrew desktop | null |
 | docker-buildx | nanobrew desktop | null |
@@ -625,7 +592,6 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | kvm-pilot | mise (pypi) | `.config/kvm-pilot/config.toml`; see [KVM](#kvm) |
 | node | mise | `.config/mise/config.toml` |
 | oxfmt, oxlint | mise (npm) | null |
-| omp | mise (GitHub) | `.omp/agent/config.yml`; see [Agents](#agents) |
 | pnpm | mise | `.config/mise/config.toml` |
 | python | mise | `.config/mise/config.toml` |
 | rust | mise | `.config/mise/config.toml` |

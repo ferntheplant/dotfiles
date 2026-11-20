@@ -1,0 +1,4 @@
+# opencode skips a server plugin file that is a link, so stow does not link the plugins.
+# scripts/opencode-settings.sh links each plugin folder instead.
+\.stow-local-ignore
+^/\.config/opencode/plugins

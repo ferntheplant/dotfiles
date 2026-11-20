@@ -7,7 +7,7 @@ set -euo pipefail
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
 #   server             no packages for desktop-only apps (a Mac server)
-#   infra              as server, and no agent config: no Claude Code, omp, fx, or skills
+#   infra              as server, and no agent config: no Claude Code, opencode, fx, or skills
 #                      (a Linux server that runs services; agents reach it through Rex)
 #   work               as desktop (the Pillar laptop)
 # On Linux, the packages in MACOS_ONLY are skipped too. A package that the profile skips is
@@ -24,7 +24,7 @@ IGNORE_LIST=("handy" "node_modules" "themes" "tinycast" "vorssaint")
 # Packages for apps that the server and infra profiles do not install
 DESKTOP_ONLY=("kanata" "librewolf" "paneru" "zed")
 # Packages for agents, which the infra profile does not install
-AGENT_ONLY=("claude" "fx" "kvm-pilot" "omp")
+AGENT_ONLY=("claude" "fx" "kvm-pilot" "opencode")
 # Packages for apps that have no Linux build (the server profile is for a Mac, so it keeps them)
 MACOS_ONLY=("ghostty")
 if [[ "$(uname -s)" == "Linux" ]]; then
@@ -75,7 +75,7 @@ for subdir in "$fixed_location"/*; do
 done
 
 # Remove links into ~/dotfiles whose file was deleted or moved
-# Include legacy ~/.pi only to clean up dangling dotfiles links; leave its runtime data alone.
+# Include legacy ~/.pi and ~/.omp only to clean up dangling dotfiles links; leave their runtime data alone.
 {
 	find "$HOME" -maxdepth 1 -type l 2>/dev/null
 	find "$HOME/.config" "$HOME/.local/bin" "$HOME/.claude" "$HOME/.pi" "$HOME/.omp" "$HOME/.fx" "$HOME/.zsh" -name node_modules -prune -o -type l -print 2>/dev/null
@@ -96,7 +96,7 @@ fi
 if [[ "$profile" != "infra" ]]; then
 	"$fixed_location/scripts/link-agents.sh"
 	"$fixed_location/scripts/claude-settings.sh"
-	"$fixed_location/scripts/omp-settings.sh"
+	"$fixed_location/scripts/opencode-settings.sh"
 	"$fixed_location/scripts/fx-settings.sh"
 	"$fixed_location/scripts/claude-mcp.sh"
 fi

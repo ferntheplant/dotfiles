@@ -14,11 +14,12 @@ fixed_location="$HOME/dotfiles"
 profile="$(cat "$fixed_location/.work/profile" 2>/dev/null || echo desktop)"
 
 # Formulas that nanobrew does not install correctly on Linux:
-#   mole  has no Linux build
-#   stow  the bottle does not find its Perl modules after relocation; apt installs stow
-#   zmx   nanobrew ignores the tap's on_linux block and installs the macOS binary; mise installs
-#         zmx (os = ["linux"] in the mise config)
-MACOS_ONLY=("mole" "stow" "zmx")
+#   mole         has no Linux build
+#   opencode-v2  an agent, and the infra profile gets no agents
+#   stow         the bottle does not find its Perl modules after relocation; apt installs stow
+#   zmx          nanobrew ignores the tap's on_linux block and installs the macOS binary; mise
+#                installs zmx (os = ["linux"] in the mise config)
+MACOS_ONLY=("mole" "opencode-v2" "stow" "zmx")
 # Linux-only dependencies of .Nanobrewfile formulas. Nanobrew installs the dependencies that
 # Homebrew lists for macOS only, so it skips these:
 #   alsa-lib, libxcb  ffmpeg
