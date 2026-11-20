@@ -27,8 +27,14 @@ function profile(): string {
   }
 }
 
-// The Tailscale machine name, such as personal-macbook.
+// The Tailscale machine name, such as personal-macbook. scripts/opencode-settings.sh saves it, because
+// tailnet-name.sh cannot always reach the Tailscale app, for example in a sandbox.
 function host(): string {
+  const saved = join(process.env.XDG_STATE_HOME || join(homedir(), ".local/state"), "dotfiles/tailnet-name")
+  try {
+    const name = readFileSync(saved, "utf8").trim()
+    if (name) return name
+  } catch {}
   try {
     return execFileSync(join(dotfiles, "scripts/tailnet-name.sh"), { encoding: "utf8", timeout: 5000 }).trim()
   } catch {

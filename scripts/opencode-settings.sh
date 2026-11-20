@@ -34,6 +34,12 @@ merge() {
 merge opencode.base.json opencode.json
 merge cli.base.json cli.json
 
+# Save the Tailscale machine name for the agent identity in the agent-context plugin. The plugin cannot
+# always run tailnet-name.sh, for example in a sandbox that blocks the Tailscale app.
+state="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles"
+mkdir -p "$state"
+"$HOME/dotfiles/scripts/tailnet-name.sh" > "$state/tailnet-name"
+
 # Link each plugin folder. opencode loads a folder at ~/.config/opencode/plugins/<name>, but it skips a
 # server plugin file that is a link. Thus stow skips the plugins (see opencode/.stow-local-ignore),
 # and this links the folders. install.sh removes a link whose folder is gone.
