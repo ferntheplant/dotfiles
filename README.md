@@ -285,6 +285,30 @@ The `agent-context` plugin has two parts:
 Each part of the context from `tui.ts` is an instruction entry on the session. An entry that
 changes reaches the model at its next step. A subagent's session gets no entries from `tui.ts`.
 
+The `status-footer` plugin replaces the omp status line and stop time. It adds two things:
+
+- **The footer row**, after opencode's own `cwd:branch`: the context that remains, and the five-hour
+  and weekly quota that remains for the provider of the selected model, with the time to each
+  reset. Example: `· 62% ctx left · 5h 71% (2h10m)  7d 38% (3d4h)`. opencode already shows the
+  model, the thinking level, and the branch.
+- **The row above the input**: `stopped at HH:MM`, the time that the last turn ended, with the date
+  when it is not today. Use it to tell whether the provider prompt cache has likely expired.
+  opencode has no place under each reply, so earlier turns show no time.
+
+`?` means unknown, `~` marks a value older than 10 minutes, and a passed reset shows `? (now)`. The
+quota takes the theme's warning color at 20% or less, and its info color at 50% or less. The quota sources:
+
+| Provider | Source | Credentials |
+| --- | --- | --- |
+| `openai` (a ChatGPT sign-in) | The Codex rate-limit WebSocket frames and `x-codex-*` headers on each model response | None |
+| `claude-agent` | The Claude Agent SDK rate-limit event that opencode keeps on each step (`native.rateLimit.unifiedWindows`) | None |
+| `opencode-go` | opencode's usage-limits call, once a minute while a Go model is selected | opencode's own. It needs an OpenCode Console sign-in (`/connect`) in the workspace of the Go subscription. A Go API key alone gives `?`. |
+
+The server part (`server.ts`) keeps the newest value of each window in the plugin storage, so the
+values survive a server restart. The TUI part (`tui.ts`) reads them through the RPC in `rpc.ts`.
+openai and claude-agent quota update only on model responses. After a long pause, the values show
+`~` until the next reply.
+
 ### Shared instruction and skill discovery
 
 `opencode.base.json` sets `instructions` to `~/.claude/agent-instructions/*.md`, the folder that
