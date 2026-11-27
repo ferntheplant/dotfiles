@@ -1,0 +1,57 @@
+/* Rosé Pine Moon palette: https://rosepinetheme.com/palette/ */
+:root {
+  --mddog-base: github-dark;
+
+  /* File list, status bar, and table of contents. */
+  --mddog-bg: #232136;
+  --mddog-fg: #e0def4;
+  --mddog-fg-muted: #908caa;
+  --mddog-fg-bright: #e0def4;
+  --mddog-selection-bg: #44415a;
+  --mddog-bar-bg: #2a273f;
+  --mddog-border: #56526e;
+  --mddog-skeleton: #393552;
+
+  /* Markdown page. */
+  --mddog-text: #e0def4;
+  --mddog-text-muted: #908caa;
+  --mddog-heading: #ea9a97;
+  --mddog-link: #c4a7e7;
+  --mddog-accent: #9ccfd8;
+  --mddog-code-bg: #393552;
+  --mddog-pre-bg: #2a273f;
+  --mddog-alt-bg: #2a283e;
+  --mddog-rule: #56526e;
+  --mddog-mark-bg: #57424c;
+  --mddog-match-bg: #c4a7e7;
+  --mddog-match-current-bg: #f6c177;
+  --mddog-match-fg: #232136;
+  --mddog-match-current-fg: #232136;
+  --mddog-text-selection: #44415a;
+  --mddog-button-bg: #393552;
+
+  /* Alerts and diff backgrounds. */
+  --mddog-alert-note: #9ccfd8;
+  --mddog-alert-tip: #3e8fb0;
+  --mddog-alert-important: #c4a7e7;
+  --mddog-alert-warning: #f6c177;
+  --mddog-alert-caution: #eb6f92;
+  --mddog-alert-note-bar: #9ccfd8;
+  --mddog-alert-tip-bar: #3e8fb0;
+  --mddog-alert-important-bar: #c4a7e7;
+  --mddog-alert-warning-bar: #f6c177;
+  --mddog-alert-caution-bar: #eb6f92;
+  --mddog-diff-add-bg: #2e3e4e;
+  --mddog-diff-del-bg: #462f4a;
+
+  /* Code colors. */
+  --mddog-pl-comment: #908caa;
+  --mddog-pl-keyword: #3e8fb0;
+  --mddog-pl-string: #f6c177;
+  --mddog-pl-constant: #ea9a97;
+  --mddog-pl-entity: #9ccfd8;
+  --mddog-pl-inserted: #9ccfd8;
+  --mddog-pl-deleted: #eb6f92;
+  --mddog-pl-variable: #e0def4;
+  --mddog-pl-tag: #c4a7e7;
+}
