@@ -47,7 +47,7 @@ from any shell.
 
 ### Mac server
 
-The server keeps its own apps and services (OrbStack, Tailscale, and others) in a separate
+The server keeps its own apps and services (Tailscale and others) in a separate
 private repo. Rex is not in Nanobrew: install it from `Rex.dmg`. After `scripts/install.sh`,
 run `agent-browser install` once so that agents have a browser.
 
