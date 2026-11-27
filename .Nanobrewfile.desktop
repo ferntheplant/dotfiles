@@ -1,5 +1,4 @@
 # Nanobrew: desktop packages, installed after .Nanobrewfile
-brew "colima"
 brew "docker"
 brew "docker-buildx"
 brew "docker-completion"
@@ -16,6 +15,7 @@ cask "font-monaspace"
 cask "ghostty"
 cask "handy"
 cask "hiddenbar"
+cask "libracoder/kiri/kiri"
 cask "librewolf"
 cask "saffsanity/sill/sill"
 cask "spotify"

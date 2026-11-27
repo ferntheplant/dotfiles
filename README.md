@@ -475,9 +475,20 @@ leave-machine -c
 
 TODO: find way to keep `.Nanobrewfile` and `.Nanobrewfile.desktop` clean (nb leaves drops packages that are also dependencies, such as jq)
 
-## Colima vs Docker Desktop (vs Orbstack)
+## Kiri
 
-See this [thread](https://github.com/abiosoft/colima/discussions/273) for installing buildx
+[Kiri](https://github.com/libracoder/kiri) runs local development containers.
+The desktop and work profiles install Kiri. On a Mac server that needs Kiri, install it with
+`nb install --cask libracoder/kiri/kiri`.
+
+Run this once to start Kiri at login and select the `kiri` Docker context:
+
+```bash
+ZDOTDIR="$HOME/dotfiles/.work" /Applications/Kiri.app/Contents/MacOS/kiri setup --use --no-domains
+```
+
+`ZDOTDIR` keeps Kiri's shell setup out of the linked `.zshrc`. The dotfiles add Kiri to `PATH`.
+Open a new shell. Run `docker context show` to confirm the default context.
 
 ## Config TODOs
 
@@ -592,7 +603,6 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | 1password-cli | nanobrew core | null |
 | claude-code | nanobrew core | `.claude` |
 | opencode-v2 (`anomalyco/tap`) | nanobrew core, macOS only | `.config/opencode`; see [Agents](#agents) |
-| colima | nanobrew desktop | null |
 | docker | nanobrew desktop | null |
 | docker-buildx | nanobrew desktop | null |
 | docker-completion | nanobrew desktop | null |
@@ -654,6 +664,7 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | ghostty | nanobrew | `.config/ghostty` | |
 | handy | nanobrew | `dotfiles/handy/settings.json` via `scripts/handy-settings.sh` | |
 | hiddenbar | nanobrew | `scripts/macos-defaults.sh` | yes |
+| Kiri | nanobrew (`libracoder/kiri` tap) | See [Kiri](#kiri) | yes |
 | librewolf | nanobrew | `.librewolf/librewolf.overrides.cfg`, `dotfiles/librewolf` | |
 | sill | nanobrew (`saffsanity/sill` tap) | `scripts/macos-defaults.sh` | yes |
 | spotify | nanobrew | null | |

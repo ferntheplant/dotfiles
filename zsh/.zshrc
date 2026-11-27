@@ -9,6 +9,7 @@ export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]] && path+=("/opt/homebrew/bin")
 [[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && path+=("$HOME/.local/bin")
 [[ ":$PATH:" != *":$HOME/.bun/bin:"* ]] && path+=("$HOME/.bun/bin")
+[[ -d "$HOME/.kiri/bin" && ":$PATH:" != *":$HOME/.kiri/bin:"* ]] && path+=("$HOME/.kiri/bin")
 export PATH
 
 alias l="eza -a --long --header --tree --level=2 --icons --no-user --git --ignore-glob='.git|*node_modules*' --time-style='relative' --no-permissions --modified"
@@ -195,4 +196,3 @@ done
 
 # Machine-only config (work env, aliases) from the gitignored ~/dotfiles/.work/
 for f in "$HOME"/dotfiles/.work/*.zsh(N); do source "$f"; done
-
