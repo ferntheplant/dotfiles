@@ -589,7 +589,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | gzip | nanobrew core | null |
 | httpie | nanobrew core | null |
 | jq | nanobrew core | null |
-| leaf-markdown-viewer | nanobrew core | `.config/leaf/config.toml` |
+| leaf | nanobrew (`deepanshumishraa/tap` tap) | `.config/leaf/config.toml` |
 | less | nanobrew core | null |
 | libpq | nanobrew core | null |
 | mddog (`mdd`) | nanobrew (`qu8n/tap` tap) on macOS, mise on Linux | `.config/mddog`, Rosé Pine Moon |

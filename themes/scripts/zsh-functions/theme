@@ -35,7 +35,6 @@ theme() {
 		'$update' \"\$HOME/.config/helix/config.toml\" '$from' '$to'
 		'$update' \"\$HOME/.config/btop/btop.conf\" '$from' '$to'
 		'$update' \"\$HOME/.gitconfig\" '$from' '$to'
-		'$update' \"\$HOME/.config/leaf/config.toml\" '$from' '$to'
 	" || {
 		echo "Theme update failed"
 		return 0

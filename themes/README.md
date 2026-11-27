@@ -1,7 +1,7 @@
 # Themes
 
 Ports of VS Code color themes to the terminal tools the `theme` light/dark toggle drives:
-Ghostty, bat, delta, Helix, btop, starship, leaf, vivid (`LS_COLORS`), zsh-syntax-highlighting and fzf.
+Ghostty, bat, delta, Helix, btop, starship, vivid (`LS_COLORS`), zsh-syntax-highlighting and fzf.
 
 The input is a theme's **VS Code theme JSON**, since that's the one implementation almost every theme has.
 A **Zed theme** works too, for themes that only exist for Zed (see [Zed themes](#zed-themes)).
@@ -87,7 +87,7 @@ themes/
    - Ghostty: selection visibility, `ls` colors, a `git diff`.
    - Helix: popups and menus (`bgActive`), statusline mode colors, whitespace dots, diagnostics.
    - bat/delta: a diff with changed words (`minus/plus-emph`) and syntax highlighting.
-   - btop, leaf (open a markdown file), starship prompt, fzf (`ctrl-r`), zsh highlighting.
+   - btop, starship prompt, fzf (`ctrl-r`), zsh highlighting.
 
    Record anything theme-specific you decided in `theme.json` `"notes"`.
 
@@ -181,7 +181,6 @@ are documented in the comment at the top of each `lib/targets/*.mjs`. They're th
 | Helix | `helix/.config/helix/themes/<stem_us>.toml` | `~/.config/helix/themes/` |
 | btop | `btop/.config/btop/themes/<stem>.theme` | `~/.config/btop/themes/` |
 | starship | `snippets/starship-palettes.toml` | append to `starship.toml`, set `palette` |
-| leaf | `snippets/leaf-themes.toml` | append to `leaf/config.toml`, set `theme` |
 | vivid | `vivid/.config/vivid/themes/<stem>.yml` | `~/.config/vivid/themes/` |
 | zsh-syntax-highlighting, fzf | `zsh/.zsh/<stem_us>-{zsh-syntax-highlighting,fzf}.zsh` | `~/.zsh/` |
 | (shell) | `pairs.sh` | read by `try.sh` and the `theme` function |
@@ -194,7 +193,7 @@ are documented in the comment at the top of each `lib/targets/*.mjs`. They're th
 `themes/try.sh <slug> [pair]` opens a separate Ghostty instance. Its shell loads your normal `~/.zshrc`, then
 layers the theme on top. Your real configs are only read: the sandbox uses copies in `~/.cache/theme-try/<slug>/`,
 with only the theme lines changed. It points each tool at its copy with `STARSHIP_CONFIG`, `BAT_THEME`,
-`GIT_PAGER="delta --config …"`, `hx`/`leaf` aliases with their own `XDG_CONFIG_HOME`, and `btop -c`.
+`GIT_PAGER="delta --config …"`, the `hx` alias with its own `XDG_CONFIG_HOME`, and `btop -c`.
 Quit that instance to go back.
 
 - It follows macOS appearance at startup. Run `theme-try-mode light|dark` after changing it.
@@ -204,7 +203,7 @@ Quit that instance to go back.
   `.tmTheme` files are symlinked into `~/.config/bat/themes` and the cache is rebuilt. That only adds
   themes. `clean` removes them.
 - The copies need the lines being swapped to exist in your real configs: `palette = ` (starship),
-  `theme = ` (Helix, leaf), `color_theme = ` (btop).
+  `theme = ` (Helix), `color_theme = ` (btop).
 
 ## Adopting a theme
 
@@ -225,8 +224,6 @@ Quit that instance to go back.
      `[delta] features = <stem>`
    - starship: append `snippets/starship-palettes.toml`, set `palette = "<stem>"`. The palettes redefine
      `red`/`green`/... so the prompt's `bold green`-style module styles use the theme's colors.
-   - leaf: append `snippets/leaf-themes.toml`, set `theme = "<stem>"`. leaf can only use its built-in
-     syntect themes for code blocks, so just its UI and markdown colors come from the theme.
 3. **Toggle:** replace `scripts/zsh-functions/theme` with `themes/scripts/zsh-functions/theme`. It takes
    `THEME_SLUG` / `THEME_PAIR` env vars, flips each config between the pair's dark and light stems
    with `update-theme.sh`, and loads the matching `LS_COLORS`, fzf and zsh-highlighting files.

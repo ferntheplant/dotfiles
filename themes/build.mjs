@@ -21,7 +21,6 @@ import btop from './lib/targets/btop.mjs'
 import delta from './lib/targets/delta.mjs'
 import ghostty from './lib/targets/ghostty.mjs'
 import helix from './lib/targets/helix.mjs'
-import leaf from './lib/targets/leaf.mjs'
 import starship from './lib/targets/starship.mjs'
 import vivid from './lib/targets/vivid.mjs'
 import zsh from './lib/targets/zsh.mjs'
@@ -29,7 +28,7 @@ import zsh from './lib/targets/zsh.mjs'
 // A target has `files(palette, ctx)` for per-variant files and/or `combined(variants, ctx)`
 // for one file covering every variant (config snippets). Both return [{ path, content }]
 // with paths relative to dist/.
-const TARGETS = [ghostty, bat, delta, helix, btop, starship, leaf, vivid, zsh]
+const TARGETS = [ghostty, bat, delta, helix, btop, starship, vivid, zsh]
 
 const ROOT = dirname(fileURLToPath(import.meta.url))
 

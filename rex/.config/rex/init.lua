@@ -134,3 +134,10 @@ rex.bind("cmd+enter", function(ctx)
   }
   return true
 end)
+
+-- >>> leaf >>>
+-- Managed by `leaf rex install`; `leaf rex uninstall` removes it.
+-- plugin: 752dfc14f7188a9c
+dofile("/Users/fjorn/.config/rex/plugins/leaf/init.lua").setup({ bin = { "/opt/nanobrew/prefix/bin/leaf" } })
+-- open: idle classic
+-- <<< leaf <<<

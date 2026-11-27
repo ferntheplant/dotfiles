@@ -10,7 +10,7 @@
 # with that pair's variants.
 #
 # Real configs are only read, never written. The sandbox shell gets copies with the theme lines
-# swapped, selected via env vars and flags (STARSHIP_CONFIG, BAT_THEME, GIT_PAGER, hx/leaf
+# swapped, selected via env vars and flags (STARSHIP_CONFIG, BAT_THEME, GIT_PAGER, hx
 # XDG_CONFIG_HOME, btop -c). Quit that Ghostty instance and you're back to normal.
 #
 # One exception: delta only reads syntax themes from bat's default cache, so the theme's
@@ -82,13 +82,6 @@ build() {
 		ln -s "$HOME/.config/helix/languages.toml" "$xdg/helix/languages.toml"
 		ln -s "$DIST/helix/.config/helix/themes" "$xdg/helix/themes"
 
-		mkdir -p "$xdg/leaf"
-		{
-			swap_line "$HOME/.config/leaf/config.toml" 'theme = ' "theme = \"$stem\""
-			echo
-			cat "$DIST/snippets/leaf-themes.toml"
-		} >"$xdg/leaf/config.toml"
-
 		# btop writes its config back on exit, which is fine: it's the copy
 		swap_line "$HOME/.config/btop/btop.conf" 'color_theme = ' \
 			"color_theme = \"$DIST/btop/.config/btop/themes/$stem.theme\"" >"$SANDBOX/btop-$mode.conf"
@@ -122,7 +115,6 @@ build() {
 		  export GIT_PAGER="delta --config $SANDBOX/delta-\$mode.gitconfig"
 		  export LS_COLORS="\$(vivid generate "$DIST/vivid/.config/vivid/themes/\$stem.yml")"
 		  alias hx="XDG_CONFIG_HOME=$SANDBOX/xdg-\$mode hx"
-		  alias leaf="XDG_CONFIG_HOME=$SANDBOX/xdg-\$mode leaf"
 		  alias btop="btop -c $SANDBOX/btop-\$mode.conf"
 		  source "$DIST/zsh/.zsh/\${stem_us}-fzf.zsh"
 		  source "$DIST/zsh/.zsh/\${stem_us}-zsh-syntax-highlighting.zsh"
