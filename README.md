@@ -26,15 +26,17 @@ The Pillar link wins when a skill name is in both repos, and `scripts/link-agent
 `install.sh` unstows each package that the profile skips, so a machine that changes its profile loses those links.
 It does not uninstall a tool.
 
-```bash
-scripts/install-packages.sh # nanobrew packages for the profile and the OS; safe to run again
-scripts/install.sh          # stow, skills, harness settings; safe to run again
-                            # desktop only: macOS defaults, Handy settings
-```
+Install Nanobrew and mise first. Run `scripts/install.sh` to install Nanobrew packages, link the
+dotfiles, install mise tools, and apply settings. You can run it again after a pull.
+
+Use `scripts/install.sh --config-only` to apply the dotfiles and settings without a package install.
+Use `scripts/install-packages.sh` to install only Nanobrew packages. Neither script installs Mac App
+Store apps. See [Set up a new desktop Mac](#set-up-a-new-desktop-mac) for that step.
 
 `leave-brew` puts a new formula in `.Nanobrewfile` and a new cask in `.Nanobrewfile.desktop`.
-Move a line by hand when that guess is wrong. It does not run on the server or infra profile. A new
-formula that has no Linux build must also go in `MACOS_ONLY` in `scripts/install-packages.sh`.
+It skips `fresh-editor`. The repo keeps the Fresh config but does not install the editor.
+Move a line by hand if it belongs in the other file. `leave-brew` does not run on the server or
+infra profile. Add a formula with no Linux build to `MACOS_ONLY` in `scripts/install-packages.sh`.
 
 A Mac can also have Homebrew in `/opt/homebrew`, which links to nanobrew's prefix, so the two
 tools share one Cellar. Nanobrew's kegs have no Homebrew install receipt, so Homebrew's autoremove
@@ -45,8 +47,8 @@ from any shell.
 ### Mac server
 
 The server keeps its own apps and services (OrbStack, Tailscale, and others) in a separate
-private repo. Rex is not in nanobrew: install it from `Rex.dmg`. Run `mise install`, and then
-run `agent-browser install` once, so that agents have a browser.
+private repo. Rex is not in Nanobrew: install it from `Rex.dmg`. After `scripts/install.sh`,
+run `agent-browser install` once so that agents have a browser.
 
 ```bash
 echo server > ~/dotfiles/.work/profile
@@ -62,7 +64,7 @@ in the same private repo as the Mac server's. Nanobrew installs the Linux builds
 - `1password-cli` (a cask): 1Password's apt repo, from the host setup
 - `claude-code` (a cask): none, because agents do not run on the Linux server
 - `stow`: apt
-- `zmx`: mise
+- `mddog` and `zmx`: mise
 - `mole`: none, because it is a macOS app
 
 1. Install zsh, stow, and a C compiler, make zsh the login shell, and install nanobrew. mise
@@ -77,21 +79,18 @@ in the same private repo as the Mac server's. Nanobrew installs the Linux builds
    sudo /opt/nanobrew/prefix/bin/nb init
    ```
 
-2. Install the other tools, clone the repo, and link the dotfiles.
+2. Install mise. Clone the repo. Run the installer.
 
    ```bash
    curl https://mise.run | sh
    git clone https://github.com/ferntheplant/dotfiles ~/dotfiles
    mkdir -p ~/dotfiles/.work && echo infra > ~/dotfiles/.work/profile
    cd ~/dotfiles
-   PATH="/opt/nanobrew/prefix/bin:$PATH" scripts/install-packages.sh
-   PATH="/opt/nanobrew/prefix/bin:$PATH" scripts/install.sh
-   ~/.local/bin/mise install
+   scripts/install.sh
    ```
 
-To sync after a push, use the same command as the Mac server. Run `scripts/install-packages.sh` too
-when `.Nanobrewfile` changes. `mise install` still installs agent-browser, because the mise config
-has no profiles; nothing configures it on the Linux server.
+To sync after a push, use the same command as the Mac server. The mise config has no profiles.
+It installs agent-browser on the Linux server, but the installer does not configure it there.
 
 ## Set up a new desktop Mac
 
@@ -109,34 +108,29 @@ has no profiles; nothing configures it on the Linux server.
    git clone https://github.com/ferntheplant/dotfiles ~/dotfiles
    ```
 
-3. Install [mise](https://mise.jdx.dev/installing-mise.html) with its installer. The runtimes come
-   from `.config/mise/config.toml` after step 6.
+3. Install [mise](https://mise.jdx.dev/installing-mise.html) with its installer.
 
    ```bash
    curl https://mise.run | sh
    ```
 
-4. Install [nanobrew](https://github.com/justrach/nanobrew) and the packages. Nanobrew does not
-   install App Store apps, so `mas` installs the `mas` lines. Sign in to the App Store first.
+4. Install [Nanobrew](https://github.com/justrach/nanobrew).
 
    ```bash
    curl -fsSL https://nanobrew.trilok.ai/install | bash
-   cd ~/dotfiles
-   nb bundle install .Nanobrewfile
-   nb bundle install .Nanobrewfile.desktop
-   sed -n 's/^mas .*id: //p' .Nanobrewfile.desktop | xargs mas install
    ```
 
 5. Install the apps and fonts that no package file installs:
    - [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md) (Ghostty and Rex use it)
    - Rex from `Rex.dmg`
    - the other `download` apps in the [Apps](#apps) table
-6. Run the installer scripts. `install.sh` is safe to run again.
+6. Run the installer. Import the Rex settings. Sign in to the App Store before the `mas` command.
 
    ```bash
-   scripts/install.sh            # stow, skills, harness settings, macOS defaults, Handy settings
+   cd ~/dotfiles
+   scripts/install.sh
    scripts/rex-settings.sh import
-   mise install
+   sed -n 's/^mas .*id: //p' .Nanobrewfile.desktop | xargs /opt/nanobrew/prefix/bin/mas install
    ```
 
 7. Set up LibreWolf. `install.sh` already linked `~/.librewolf/librewolf.overrides.cfg`, which keeps
@@ -244,7 +238,7 @@ The base files capture the shared harness preferences:
 opencode keeps its selected model in its own state, not in a settings file.
 The installer applies these settings on desktop, server, and work profiles, but not infra.
 
-Edit the base files and run `scripts/install.sh`, or apply only these settings:
+Edit the base files. Run `scripts/install.sh --config-only`, or apply only these settings:
 
 ```bash
 scripts/opencode-settings.sh
@@ -357,11 +351,11 @@ on each agent machine. The KVM is a GL.iNet Comet on the home network. It contro
 - **Registration:** `scripts/claude-mcp.sh` (run by `install.sh`) registers the server only on a
   machine whose keychain has the password. Without it, the script prints the command to add it.
 
-To set up a machine, add the password, then run `install.sh` again:
+To set up a machine, add the password. Run `install.sh --config-only` to register the server:
 
 ```bash
 security add-generic-password -s kvm-pilot -a comet -w   # prompts for the Comet admin password
-scripts/install.sh
+scripts/install.sh --config-only
 claude mcp get kvm-pilot                                 # expect: Status: ✔ Connected
 ```
 
@@ -580,6 +574,7 @@ This list shows the command-line tools on the desktop Mac. The source column tel
 | leaf-markdown-viewer | nanobrew core | `.config/leaf/config.toml` |
 | less | nanobrew core | null |
 | libpq | nanobrew core | null |
+| mddog (`mdd`) | nanobrew (`qu8n/tap` tap) on macOS, mise on Linux | null |
 | mole | nanobrew core | null |
 | openssl@4 | nanobrew core | null |
 | pkgconf | nanobrew core | null |
@@ -665,6 +660,7 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | syncthing-app | nanobrew | null | |
 | tinycast | nanobrew | `dotfiles/tinycast` | yes |
 | vorssaint | nanobrew | `dotfiles/vorssaint/settings.plist` | yes |
+| Zed | nanobrew | `.config/zed` | |
 | zoom | nanobrew | null | |
 | Equinox | mas | null | yes |
 | Pandan | mas | null | yes |

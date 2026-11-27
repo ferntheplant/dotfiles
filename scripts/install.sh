@@ -1,8 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-# Link the dotfiles into $HOME with stow, and on the desktop and work profiles write the macOS
-# defaults and the Handy settings. Run it again after a pull: it is safe to repeat.
+# Install packages with Nanobrew, link dotfiles with Stow, and install tools with mise.
+# Use --config-only to apply the dotfiles and settings without either package manager.
+# The desktop and work profiles also get macOS defaults and Handy settings.
 #
 # The profile in the gitignored ~/dotfiles/.work/profile selects the packages:
 #   desktop (default)  every package
@@ -12,6 +13,17 @@ set -euo pipefail
 #   work               as desktop (the Pillar laptop)
 # On Linux, the packages in MACOS_ONLY are skipped too. A package that the profile skips is
 # unstowed, so a machine that changes its profile loses the links of that package.
+
+usage="Usage: $0 [--config-only]"
+case "$#:${1-}" in
+	0:) install_packages=true ;;
+	1:--config-only) install_packages=false ;;
+	1:-h | 1:--help) echo "$usage"; exit 0 ;;
+	*) echo "$usage" >&2; exit 2 ;;
+esac
+
+# Find the package managers on a new machine before the shell config is in place.
+export PATH="$PATH:/opt/nanobrew/prefix/bin:$HOME/.local/bin"
 
 fixed_location="$HOME/dotfiles"
 profile="$(cat "$fixed_location/.work/profile" 2>/dev/null || echo desktop)"
@@ -36,6 +48,16 @@ fi
 FOLDED=("fresh")
 
 cd "$fixed_location"
+
+if [[ "$install_packages" == true ]]; then
+	for tool in nb mise; do
+		if ! command -v "$tool" >/dev/null; then
+			echo "Install $tool first. See $fixed_location/README.md." >&2
+			exit 1
+		fi
+	done
+	"$fixed_location/scripts/install-packages.sh"
+fi
 
 # Stow a FOLDED package. Stow links a folder only when the target does not exist, so a plain folder
 # that the app made before the first install moves to <folder>.pre-dotfiles first.
@@ -78,7 +100,10 @@ done
 # Include legacy ~/.pi and ~/.omp only to clean up dangling dotfiles links; leave their runtime data alone.
 {
 	find "$HOME" -maxdepth 1 -type l 2>/dev/null
-	find "$HOME/.config" "$HOME/.local/bin" "$HOME/.claude" "$HOME/.pi" "$HOME/.omp" "$HOME/.fx" "$HOME/.zsh" -name node_modules -prune -o -type l -print 2>/dev/null
+	for dir in "$HOME/.config" "$HOME/.local/bin" "$HOME/.claude" "$HOME/.pi" "$HOME/.omp" "$HOME/.fx" "$HOME/.zsh"; do
+		[[ -d "$dir" ]] || continue
+		find "$dir" -name node_modules -prune -o -type l -print 2>/dev/null
+	done
 } | while read -r link; do
 	if [[ "$(readlink "$link")" == *dotfiles/* && ! -e "$link" ]]; then
 		rm "$link"
@@ -110,6 +135,11 @@ mise_work="$HOME/.config/mise/conf.d/work.toml"
 if [[ -f "$mise_work" && ! -L "$mise_work" ]] &&
 	cmp -s "$mise_work" <(printf '# Written by ~/dotfiles/scripts/install.sh for the work profile\n[settings]\ndisable_tools = ["pi"]\n'); then
 	rm "$mise_work"
+fi
+
+# Stow links the mise config before mise can read the list of tools.
+if [[ "$install_packages" == true ]]; then
+	mise install
 fi
 
 # Desktop apps: macOS, Hidden Bar, and Sill defaults, Handy settings

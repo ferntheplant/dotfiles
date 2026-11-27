@@ -22,6 +22,7 @@ cask "spotify"
 cask "syncthing-app"
 cask "tinycast"
 cask "vorssaint"
+cask "zed"
 cask "zoom"
 mas "Equinox", id: 1591510203
 mas "Pandan", id: 1569600264

@@ -6,6 +6,7 @@
 # cask to the desktop list; move it by hand if that guess is wrong. nb drops tap prefixes,
 # so a name already in a file keeps its full tap name. Packages in the gitignored
 # .work/Nanobrewfile are machine-only and stay out of both files.
+# Fresh has shared config, but its binary stays out of the shared lists.
 leave-brew() {
     if [[ "$(cat .work/profile 2>/dev/null)" == (server|infra) ]]; then
         echo "❌ leave-brew rewrites the shared package lists; do not run it on the server or infra profile"
@@ -19,6 +20,7 @@ leave-brew() {
         nb leaves | awk '{print "brew " $1}'
         nb bundle dump | awk -F'"' '/^cask /{print "cask " $2}'
     } | awk -F'"' '
+        BEGIN { skip["brew fresh-editor"] = 1 }
         FILENAME != "-" && /^(brew|cask) "/ {
             kind = substr($1, 1, 4); short = $2; sub(/.*\//, "", short)
             if (FILENAME == work) { skip[kind " " short] = 1; next }

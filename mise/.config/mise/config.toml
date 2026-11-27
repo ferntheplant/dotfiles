@@ -37,7 +37,8 @@ just = "latest"
 "pypi:kvm-pilot" = "latest"
 shellcheck = "latest"
 yq = "latest"
-# Nanobrew installs zmx on macOS. On Linux it installs the macOS binary, so mise installs zmx there.
+# Nanobrew installs mddog and zmx on macOS. Use the Linux releases from GitHub on Linux.
+"github:qu8n/mddog" = { version = "latest", os = ["linux"] }
 "github:neurosnap/zmx" = { version = "latest", os = ["linux"] }
 
 [settings]
