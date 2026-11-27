@@ -7,7 +7,7 @@ The gitignored `.work/profile` file selects what a machine gets. A machine witho
 
 | Profile | Packages | Stow packages |
 | --- | --- | --- |
-| `desktop` | `.Nanobrewfile` and `.Nanobrewfile.desktop` | all of them |
+| `desktop` | `.Nanobrewfile`, `.Nanobrewfile.desktop`, and Kiri | all of them |
 | `server` (a Mac server) | `.Nanobrewfile` only | all except kanata, librewolf, paneru, and zed |
 | `infra` (a Linux server) | `.Nanobrewfile` without the casks and the macOS-only formulas | as `server`, and also not ghostty, claude, fx, kvm-pilot, or opencode |
 | `work` (the Pillar laptop) | as `desktop` | all of them |
@@ -30,8 +30,9 @@ Install Nanobrew and mise first. Run `scripts/install.sh` to install Nanobrew pa
 dotfiles, install mise tools, and apply settings. You can run it again after a pull.
 
 Use `scripts/install.sh --config-only` to apply the dotfiles and settings without a package install.
-Use `scripts/install-packages.sh` to install only Nanobrew packages. Neither script installs Mac App
-Store apps. See [Set up a new desktop Mac](#set-up-a-new-desktop-mac) for that step.
+Use `scripts/install-packages.sh` to install packages without the dotfiles and settings.
+Neither script installs Mac App Store apps. See [Set up a new desktop Mac](#set-up-a-new-desktop-mac)
+for that step.
 
 `leave-brew` puts a new formula in `.Nanobrewfile` and a new cask in `.Nanobrewfile.desktop`.
 It skips `fresh-editor`. The repo keeps the Fresh config but does not install the editor.
@@ -478,13 +479,19 @@ TODO: find way to keep `.Nanobrewfile` and `.Nanobrewfile.desktop` clean (nb lea
 ## Kiri
 
 [Kiri](https://github.com/libracoder/kiri) runs local development containers.
-The desktop and work profiles install Kiri. On a Mac server that needs Kiri, install it with
-`nb install --cask libracoder/kiri/kiri`.
+The desktop and work profiles use the Kiri installer. Nanobrew cannot expand the architecture
+in the Kiri cask URL. On a Mac server that needs Kiri, run the installer:
+
+```bash
+curl -fsSL https://runkiri.com/install.sh | KIRI_SKIP_SETUP=1 /bin/bash
+```
 
 Run this once to start Kiri at login and select the `kiri` Docker context:
 
 ```bash
-ZDOTDIR="$HOME/dotfiles/.work" /Applications/Kiri.app/Contents/MacOS/kiri setup --use --no-domains
+kiri_app=/Applications/Kiri.app
+[[ -d "$kiri_app" ]] || kiri_app="$HOME/Applications/Kiri.app"
+ZDOTDIR="$HOME/dotfiles/.work" "$kiri_app/Contents/MacOS/kiri" setup --use --no-domains
 ```
 
 `ZDOTDIR` keeps Kiri's shell setup out of the linked `.zshrc`. The dotfiles add Kiri to `PATH`.
@@ -654,6 +661,7 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 
 - `nanobrew`: a cask in `.Nanobrewfile.desktop`
 - `mas`: a Mac App Store entry in `.Nanobrewfile.desktop`
+- `Kiri installer`: `scripts/install-packages.sh` runs the installer from Kiri
 - `download`: a manual download from the vendor; no package file installs it
 
 | App | Source | Config | macOS only |
@@ -664,7 +672,7 @@ This list shows the apps on the desktop Mac. The source column tells you how to 
 | ghostty | nanobrew | `.config/ghostty` | |
 | handy | nanobrew | `dotfiles/handy/settings.json` via `scripts/handy-settings.sh` | |
 | hiddenbar | nanobrew | `scripts/macos-defaults.sh` | yes |
-| Kiri | nanobrew (`libracoder/kiri` tap) | See [Kiri](#kiri) | yes |
+| Kiri | Kiri installer | See [Kiri](#kiri) | yes |
 | librewolf | nanobrew | `.librewolf/librewolf.overrides.cfg`, `dotfiles/librewolf` | |
 | sill | nanobrew (`saffsanity/sill` tap) | `scripts/macos-defaults.sh` | yes |
 | spotify | nanobrew | null | |

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Install the nanobrew packages that this machine's profile selects. Safe to run again.
-#   desktop  .Nanobrewfile and .Nanobrewfile.desktop (macOS only)
+#   desktop  .Nanobrewfile, .Nanobrewfile.desktop, and Kiri (macOS only)
 #   server   .Nanobrewfile only (a Mac server)
 #   infra    .Nanobrewfile without casks and macOS-only formulas (a Linux server)
 #   work     as desktop (the Pillar laptop, macOS)
@@ -32,6 +32,10 @@ if [[ "$(uname -s)" != "Linux" ]]; then
 	nb bundle install "$fixed_location/.Nanobrewfile"
 	if [[ "$profile" = "desktop" || "$profile" = "work" ]]; then
 		nb bundle install "$fixed_location/.Nanobrewfile.desktop"
+		# Nanobrew does not expand Kiri's architecture-specific cask URL.
+		if [[ ! -x /Applications/Kiri.app/Contents/MacOS/kiri && ! -x "$HOME/Applications/Kiri.app/Contents/MacOS/kiri" ]]; then
+			curl -fsSL https://runkiri.com/install.sh | KIRI_SKIP_SETUP=1 /bin/bash
+		fi
 	fi
 	exit 0
 fi
